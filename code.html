@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adaptive Study Planner</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#eeefff",
+                      "on-secondary-fixed": "#001a42",
+                      "outline-variant": "#c3c6d7",
+                      "surface-tint": "#0053db",
+                      "surface-container-low": "#f2f4f6",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "primary-container": "#2563eb",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-variant": "#e0e3e5",
+                      "surface-dim": "#d8dadc",
+                      "surface-container-high": "#e6e8ea",
+                      "on-surface": "#191c1e",
+                      "on-secondary-fixed-variant": "#004395",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#006242",
+                      "outline": "#737686",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#fefcff",
+                      "on-background": "#191c1e",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#00174b",
+                      "inverse-surface": "#2d3133",
+                      "tertiary-fixed": "#6ffbbe",
+                      "surface-bright": "#f7f9fb",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "on-tertiary-container": "#bdffdb",
+                      "surface": "#f7f9fb",
+                      "on-surface-variant": "#434655",
+                      "background": "#f7f9fb",
+                      "primary-fixed": "#dbe1ff",
+                      "inverse-primary": "#b4c5ff",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-tertiary-fixed": "#002113",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#2170e4",
+                      "primary": "#004ac6",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#eceef0",
+                      "secondary-fixed": "#d8e2ff",
+                      "tertiary-container": "#007d55",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "secondary": "#0058be"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "headline-xl-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-xl-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-spring {
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c3c6d7;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #737686;
+        }
+        .procrastination-active .task-item:nth-child(n+4) {
+            display: none;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background flex items-center justify-between px-margin-mobile h-16 w-full max-w-container-max mx-auto border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity duration-200 active:scale-95" data-icon="menu">menu</button>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Adaptive Study Planner</h1>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzuDgyxrW8ILzt-Xa3CTh7s3I1Xq3oNd4Xh6ETQ9j06ChiqjumQX1EXYVzc-Sdt2G2FgmwtEQ3fxZ7V6dJh6B6dfsJNcA2IuaXuq3bNJ_MLWsf_zYcmNvdRw_ajhzZuIegw_6KcuWDudskVCNHMGky3FxuGlhz-ic6Fn2PQttHVrXmpOVrzx-8Ax9gQez-hnC9bJ-3ZJID_hLIxjzr87o9IKyVfYBl3jPzaoqN3h2yw2fpjoM2ya69ALJN32zSWfmz6WsbwI97xaA"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-4 pb-24 max-w-4xl mx-auto">
+<!-- Tab: Plan (Main View) -->
+<div class="tab-content active space-y-8" id="tab-plan">
+<!-- Motivation System (Top Area) -->
+<section class="bg-surface-container-highest p-5 rounded-xl border border-outline-variant flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+                        오늘의 동기부여 메시지
+                    </h2>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant relative shadow-sm">
+<span class="material-symbols-outlined absolute -top-3 -left-2 bg-primary text-on-primary rounded-full p-1 text-sm">format_quote</span>
+<p class="font-body-lg text-on-surface italic leading-relaxed text-center" id="motivation-message">
+                        "공부는 습관입니다. 지금 바로 시작하세요!"
+                    </p>
+<p class="text-right text-sm font-bold text-primary mt-3" id="instructor-name-display">- AI 멘토</p>
+</div>
+</section>
+<!-- Summary Dashboard (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="md:col-span-2 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-[0px_4px_6px_rgba(0,0,0,0.05)]">
+<h2 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+                        오늘의 학습 요약
+                    </h2>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-4xl font-bold text-primary" id="progress-text">0%</span>
+<span class="font-body-md text-on-surface-variant" id="task-stats">0 / 0 완료됨</span>
+</div>
+<div class="h-4 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary progress-spring" id="progress-bar" style="width: 0%"></div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic" id="dynamic-encouragement">꾸준함이 실력을 만듭니다. 오늘도 화이팅!</p>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-6 rounded-xl shadow-lg flex flex-col justify-between">
+<div>
+<p class="font-label-md uppercase opacity-80">남은 학습량</p>
+<h3 class="text-5xl font-bold mt-2" id="remaining-count">0</h3>
+</div>
+<div class="flex items-center gap-2 mt-4">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-body-md" id="remaining-time">0분 예상</span>
+</div>
+</div>
+</section>
+<!-- Task Input Form -->
+<section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-[0px_4px_6px_rgba(0,0,0,0.05)]">
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+                    학습 항목 추가
+                </h2>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6" id="task-form">
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1">과목명</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="subject" placeholder="예: 수학, 영어, 경제학" required="" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1">공부 내용</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="content" placeholder="예: 미분과 적분 복습" required="" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1">마감일</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="due-date" required="" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1">시험일 (권장 시간 계산용)</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="exam-date" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1 flex justify-between">
+                            과목 난이도 (1-5)
+                            <span class="text-primary font-bold" id="diff-val">3</span>
+</label>
+<input class="w-full h-10 accent-primary" id="difficulty" max="5" min="1" oninput="document.getElementById('diff-val').innerText = this.value" step="1" type="range" value="3"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-on-surface-variant px-1">예상 소요 시간 (분)</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="est-time">
+<option value="15">15분</option>
+<option value="30">30분</option>
+<option value="45">45분</option>
+<option value="60">1시간</option>
+<option value="90">1시간 30분</option>
+<option value="120">2시간</option>
+</select>
+</div>
+<div class="md:col-span-2 pt-2">
+<button class="w-full bg-primary text-on-primary font-bold py-4 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                            추가하기
+                        </button>
+</div>
+</form>
+</section>
+<!-- Study List Controls -->
+<section class="space-y-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="checklist">checklist</span>
+                            학습 목록
+                        </h2>
+<div class="font-label-sm text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full" id="filter-stats">
+                            전체 0개
+                        </div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-on-surface-variant hidden md:inline">벼락치기 방지 모드</span>
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-highest transition-colors" id="procrastination-toggle-main" onclick="toggleProcrastinationMode()">
+<span class="material-symbols-outlined text-xl" id="proc-icon-main">visibility</span>
+<span class="text-sm font-bold" id="proc-text-main">집중 모드 끄기</span>
+</button>
+</div>
+</div>
+<div class="space-y-3" id="tasks-container">
+<div class="text-center py-20 opacity-40" id="empty-state">
+<span class="material-symbols-outlined text-6xl" data-icon="auto_stories">auto_stories</span>
+<p class="mt-4 font-body-md">등록된 학습 일정이 없습니다.<br/>새로운 목표를 추가해보세요!</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Tab: Stats (Simulated) -->
+<div class="tab-content space-y-8" id="tab-stats">
+<h2 class="font-headline-xl text-primary">학습 통계</h2>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant h-64 flex items-center justify-center text-on-surface-variant">
+                학습 분석 데이터가 준비 중입니다.
+            </div>
+</div>
+<!-- Tab: Focus (Mode Controller) -->
+<div class="tab-content space-y-8" id="tab-focus">
+<div class="bg-surface-container-highest p-8 rounded-2xl border border-outline-variant text-center space-y-6">
+<span class="material-symbols-outlined text-7xl text-primary" data-icon="timer">timer</span>
+<h2 class="font-headline-xl">집중 모드 (미루기 방지)</h2>
+<p class="text-on-surface-variant">집중 모드를 켜면 가장 우선순위가 높은 3개의 과제만 보여주어 학습 효율을 극대화합니다.</p>
+<div class="flex justify-center">
+<button class="flex items-center gap-4 bg-primary text-on-primary px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:scale-105 transition-transform" id="focus-tab-toggle" onclick="toggleProcrastinationMode()">
+<span class="material-symbols-outlined text-2xl" id="proc-icon-focus">bolt</span>
+<span id="proc-text-focus">집중 모드 시작하기</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tab: Profile (Settings) -->
+<div class="tab-content space-y-8" id="tab-profile">
+<h2 class="font-headline-xl text-primary">프로필 &amp; 설정</h2>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant space-y-6">
+<div class="flex items-center gap-4 border-b border-outline-variant pb-6">
+<div class="w-16 h-16 rounded-full bg-primary-container overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzuDgyxrW8ILzt-Xa3CTh7s3I1Xq3oNd4Xh6ETQ9j06ChiqjumQX1EXYVzc-Sdt2G2FgmwtEQ3fxZ7V6dJh6B6dfsJNcA2IuaXuq3bNJ_MLWsf_zYcmNvdRw_ajhzZuIegw_6KcuWDudskVCNHMGky3FxuGlhz-ic6Fn2PQttHVrXmpOVrzx-8Ax9gQez-hnC9bJ-3ZJID_hLIxjzr87o9IKyVfYBl3jPzaoqN3h2yw2fpjoM2ya69ALJN32zSWfmz6WsbwI97xaA"/>
+</div>
+<div>
+<h3 class="font-headline-md">학습자님</h3>
+<p class="text-on-surface-variant text-sm">목표를 향해 나아가는 중입니다.</p>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="font-label-md text-on-surface-variant block mb-2">멘토 스타일 선택</label>
+<select class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="mentor-style-select" onchange="updateInstructorPreference()">
+<option value="General">일반 응원 (Standard)</option>
+<option value="Seung-je Jung">정승제 스타일 (생선님)</option>
+<option value="Woo-jin Hyun">현우진 스타일 (뉴런)</option>
+<option value="Han-gil Jeon">전한길 스타일 (난공불락)</option>
+</select>
+<p class="text-[10px] text-on-surface-variant mt-1 px-1">* 멘토에 따라 동기부여 메시지의 어조가 달라집니다.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest flex justify-around items-center h-20 px-4 pb-safe border-t border-outline-variant rounded-t-xl shadow-[0px_-4px_6px_rgba(0,0,0,0.05)]">
+<button class="tab-btn flex flex-col items-center justify-center text-primary bg-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform" id="btn-tab-plan" onclick="switchTab('plan')">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm mt-1">Plan</span>
+</button>
+<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-stats" onclick="switchTab('stats')">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-label-sm mt-1">Stats</span>
+</button>
+<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-focus" onclick="switchTab('focus')">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-sm mt-1">Focus</span>
+</button>
+<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-profile" onclick="switchTab('profile')">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm mt-1">Profile</span>
+</button>
+</nav>
+<script>
+        const taskForm = document.getElementById('task-form');
+        const tasksContainer = document.getElementById('tasks-container');
+        const emptyState = document.getElementById('empty-state');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const taskStats = document.getElementById('task-stats');
+        const remainingCountDisplay = document.getElementById('remaining-count');
+        const remainingTimeDisplay = document.getElementById('remaining-time');
+        const filterStatsDisplay = document.getElementById('filter-stats');
+        
+        const mentorStyleSelect = document.getElementById('mentor-style-select');
+        const motivationMessage = document.getElementById('motivation-message');
+        const instructorNameDisplay = document.getElementById('instructor-name-display');
+        
+        const procIconMain = document.getElementById('proc-icon-main');
+        const procTextMain = document.getElementById('proc-text-main');
+        const procIconFocus = document.getElementById('proc-icon-focus');
+        const procTextFocus = document.getElementById('proc-text-focus');
+        const focusTabBtn = document.getElementById('focus-tab-toggle');
+
+        let tasks = JSON.parse(localStorage.getItem('study_planner_tasks')) || [];
+        let instructorPreference = localStorage.getItem('study_planner_instructor') || 'General';
+        let isProcrastinationMode = JSON.parse(localStorage.getItem('study_planner_proc_mode')) || false;
+
+        const instructorQuotes = {
+            "General": {
+                push: ["한 걸음씩 나아가세요.", "계획은 실천할 때 가치가 있습니다.", "오늘 할 일을 내일로 미루지 마세요."],
+                praise: ["잘하고 있습니다!", "이대로만 계속하세요.", "성취감이 느껴지시나요?"]
+            },
+            "Seung-je Jung": {
+                push: ["생선님이야! 이거 안 하면 대학 못 가!", "5단계 복습 안 했지? 빨리 해!", "야! 정신 안 차려? 너 인생이 장난이야?"],
+                praise: ["완전 대박! 너는 천재야!", "그렇지! 그렇게 하는 거야!", "생선님의 자랑스러운 제자구나!"]
+            },
+            "Woo-jin Hyun": {
+                push: ["뉴런 좀 보세요. 대충 하면 망해요.", "이해 안 가요? 다시 봐야죠.", "현실적으로 말할게요. 더 하셔야 합니다."],
+                praise: ["깔끔하네요. 합격권입니다.", "훌륭한 사고의 전개입니다.", "이게 바로 뉴런의 힘이죠."]
+            },
+            "Han-gil Jeon": {
+                push: ["이 새X야! 정신 차려!", "죽어라 해야 붙는 거야!", "난공불락 알지? 독하게 마음먹어!"],
+                praise: ["니가 최고다! 진짜 합격이다!", "그래, 이게 한길 정신이다!", "자랑스럽다! 너는 무조건 된다!"]
+            }
+        };
+
+        function init() {
+            mentorStyleSelect.value = instructorPreference;
+            updateProcrastinationUI();
+            renderTasks();
+            updateDashboard();
+            updateMotivation();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-primary-container', 'text-primary');
+                el.classList.add('text-on-surface-variant');
+            });
+            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+            activeBtn.classList.remove('text-on-surface-variant');
+            activeBtn.classList.add('bg-primary-container', 'text-primary');
+        }
+
+        function saveTasks() {
+            localStorage.setItem('study_planner_tasks', JSON.stringify(tasks));
+            renderTasks();
+            updateDashboard();
+            updateMotivation();
+        }
+
+        function updateInstructorPreference() {
+            instructorPreference = mentorStyleSelect.value;
+            localStorage.setItem('study_planner_instructor', instructorPreference);
+            updateMotivation();
+        }
+
+        function toggleProcrastinationMode() {
+            isProcrastinationMode = !isProcrastinationMode;
+            localStorage.setItem('study_planner_proc_mode', JSON.stringify(isProcrastinationMode));
+            updateProcrastinationUI();
+            renderTasks();
+        }
+
+        function updateProcrastinationUI() {
+            if (isProcrastinationMode) {
+                tasksContainer.classList.add('procrastination-active');
+                
+                // Main List UI
+                procIconMain.innerText = 'visibility_off';
+                procTextMain.innerText = '집중 모드 켜짐';
+                procIconMain.parentElement.classList.add('bg-primary-container', 'text-on-primary-container');
+                
+                // Focus Tab UI
+                procIconFocus.innerText = 'lock';
+                procTextFocus.innerText = '집중 모드 해제하기';
+                focusTabBtn.classList.replace('bg-primary', 'bg-error');
+            } else {
+                tasksContainer.classList.remove('procrastination-active');
+                
+                // Main List UI
+                procIconMain.innerText = 'visibility';
+                procTextMain.innerText = '집중 모드 끄기';
+                procIconMain.parentElement.classList.remove('bg-primary-container', 'text-on-primary-container');
+                
+                // Focus Tab UI
+                procIconFocus.innerText = 'bolt';
+                procTextFocus.innerText = '집중 모드 시작하기';
+                focusTabBtn.classList.replace('bg-error', 'bg-primary');
+            }
+        }
+
+        function updateMotivation() {
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const progress = total === 0 ? 100 : (completed / total) * 100;
+            
+            const quotes = instructorQuotes[instructorPreference];
+            const list = progress < 50 ? quotes.push : quotes.praise;
+            const randomQuote = list[Math.floor(Math.random() * list.length)];
+            
+            motivationMessage.innerText = `"${randomQuote}"`;
+            instructorNameDisplay.innerText = `- ${instructorPreference === 'General' ? 'AI 멘토' : (instructorPreference === 'Seung-je Jung' ? '생선님 정승제' : (instructorPreference === 'Woo-jin Hyun' ? '현우진' : '전한길'))}`;
+        }
+
+        function calculatePriority(task) {
+            const today = new Date();
+            const due = new Date(task.dueDate);
+            const diffDays = Math.max(0, Math.ceil((due - today) / (1000 * 60 * 60 * 24)));
+            
+            const pValue = (1000 / (diffDays + 1)) + (task.difficulty * 10) + (task.estTime / 10);
+            return pValue;
+        }
+
+        function calculateRecommendedTime(task) {
+            if (!task.examDate) return null;
+            const today = new Date();
+            const exam = new Date(task.examDate);
+            const daysLeft = Math.ceil((exam - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysLeft < 0) return "시험 종료";
+            if (daysLeft === 0) return "시험 당일";
+            
+            const recommendedMins = Math.round((task.difficulty * 60) / (daysLeft / 7 + 1));
+            return `${recommendedMins}분 권장`;
+        }
+
+        function addTask(e) {
+            e.preventDefault();
+            const subject = document.getElementById('subject').value;
+            const content = document.getElementById('content').value;
+            const dueDate = document.getElementById('due-date').value;
+            const examDate = document.getElementById('exam-date').value;
+            const difficulty = parseInt(document.getElementById('difficulty').value);
+            const estTime = parseInt(document.getElementById('est-time').value);
+
+            const newTask = {
+                id: Date.now(),
+                subject,
+                content,
+                dueDate,
+                examDate,
+                difficulty,
+                estTime,
+                completed: false
+            };
+
+            tasks.push(newTask);
+            saveTasks();
+            taskForm.reset();
+            document.getElementById('diff-val').innerText = '3';
+        }
+
+        function toggleTask(id) {
+            tasks = tasks.map(task => 
+                task.id === id ? { ...task, completed: !task.completed } : task
+            );
+            saveTasks();
+        }
+
+        function deleteTask(id) {
+            if(confirm('이 항목을 삭제하시겠습니까?')) {
+                tasks = tasks.filter(task => task.id !== id);
+                saveTasks();
+            }
+        }
+
+        function editTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            const newContent = prompt('공부 내용을 수정하세요:', task.content);
+            if (newContent !== null) {
+                tasks = tasks.map(t => t.id === id ? { ...t, content: newContent } : t);
+                saveTasks();
+            }
+        }
+
+        function updateDashboard() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const remaining = total - completed;
+            const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+            
+            const totalRemainingMinutes = tasks
+                .filter(t => !t.completed)
+                .reduce((acc, t) => acc + t.estTime, 0);
+
+            progressText.innerText = `${percentage}%`;
+            progressBar.style.width = `${percentage}%`;
+            taskStats.innerText = `${completed} / ${total} 완료됨`;
+            remainingCountDisplay.innerText = remaining;
+            
+            const hours = Math.floor(totalRemainingMinutes / 60);
+            const minutes = totalRemainingMinutes % 60;
+            remainingTimeDisplay.innerText = hours > 0 ? `${hours}시간 ${minutes}분 예상` : `${minutes}분 예상`;
+            
+            filterStatsDisplay.innerText = `전체 ${total}개`;
+        }
+
+        function renderTasks() {
+            if (tasks.length === 0) {
+                emptyState.style.display = 'block';
+                tasksContainer.innerHTML = '';
+                tasksContainer.appendChild(emptyState);
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            tasksContainer.innerHTML = '';
+
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.completed && !b.completed) return 1;
+                if (!a.completed && b.completed) return -1;
+                return calculatePriority(b) - calculatePriority(a);
+            });
+
+            const recommendedId = sortedTasks.find(t => !t.completed)?.id;
+
+            sortedTasks.forEach((task, index) => {
+                const card = document.createElement('div');
+                const isRecommended = task.id === recommendedId;
+                
+                card.className = `task-item group flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border-l-4 shadow-sm hover:shadow-md transition-all ${task.completed ? 'opacity-60 bg-surface-container-low grayscale' : ''}`;
+                
+                if (task.completed) card.classList.add('border-l-tertiary');
+                else if (isRecommended) card.classList.add('border-l-amber-500');
+                else card.classList.add('border-l-primary');
+
+                const recTime = calculateRecommendedTime(task);
+                const recTimeHtml = recTime ? `<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded text-[10px] ml-auto font-bold">${recTime}</span>` : '';
+
+                card.innerHTML = `
+                    <div class="flex-shrink-0">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" 
+                               class="w-6 h-6 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer transition-all">
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-label-md text-primary bg-primary-fixed px-2 py-0.5 rounded text-[10px] uppercase">${task.subject}</span>
+                            ${isRecommended ? '<span class="font-label-md text-on-error-container bg-error-container px-2 py-0.5 rounded text-[10px] uppercase font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[10px] fill-1">star</span>TOP</span>' : ''}
+                            <span class="font-label-sm text-on-surface-variant flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="event">event</span>
+                                ${task.dueDate}
+                            </span>
+                            ${recTimeHtml}
+                        </div>
+                        <h3 class="font-headline-md mt-1 truncate ${task.completed ? 'line-through' : ''}">${task.content}</h3>
+                        <div class="flex items-center gap-3 mt-1">
+                            <p class="font-body-sm text-on-surface-variant flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                                ${task.estTime}분
+                            </p>
+                            <p class="font-body-sm text-on-surface-variant flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]" data-icon="grade">grade</span>
+                                Lvl ${task.difficulty}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="editTask(${task.id})" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined" data-icon="edit">edit</span>
+                        </button>
+                        <button onclick="deleteTask(${task.id})" class="p-2 text-on-surface-variant hover:text-error transition-colors">
+                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        </button>
+                    </div>
+                `;
+                tasksContainer.appendChild(card);
+            });
+        }
+
+        taskForm.addEventListener('submit', addTask);
+        setInterval(updateMotivation, 300000);
+        init();
+    </script>
+</body></html>
