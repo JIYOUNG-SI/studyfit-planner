@@ -278,12 +278,30 @@
 </div>
 </section>
 </div>
-<!-- Tab: Stats (Simulated) -->
+<!-- Tab: Stats -->
 <div class="tab-content space-y-8" id="tab-stats">
-<h2 class="font-headline-xl text-primary">학습 통계</h2>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant h-64 flex items-center justify-center text-on-surface-variant">
-                학습 분석 데이터가 준비 중입니다.
-            </div>
+
+    <h2 class="font-headline-xl text-primary">학습 통계</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+            <p class="text-sm text-on-surface-variant">전체 과제</p>
+            <h3 id="stats-total" class="text-4xl font-bold text-primary">0</h3>
+        </div>
+
+        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+            <p class="text-sm text-on-surface-variant">완료 과제</p>
+            <h3 id="stats-completed" class="text-4xl font-bold text-green-600">0</h3>
+        </div>
+
+        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+            <p class="text-sm text-on-surface-variant">진행률</p>
+            <h3 id="stats-progress" class="text-4xl font-bold text-blue-600">0%</h3>
+        </div>
+
+    </div>
+
 </div>
 <!-- Tab: Focus (Mode Controller) -->
 <div class="tab-content space-y-8" id="tab-focus">
@@ -564,9 +582,16 @@
             const minutes = totalRemainingMinutes % 60;
             remainingTimeDisplay.innerText = hours > 0 ? `${hours}시간 ${minutes}분 예상` : `${minutes}분 예상`;
             
-            filterStatsDisplay.innerText = `전체 ${total}개`;
-        }
+           filterStatsDisplay.innerText = `전체 ${total}개`;
 
+const statsTotal = document.getElementById('stats-total');
+const statsCompleted = document.getElementById('stats-completed');
+const statsProgress = document.getElementById('stats-progress');
+
+if (statsTotal) statsTotal.innerText = total;
+if (statsCompleted) statsCompleted.innerText = completed;
+if (statsProgress) statsProgress.innerText = `${percentage}%`;
+}
         function renderTasks() {
             if (tasks.length === 0) {
                 emptyState.style.display = 'block';
