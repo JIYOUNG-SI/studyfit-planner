@@ -392,7 +392,7 @@
         const filterStatsDisplay = document.getElementById('filter-stats');
         const dynamicEncouragement = document.getElementById('dynamic-encouragement');
         let progressChart = null;
-        
+        let subjectChart = null;
         const mentorStyleSelect = document.getElementById('mentor-style-select');
         const motivationMessage = document.getElementById('motivation-message');
         const instructorNameDisplay = document.getElementById('instructor-name-display');
@@ -633,8 +633,45 @@
             }
 
             updateProgressChart();
+            updateSubjectChart();
         }
+let subjectChart = null;
 
+function updateSubjectChart() {
+    const canvas = document.getElementById('subjectChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    const subjectData = {};
+
+    tasks.forEach(task => {
+        if (task.completed) {
+            subjectData[task.subject] =
+                (subjectData[task.subject] || 0) + 1;
+        }
+    });
+
+    const labels = Object.keys(subjectData);
+    const data = Object.values(subjectData);
+
+    if (subjectChart) {
+        subjectChart.destroy();
+    }
+
+    subjectChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '완료한 과목 수',
+                data: data
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
         function updateProgressChart() {
             const canvas = document.getElementById('progressChart');
             if (!canvas || typeof Chart === 'undefined') return;
@@ -671,7 +708,46 @@
                 }
             });
         }
+        let subjectChart = null;
 
+function updateSubjectChart() {
+    const canvas = document.getElementById('subjectChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    const subjectData = {};
+
+    tasks.forEach(task => {
+        if (!task.completed) return;
+
+        if (!subjectData[task.subject]) {
+            subjectData[task.subject] = 0;
+        }
+
+        subjectData[task.subject]++;
+    });
+
+    const labels = Object.keys(subjectData);
+    const data = Object.values(subjectData);
+
+    if (subjectChart) {
+        subjectChart.destroy();
+    }
+
+    subjectChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '완료한 과목 수',
+                data: data
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
         function renderTasks() {
             if (tasks.length === 0) {
                 emptyState.style.display = 'block';
