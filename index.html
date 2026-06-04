@@ -2,10 +2,12 @@
 
 <html class="light" lang="ko"><head>
 <meta charset="utf-8"/>
-<meta coㅜtent="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Adaptive Study Planner</title>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Chart.js: 학습 통계 그래프 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
@@ -303,7 +305,9 @@
     </div>
 <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
     <h3 class="text-xl font-bold mb-4">학습 진행률 그래프</h3>
-    <canvas id="progressChart"></canvas>
+    <div class="relative h-64 md:h-80">
+        <canvas id="progressChart"></canvas>
+    </div>
 </div>
 </div>
 <!-- Tab: Focus (Mode Controller) -->
@@ -377,6 +381,8 @@
         const remainingCountDisplay = document.getElementById('remaining-count');
         const remainingTimeDisplay = document.getElementById('remaining-time');
         const filterStatsDisplay = document.getElementById('filter-stats');
+        const dynamicEncouragement = document.getElementById('dynamic-encouragement');
+        let progressChart = null;
         
         const mentorStyleSelect = document.getElementById('mentor-style-select');
         const motivationMessage = document.getElementById('motivation-message');
@@ -421,15 +427,24 @@
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tabId}`).classList.add('active');
+            const targetTab = document.getElementById(`tab-${tabId}`);
+            if (targetTab) targetTab.classList.add('active');
             
             document.querySelectorAll('.tab-btn').forEach(el => {
                 el.classList.remove('bg-primary-container', 'text-primary');
                 el.classList.add('text-on-surface-variant');
             });
             const activeBtn = document.getElementById(`btn-tab-${tabId}`);
-            activeBtn.classList.remove('text-on-surface-variant');
-            activeBtn.classList.add('bg-primary-container', 'text-primary');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-on-surface-variant');
+                activeBtn.classList.add('bg-primary-container', 'text-primary');
+            }
+
+            // Stats 탭에 들어갈 때마다 저장된 tasks 기준으로 통계를 다시 계산합니다.
+            if (tabId === 'stats') {
+                updateDashboard();
+                setTimeout(updateProgressChart, 50);
+            }
         }
 
         function saveTasks() {
@@ -574,27 +589,80 @@
             
             const totalRemainingMinutes = tasks
                 .filter(t => !t.completed)
-                .reduce((acc, t) => acc + t.estTime, 0);
+                .reduce((acc, t) => acc + Number(t.estTime || 0), 0);
 
-            progressText.innerText = `${percentage}%`;
-            progressBar.style.width = `${percentage}%`;
-            taskStats.innerText = `${completed} / ${total} 완료됨`;
-            remainingCountDisplay.innerText = remaining;
+            if (progressText) progressText.innerText = `${percentage}%`;
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+            if (taskStats) taskStats.innerText = `${completed} / ${total} 완료됨`;
+            if (remainingCountDisplay) remainingCountDisplay.innerText = remaining;
             
             const hours = Math.floor(totalRemainingMinutes / 60);
             const minutes = totalRemainingMinutes % 60;
-            remainingTimeDisplay.innerText = hours > 0 ? `${hours}시간 ${minutes}분 예상` : `${minutes}분 예상`;
-            
-           filterStatsDisplay.innerText = `전체 ${total}개`;
+            if (remainingTimeDisplay) {
+                remainingTimeDisplay.innerText = hours > 0 ? `${hours}시간 ${minutes}분 예상` : `${minutes}분 예상`;
+            }
+            if (filterStatsDisplay) filterStatsDisplay.innerText = `전체 ${total}개`;
 
-const statsTotal = document.getElementById('stats-total');
-const statsCompleted = document.getElementById('stats-completed');
-const statsProgress = document.getElementById('stats-progress');
+            const statsTotal = document.getElementById('stats-total');
+            const statsCompleted = document.getElementById('stats-completed');
+            const statsProgress = document.getElementById('stats-progress');
 
-if (statsTotal) statsTotal.innerText = total;
-if (statsCompleted) statsCompleted.innerText = completed;
-if (statsProgress) statsProgress.innerText = `${percentage}%`;
-}
+            if (statsTotal) statsTotal.innerText = total;
+            if (statsCompleted) statsCompleted.innerText = completed;
+            if (statsProgress) statsProgress.innerText = `${percentage}%`;
+
+            if (dynamicEncouragement) {
+                if (total === 0) {
+                    dynamicEncouragement.innerText = '새로운 학습 항목을 추가해보세요.';
+                } else if (percentage === 100) {
+                    dynamicEncouragement.innerText = '오늘 학습을 모두 완료했습니다. 정말 잘하셨습니다!';
+                } else if (percentage >= 50) {
+                    dynamicEncouragement.innerText = '절반 이상 완료했습니다. 조금만 더 가면 됩니다.';
+                } else {
+                    dynamicEncouragement.innerText = '꾸준함이 실력을 만듭니다. 오늘도 화이팅!';
+                }
+            }
+
+            updateProgressChart();
+        }
+
+        function updateProgressChart() {
+            const canvas = document.getElementById('progressChart');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            const completed = tasks.filter(t => t.completed).length;
+            const remaining = tasks.length - completed;
+
+            if (progressChart) {
+                progressChart.data.datasets[0].data = [completed, remaining];
+                progressChart.update();
+                return;
+            }
+
+            progressChart = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['완료', '미완료'],
+                    datasets: [{
+                        label: '학습 진행률',
+                        data: [completed, remaining],
+                        backgroundColor: ['#16a34a', '#dbeafe'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
         function renderTasks() {
             if (tasks.length === 0) {
                 emptyState.style.display = 'block';
