@@ -761,6 +761,7 @@
 // ====================
 
 let studyStartTime = null;
+let timerInterval = null;
 
 let totalStudyMinutes =
     parseInt(localStorage.getItem('totalStudyMinutes')) || 0;
@@ -783,7 +784,18 @@ document
 .addEventListener('click', () => {
 
     studyStartTime = Date.now();
+timerInterval = setInterval(() => {
 
+    const elapsedSeconds =
+        Math.floor((Date.now() - studyStartTime) / 1000);
+
+    const mins = Math.floor(elapsedSeconds / 60);
+    const secs = elapsedSeconds % 60;
+
+   document.getElementById('total-study-time').innerText =
+    `${mins}분 ${secs}초`;
+
+}, 1000);
     alert('공부 시작!');
 });
 
@@ -795,6 +807,7 @@ document
         alert('먼저 공부 시작을 눌러주세요.');
         return;
     }
+        clearInterval(timerInterval);
 
     const elapsedMinutes =
         Math.round(
