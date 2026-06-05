@@ -756,7 +756,67 @@
                 tasksContainer.appendChild(card);
             });
         }
+// ====================
+// 공부시간 측정 기능
+// ====================
 
+let studyStartTime = null;
+
+let totalStudyMinutes =
+    parseInt(localStorage.getItem('totalStudyMinutes')) || 0;
+
+const totalStudyTimeDisplay =
+    document.getElementById('total-study-time');
+
+function updateStudyTimeDisplay() {
+    const hours = Math.floor(totalStudyMinutes / 60);
+    const mins = totalStudyMinutes % 60;
+
+    totalStudyTimeDisplay.innerText =
+        `${hours}시간 ${mins}분`;
+}
+
+updateStudyTimeDisplay();
+
+document
+.getElementById('start-study')
+.addEventListener('click', () => {
+
+    studyStartTime = Date.now();
+
+    alert('공부 시작!');
+});
+
+document
+.getElementById('stop-study')
+.addEventListener('click', () => {
+
+    if (!studyStartTime) {
+        alert('먼저 공부 시작을 눌러주세요.');
+        return;
+    }
+
+    const elapsedMinutes =
+        Math.round(
+            (Date.now() - studyStartTime)
+            / 1000 / 60
+        );
+
+    totalStudyMinutes += elapsedMinutes;
+
+    localStorage.setItem(
+        'totalStudyMinutes',
+        totalStudyMinutes
+    );
+
+    updateStudyTimeDisplay();
+
+    studyStartTime = null;
+
+    alert(
+        `${elapsedMinutes}분 공부 완료!`
+    );
+});
         taskForm.addEventListener('submit', addTask);
         setInterval(updateMotivation, 300000);
         init();
