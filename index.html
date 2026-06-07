@@ -174,6 +174,10 @@
     <option value="데이터베이스">데이터베이스</option>
     <option value="운영체제">운영체제</option>
 </select>
+
+ <div id="subject-stats"
+     class="mt-3 text-sm text-gray-600">
+</div>
     <div class="flex gap-3 mt-4">
         <button id="start-study"
             class="bg-primary text-white px-4 py-2 rounded-lg">
@@ -185,6 +189,9 @@
             공부 종료
         </button>
     </div>
+     <div id="subject-stats"
+     class="mt-4 p-4 border rounded-lg">
+</div>   
 </section>
 <!-- Motivation System (Top Area) -->
 <section class="bg-surface-container-highest p-5 rounded-xl border border-outline-variant flex flex-col gap-4">
@@ -776,7 +783,26 @@ let subjectStudyTime =
     JSON.parse(localStorage.getItem('subjectStudyTime')) || {};
 const totalStudyTimeDisplay =
     document.getElementById('total-study-time');
+function updateSubjectStats() {
 
+    const statsDiv = document.getElementById('subject-stats');
+
+    if (!statsDiv) return;
+
+    let html = '';
+
+    for (const subject in subjectStudyTime) {
+
+        const mins = subjectStudyTime[subject];
+
+        html += `
+            <p>${subject} : ${mins}분</p>
+        `;
+    }
+
+    statsDiv.innerHTML = html;
+}
+updateSubjectStats();
 function updateStudyTimeDisplay() {
     const hours = Math.floor(totalStudyMinutes / 60);
     const mins = totalStudyMinutes % 60;
@@ -791,7 +817,16 @@ document
 .getElementById('start-study')
 .addEventListener('click', () => {
 
-    studyStartTime = Date.now();
+  currentStudySubject =
+    document.getElementById('study-subject').value.trim();
+
+if (!currentStudySubject) {
+    alert('과목명을 입력해주세요.');
+    return;
+}
+
+studyStartTime = Date.now();
+
 timerInterval = setInterval(() => {
 
     const elapsedSeconds =
@@ -824,7 +859,18 @@ document
         );
 
     totalStudyMinutes += elapsedMinutes;
+if (!subjectStudyTime[currentStudySubject]) {
+    subjectStudyTime[currentStudySubject] = 0;
+}
 
+subjectStudyTime[currentStudySubject] += elapsedMinutes;
+
+localStorage.setItem(
+    'subjectStudyTime',
+    JSON.stringify(subjectStudyTime)
+);
+
+updateSubjectStats();
     localStorage.setItem(
         'totalStudyMinutes',
         totalStudyMinutes
