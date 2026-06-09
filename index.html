@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>StudyFit Planner - 스마트 스터디 플래너</title>
+    <title>MetaStudy Planner - 스마트 스터디 플래너</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Chart.js: 학습 통계 그래프 -->
@@ -99,6 +99,41 @@
         .progress-spring {
             transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0.75rem;
+            width: 18%;
+            max-width: 60px;
+            height: 50px;
+        }
+        @media (min-width: 640px) {
+            .tab-btn {
+                width: 64px;
+                height: 56px;
+                border-radius: 1rem;
+            }
+        }
+        .task-complete-btn.pressing .progress-ring {
+            display: block;
+        }
+        .task-complete-btn.pressing .progress-ring__circle {
+            animation: progress-ring-fill 0.8s linear forwards;
+        }
+        .task-complete-btn.pressing span {
+            transform: scale(1.25);
+        }
+        @keyframes progress-ring-fill {
+            from {
+                stroke-dashoffset: 125.6;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -132,7 +167,8 @@
         html.dark #drawer-content,
         html.dark .bg-white,
         html.dark #edit-modal > div,
-        html.dark #exam-date-modal > div {
+        html.dark #exam-date-modal > div,
+        html.dark #meta-eval-modal > div {
             background-color: #1e293b !important;
             border-color: #334155 !important;
             color: #f8fafc !important;
@@ -173,6 +209,19 @@
         html.dark .task-item.bg-slate-50 {
             background-color: #1e293b !important;
             opacity: 0.65;
+        }
+        
+        /* Metacognitive Modal Dark Mode Details */
+        html.dark #meta-eval-modal label.bg-slate-50 {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+        }
+        html.dark #meta-eval-modal label.bg-slate-50:hover {
+            background-color: #1e293b !important;
+        }
+        html.dark #meta-eval-modal label.border-primary {
+            border-color: #2563eb !important;
+            background-color: rgba(37, 99, 235, 0.2) !important;
         }
     </style>
 </head>
@@ -392,14 +441,15 @@
                 </div>
 
                 <!-- 학습 추가 버튼 & 글로벌 D-Day Card -->
-                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[140px]">
-                    <div class="flex items-center justify-between">
-                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">🎯 목표 디데이</p>
-                        <span id="home-global-dday" class="text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full">시험일 미설정</span>
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-5 rounded-2xl border border-indigo-100 shadow-sm flex flex-col justify-between min-h-[140px]">
+                    <p class="text-[10px] font-bold text-indigo-800 uppercase tracking-wider w-full text-center">🎯 목표 디데이</p>
+                    <div class="flex-grow flex flex-col items-center justify-center my-2">
+                        <h3 id="home-global-dday-large" class="text-4xl sm:text-5xl font-black text-indigo-600 tracking-tighter">D-Day</h3>
+                        <p id="home-global-dday-sub" class="text-xs font-semibold text-indigo-400 mt-1">시험일 미설정</p>
                     </div>
-                    <button onclick="scrollToTaskForm()" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-sm min-h-[44px]">
-                        <span class="material-symbols-outlined text-lg">add_circle</span>
-                        학습 추가하기
+                    <button onclick="generateAIPlan()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-sm min-h-[44px]">
+                        <span class="text-lg">🧠</span>
+                        맞춤 오늘 계획 생성
                     </button>
                 </div>
             </section>
@@ -411,18 +461,18 @@
                     공부시간 측정
                 </h2>
 
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                    <div>
-                        <p class="text-xs text-outline mb-1 font-semibold uppercase tracking-wider">누적 총 공부 시간</p>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                    <div class="space-y-1">
+                        <p class="text-xs text-outline font-semibold uppercase tracking-wider">누적 총 공부 시간</p>
                         <p id="total-study-time" class="text-3xl font-bold text-primary tracking-tight">
                             0시간 0분
                         </p>
                     </div>
-                    <div class="w-full sm:w-auto space-y-1">
-                        <label class="block text-xs font-semibold text-outline" for="study-subject">과목 선택</label>
-                        <select id="study-subject" class="w-full sm:w-48 p-2.5 bg-white border border-outline-variant rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all cursor-pointer min-h-[44px]">
-                            <!-- Dynamically loaded subjects -->
-                        </select>
+                    <div class="border-t sm:border-t-0 sm:border-l border-outline-variant/60 w-full sm:w-auto pt-4 sm:pt-0 sm:pl-6 flex flex-col justify-center min-h-[60px]">
+                        <p id="study-status-label" class="text-xs text-outline font-semibold uppercase tracking-wider">최근 학습 과목</p>
+                        <p id="study-status-subject" class="text-lg font-bold text-on-surface mt-1 flex items-center gap-1.5">
+                            📚 <span id="study-status-subject-name">없음</span>
+                        </p>
                     </div>
                 </div>
 
@@ -434,6 +484,16 @@
                     <button id="start-study" class="flex-1 bg-primary text-white font-bold py-3.5 px-6 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
                         <span class="material-symbols-outlined text-lg">play_arrow</span>
                         공부 시작
+                    </button>
+
+                    <button id="pause-study" class="hidden flex-1 bg-amber-500 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-amber-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
+                        <span class="material-symbols-outlined text-lg">pause</span>
+                        일시정지
+                    </button>
+
+                    <button id="resume-study" class="hidden flex-1 bg-emerald-500 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-emerald-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
+                        <span class="material-symbols-outlined text-lg">play_arrow</span>
+                        계속하기
                     </button>
 
                     <button id="stop-study" class="flex-1 bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-red-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
@@ -557,12 +617,15 @@
                 </h2>
                 <form class="grid grid-cols-1 md:grid-cols-2 gap-5" id="task-form">
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold text-outline px-1">과목명</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <input class="col-span-2 w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="subject" placeholder="예: 수학, 영어, 자료구조" required="" type="text"/>
-                            <select id="existing-subjects" class="col-span-1 bg-slate-50 border border-outline-variant rounded-xl px-2.5 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" onchange="selectExistingSubject(this.value)">
-                                <option value="">기존 과목 선택</option>
+                        <label class="text-xs font-semibold text-outline px-1 flex justify-between items-center">
+                            <span>과목명</span>
+                            <span class="text-[11px] text-outline">기존 과목 선택:</span>
+                        </label>
+                        <div class="flex gap-2">
+                            <select id="subject-select" onchange="document.getElementById('subject').value = this.value; document.getElementById('subject').dispatchEvent(new Event('input'));" class="bg-slate-50 border border-outline-variant rounded-xl px-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-xs max-w-[150px] min-h-[48px] cursor-pointer">
+                                <option value="">-- 선택 --</option>
                             </select>
+                            <input class="flex-grow bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="subject" placeholder="예: 수학, 영어, 자료구조" required="" type="text" autocomplete="off"/>
                         </div>
                         <p id="subject-gap-tip" class="text-[11px] text-amber-600 mt-1 font-semibold hidden"></p>
                     </div>
@@ -689,17 +752,19 @@
 
             <!-- Charts Section -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Completion Rate Chart (기존) -->
+                <!-- 과목별 누적 공부시간 목록 -->
                 <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
-                    <h3 class="text-base font-bold mb-4 text-on-surface">학습 완료 분포</h3>
-                    <div class="relative h-64 flex items-center justify-center">
-                        <canvas id="progressChart"></canvas>
+                    <h3 class="text-base font-bold mb-4 text-on-surface">과목별 누적 공부시간</h3>
+                    <div class="relative h-64 flex items-center justify-center w-full">
+                        <div id="subject-cumulative-time-list" class="w-full space-y-3.5 overflow-y-auto max-h-64 pr-1">
+                            <!-- Dynamically populated rows -->
+                        </div>
                     </div>
                 </div>
 
                 <!-- Weekly Study Time Bar Chart (최근 7일) -->
                 <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
-                    <h3 class="text-base font-bold mb-4 text-on-surface">주간 공부시간 (최근 7일)</h3>
+                    <h3 class="text-base font-bold mb-4 text-on-surface">최근 7일 학습 추이</h3>
                     <div class="relative h-64 flex items-center justify-center">
                         <canvas id="weeklyStudyChart"></canvas>
                     </div>
@@ -710,6 +775,9 @@
                     <h3 class="text-base font-bold mb-4 text-on-surface">과목별 누적 공부시간</h3>
                     <div class="relative h-64 flex items-center justify-center">
                         <canvas id="subjectStudyChart"></canvas>
+                    </div>
+                    <div id="subject-study-ranking" class="mt-4 border-t border-slate-100 dark:border-slate-700/50 pt-4">
+                        <!-- Dynamically populated rankings -->
                     </div>
                 </div>
             </div>
@@ -743,7 +811,7 @@
                         </div>
                     </div>
                     <div class="border-t border-slate-200/60 pt-4 mt-2">
-                        <p class="text-xs font-bold text-primary mb-1">💡 AI 학습 계획 권장사항</p>
+                        <p class="text-xs font-bold text-primary mb-1">💡 맞춤 학습 계획 권장사항</p>
                         <div id="gap-ai-advice" class="text-xs text-outline leading-relaxed italic space-y-1">
                             데이터를 수집 중입니다...
                         </div>
@@ -774,7 +842,7 @@
                             <span id="report-streak" class="font-bold text-on-surface">0일</span>
                         </div>
                         <div class="border-t border-slate-200/60 pt-3.5 mt-2">
-                            <p class="text-xs font-bold text-primary mb-1">💡 AI 학습 추천</p>
+                            <p class="text-xs font-bold text-primary mb-1">💡 맞춤 학습 추천</p>
                             <p id="report-recommendation" class="text-xs text-outline leading-relaxed italic">데이터를 수집 중입니다...</p>
                         </div>
                     </div>
@@ -837,25 +905,86 @@
 
             </div>
         </div>
+
+        <!-- Tab: Metacognition (Metacognitive Analysis View) -->
+        <div class="tab-content space-y-6" id="tab-metacognition">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 class="text-2xl font-bold text-primary tracking-tight">메타인지 분석 리포트</h2>
+                <span class="text-xs font-bold text-outline bg-white border border-outline-variant px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
+                    <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    실시간 메타인지 진단 중
+                </span>
+            </div>
+
+            <!-- 1. 시험일 연동 긴급 경고 배너 영역 (Priority Notice) -->
+            <div id="meta-priority-warnings" class="space-y-3 hidden">
+                <!-- Dynamically injected warning alerts -->
+            </div>
+
+            <!-- 2. 복습 추천 목록 영역 (Review Recommendations) -->
+            <section class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-amber-500">reviews</span>
+                    스마트 복습 추천
+                </h3>
+                <p class="text-xs text-outline leading-relaxed">
+                    이해도가 낮거나(평균 3점 이하) 난이도가 높았던(평균 4점 이상) 과목들을 시스템이 자동으로 분석하여 추천 목록을 제시합니다.
+                </p>
+                <div id="meta-review-recommendations-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                    <!-- Dynamically loaded review recommendation cards -->
+                </div>
+            </section>
+
+            <!-- 3. 시각화 영역 (Chart.js Visualization) -->
+            <section class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">bar_chart</span>
+                    과목별 이해도 vs 난이도 비교
+                </h3>
+                <div class="relative h-72 flex items-center justify-center pt-2">
+                    <canvas id="metaAnalysisChart"></canvas>
+                    <div id="meta-chart-placeholder" class="absolute inset-0 bg-white/85 dark:bg-slate-900/85 backdrop-blur-[1.5px] flex flex-col items-center justify-center text-center p-4 rounded-xl hidden">
+                        <span class="material-symbols-outlined text-4xl text-outline/50 mb-2">analytics</span>
+                        <p class="text-sm font-bold text-on-surface">메타인지 비교 분석 그래프</p>
+                        <p class="text-xs text-outline mt-1 max-w-xs leading-relaxed">학습 완료 후 메타인지 평가를 저장하면 과목별 난이도와 이해도를 분석한 막대 그래프가 활성화됩니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. 과목별 메타인지 세부 카드 영역 (Subject-wise detail list) -->
+            <section class="space-y-4">
+                <h3 class="font-bold text-base text-on-surface flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">analytics</span>
+                    과목별 상세 메타인지 진단
+                </h3>
+                <div id="meta-subject-details-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamically loaded detail cards -->
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- BottomNavBar -->
     <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl z-40 bg-white/95 backdrop-blur-md flex justify-around items-center h-20 px-4 border-t border-outline-variant rounded-t-2xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)]">
-        <button class="tab-btn flex flex-col items-center justify-center text-primary bg-primary-container rounded-2xl w-16 h-14 active:scale-90 transition-all" id="btn-tab-plan" onclick="switchTab('plan')">
+        <button class="tab-btn text-primary bg-primary-container active:scale-90" id="btn-tab-plan" onclick="switchTab('plan')">
             <span class="material-symbols-outlined text-xl">calendar_today</span>
-            <span class="text-[10px] font-bold mt-1">Plan</span>
+            <span class="text-[10px] font-bold mt-0.5">Plan</span>
         </button>
-        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-stats" onclick="switchTab('stats')">
+        <button class="tab-btn text-outline hover:text-on-surface active:scale-90" id="btn-tab-stats" onclick="switchTab('stats')">
             <span class="material-symbols-outlined text-xl">bar_chart</span>
-            <span class="text-[10px] font-semibold mt-1">Stats</span>
+            <span class="text-[10px] font-semibold mt-0.5">Stats</span>
         </button>
-        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-focus" onclick="switchTab('focus')">
+        <button class="tab-btn text-outline hover:text-on-surface active:scale-90" id="btn-tab-focus" onclick="switchTab('focus')">
             <span class="material-symbols-outlined text-xl">timer</span>
-            <span class="text-[10px] font-semibold mt-1">Focus</span>
+            <span class="text-[10px] font-semibold mt-0.5">Focus</span>
         </button>
-        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-profile" onclick="switchTab('profile')">
+        <button class="tab-btn text-outline hover:text-on-surface active:scale-90" id="btn-tab-metacognition" onclick="switchTab('metacognition')">
+            <span class="material-symbols-outlined text-xl">psychology</span>
+            <span class="text-[10px] font-semibold mt-0.5">메타인지</span>
+        </button>
+        <button class="tab-btn text-outline hover:text-on-surface active:scale-90" id="btn-tab-profile" onclick="switchTab('profile')">
             <span class="material-symbols-outlined text-xl">person</span>
-            <span class="text-[10px] font-semibold mt-1">Profile</span>
+            <span class="text-[10px] font-semibold mt-0.5">Profile</span>
         </button>
     </nav>
 
@@ -869,12 +998,15 @@
             <form id="edit-form" class="space-y-4">
                 <input type="hidden" id="edit-task-id">
                 <div class="space-y-1">
-                    <label class="text-xs font-semibold text-outline block">과목명</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <input class="col-span-2 w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-subject" required type="text"/>
-                        <select id="edit-existing-subjects" class="col-span-1 bg-slate-50 border border-outline-variant rounded-xl px-2.5 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" onchange="selectEditExistingSubject(this.value)">
-                            <option value="">기존 과목 선택</option>
+                    <label class="text-xs font-semibold text-outline block flex justify-between items-center">
+                        <span>과목명</span>
+                        <span class="text-[11px] text-outline">기존 과목 선택:</span>
+                    </label>
+                    <div class="flex gap-2">
+                        <select id="edit-subject-select" onchange="document.getElementById('edit-subject').value = this.value; document.getElementById('edit-subject').dispatchEvent(new Event('input'));" class="bg-slate-50 border border-outline-variant rounded-xl px-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-xs max-w-[150px] min-h-[48px] cursor-pointer">
+                            <option value="">-- 선택 --</option>
                         </select>
+                        <input class="flex-grow bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-subject" required type="text" autocomplete="off"/>
                     </div>
                     <p id="edit-subject-gap-tip" class="text-[11px] text-amber-600 mt-1 font-semibold hidden"></p>
                 </div>
@@ -938,6 +1070,132 @@
         </div>
     </div>
 
+    <!-- Metacognitive Evaluation Modal -->
+    <div id="meta-eval-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white border border-outline-variant p-6 rounded-2xl w-full max-w-lg shadow-xl space-y-4 my-8 animate-in fade-in duration-200">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-on-surface">
+                <span class="material-symbols-outlined text-primary text-xl">psychology</span>
+                학습 완료 &amp; 메타인지 평가
+            </h3>
+            <p class="text-xs text-outline leading-relaxed bg-slate-50 dark:bg-slate-800/40 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                공부를 마친 것을 진심으로 축하합니다! 🎉<br>
+                학습 직후 스스로의 이해 상태를 되돌아보는 회고는 메타인지 능력 향상에 핵심적입니다. 실제 공부한 시간, 학습 시 체감한 난이도와 주관적 이해도를 정직하게 평가하여 입력해 주세요. 이 데이터는 분석 리포트에서 맞춤형 복습 계획과 권장 학습 팁을 계산하는 데 사용됩니다.
+            </p>
+            <form id="meta-eval-form" class="space-y-4" onsubmit="saveMetacognitiveEvaluation(event)">
+                <input type="hidden" id="meta-eval-task-id">
+                
+                <!-- 0. Actual Time Spent -->
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">실제 공부 시간 (분 단위)</label>
+                    <input class="w-full bg-slate-50 dark:bg-slate-900 border border-outline-variant dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="meta-actual-minutes" required type="number" min="1"/>
+                </div>
+
+                <!-- 1. Difficulty -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-outline block">1. 이번 학습의 체감 난이도는 어땠나요?</label>
+                    <div class="grid grid-cols-5 gap-2">
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-diff-1">
+                            <input type="radio" name="meta-difficulty" value="1" class="hidden" onclick="selectMetaOption('diff', 1)" required>
+                            <span class="text-lg">😊</span>
+                            <span class="text-[9px] font-bold">매우 쉬움</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-diff-2">
+                            <input type="radio" name="meta-difficulty" value="2" class="hidden" onclick="selectMetaOption('diff', 2)">
+                            <span class="text-lg">🙂</span>
+                            <span class="text-[9px] font-bold">쉬움</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-diff-3">
+                            <input type="radio" name="meta-difficulty" value="3" class="hidden" onclick="selectMetaOption('diff', 3)">
+                            <span class="text-lg">😐</span>
+                            <span class="text-[9px] font-bold">보통</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-diff-4">
+                            <input type="radio" name="meta-difficulty" value="4" class="hidden" onclick="selectMetaOption('diff', 4)">
+                            <span class="text-lg">🙁</span>
+                            <span class="text-[9px] font-bold">어려움</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-diff-5">
+                            <input type="radio" name="meta-difficulty" value="5" class="hidden" onclick="selectMetaOption('diff', 5)">
+                            <span class="text-lg">😫</span>
+                            <span class="text-[9px] font-bold">매우 어려움</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2. Understanding -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-outline block">2. 공부를 완료한 지금, 핵심 내용에 대한 나의 이해도는 어떤가요?</label>
+                    <div class="grid grid-cols-5 gap-2">
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-und-1">
+                            <input type="radio" name="meta-understanding" value="1" class="hidden" onclick="selectMetaOption('und', 1)" required>
+                            <span class="text-lg">❌</span>
+                            <span class="text-[9px] font-bold">전혀 모름</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-und-2">
+                            <input type="radio" name="meta-understanding" value="2" class="hidden" onclick="selectMetaOption('und', 2)">
+                            <span class="text-lg">🔍</span>
+                            <span class="text-[9px] font-bold">조금 앎</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-und-3">
+                            <input type="radio" name="meta-understanding" value="3" class="hidden" onclick="selectMetaOption('und', 3)">
+                            <span class="text-lg">📖</span>
+                            <span class="text-[9px] font-bold">보통</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-und-4">
+                            <input type="radio" name="meta-understanding" value="4" class="hidden" onclick="selectMetaOption('und', 4)">
+                            <span class="text-lg">💡</span>
+                            <span class="text-[9px] font-bold">잘 이해함</span>
+                        </label>
+                        <label class="cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200" id="lbl-und-5">
+                            <input type="radio" name="meta-understanding" value="5" class="hidden" onclick="selectMetaOption('und', 5)">
+                            <span class="text-lg">🎓</span>
+                            <span class="text-[9px] font-bold">설명 가능</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Key Takeaway -->
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">3. 오늘 배운 핵심 내용을 한 줄로 요약해주세요.</label>
+                    <input class="w-full bg-slate-50 dark:bg-slate-900 border border-outline-variant dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="meta-takeaway" placeholder="예: 퀵 정렬의 피벗 선택과 분할 알고리즘 핵심 원리 학습" required type="text"/>
+                </div>
+
+                <!-- 4. Gaps / Weaknesses -->
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">4. 아직 이해가 부족하거나 보완이 필요한 부분은 무엇인가요?</label>
+                    <input class="w-full bg-slate-50 dark:bg-slate-900 border border-outline-variant dark:border-slate-700 rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="meta-gap" placeholder="예: 최악의 시간복잡도 O(N^2)를 피하기 위한 중위 피벗 선택 기법 이해 부족" required type="text"/>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="cancelMetacognitiveEvaluation()" class="flex-1 bg-slate-100 dark:bg-slate-800 text-on-surface dark:text-slate-200 font-bold py-3.5 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-sm min-h-[48px]">취소</button>
+                    <button type="submit" class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-all text-sm min-h-[48px]">평가 저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Plan Modal -->
+    <div id="ai-plan-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl flex flex-col border border-outline-variant animate-in fade-in zoom-in duration-200">
+            <div class="p-4 border-b border-outline-variant bg-slate-50 flex items-center justify-between">
+                <h3 class="font-bold text-lg text-primary flex items-center gap-2">
+                    <span class="text-xl">🧠</span> 맞춤 추천 학습
+                </h3>
+                <button onclick="document.getElementById('ai-plan-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full text-outline hover:bg-slate-200 transition-colors">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto max-h-[60vh]" id="ai-plan-content">
+                <!-- Content will be injected here -->
+            </div>
+            <div class="p-4 border-t border-outline-variant bg-slate-50">
+                <button onclick="document.getElementById('ai-plan-modal').classList.add('hidden')" class="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-all text-sm min-h-[48px]">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script>
         const taskForm = document.getElementById('task-form');
@@ -977,6 +1235,8 @@
 
         // Timer State Variables
         let studyStartTime = null;
+        let studyPausedSeconds = 0;
+        let isStudyPaused = false;
         let timerInterval = null;
         let currentStudySubject = "";
         let totalStudyMinutes = 0;
@@ -1098,7 +1358,7 @@
             // If they switched to stats tab previously, refresh graphs
             const activeTab = document.querySelector('.tab-content.active');
             if (activeTab && activeTab.id === 'tab-stats') {
-                updateProgressChart();
+                updateSubjectCumulativeTimeList();
             }
         }
 
@@ -1197,6 +1457,8 @@
             dailyStudyLog = JSON.parse(localStorage.getItem(`metastudy_daily_study_log_${suffix}`)) || {};
             subjectGapRates = JSON.parse(localStorage.getItem(`metastudy_subject_gap_rates_${suffix}`)) || {};
             studyHistory = JSON.parse(localStorage.getItem(`metastudy_study_history_${suffix}`)) || [];
+            currentStudySubject = localStorage.getItem(`metastudy_last_study_subject_${suffix}`) || "";
+            updateTimerSubjectUI();
         }
 
         function saveUserTasks() {
@@ -1211,12 +1473,13 @@
             localStorage.setItem(`metastudy_daily_study_log_${suffix}`, JSON.stringify(dailyStudyLog));
             localStorage.setItem(`metastudy_subject_gap_rates_${suffix}`, JSON.stringify(subjectGapRates));
             localStorage.setItem(`metastudy_study_history_${suffix}`, JSON.stringify(studyHistory));
+            localStorage.setItem(`metastudy_last_study_subject_${suffix}`, currentStudySubject);
             
             updateStudySubjectSelect();
             renderTasks();
             updateDashboard();
             updateMotivation();
-            updateExistingSubjectsSelects();
+            updateTimerSubjectUI();
         }
 
         function saveTasks() {
@@ -1267,7 +1530,12 @@
                 localStorage.setItem('metastudy_theme', 'dark');
             }
             
-            updateProgressChart();
+            // Re-render graphs and tabs to apply new colors
+            updateSubjectCumulativeTimeList();
+            if (metaChart) {
+                const stats = getMetacognitiveStats();
+                updateMetacognitionChart(stats);
+            }
         }
 
         function initTheme() {
@@ -1314,13 +1582,131 @@
             alert('글로벌 시험일이 설정되었습니다!');
         }
 
+        function generateAIPlan() {
+            const modal = document.getElementById('ai-plan-modal');
+            const content = document.getElementById('ai-plan-content');
+            modal.classList.remove('hidden');
+            
+            content.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-10 space-y-4">
+                    <span class="material-symbols-outlined text-4xl text-primary animate-spin" style="animation-duration: 1s;">sync</span>
+                    <p class="text-sm font-bold text-outline">학습 데이터 분석 중...</p>
+                </div>
+            `;
+
+            setTimeout(() => {
+                let subjectsData = {};
+                
+                tasks.forEach(t => {
+                    if (!subjectsData[t.subject]) {
+                        subjectsData[t.subject] = { pendingCount: 0, totalUnd: 0, undCount: 0 };
+                    }
+                    if (!t.completed) {
+                        subjectsData[t.subject].pendingCount++;
+                    } else if (t.metaUnderstanding) {
+                        subjectsData[t.subject].totalUnd += t.metaUnderstanding;
+                        subjectsData[t.subject].undCount++;
+                    }
+                });
+
+                const examDateStr = currentUser ? localStorage.getItem(`metastudy_exam_date_${currentUser.studentId}`) : null;
+                let isExamClose = false;
+                if (examDateStr) {
+                    const today = new Date(getTodayString());
+                    const exam = new Date(examDateStr);
+                    const diffDays = Math.ceil((exam - today) / (1000 * 60 * 60 * 24));
+                    if (diffDays >= 0 && diffDays <= 7) isExamClose = true; 
+                }
+
+                let recommendations = [];
+                
+                for (const sub in subjectsData) {
+                    const data = subjectsData[sub];
+                    let score = 0;
+                    let reason = "";
+                    let time = 30; 
+                    
+                    const avgUnd = data.undCount > 0 ? (data.totalUnd / data.undCount) : 3;
+                    
+                    if (avgUnd <= 2) {
+                        score += 50;
+                        reason = "최근 이해도 낮음";
+                        time = 90;
+                    } else if (avgUnd === 3) {
+                        score += 30;
+                        reason = "복습 필요";
+                        time = 60;
+                    } else {
+                        score += 10;
+                        reason = "학습 흐름 유지";
+                        time = 30;
+                    }
+
+                    if (isExamClose) {
+                        score += 20;
+                        reason = "시험 임박";
+                        time += 30;
+                    }
+
+                    if (data.pendingCount > 0) {
+                        score += Math.min(data.pendingCount * 10, 30);
+                        if (reason === "학습 흐름 유지") reason = "미완료 과제 존재";
+                    }
+
+                    recommendations.push({ subject: sub, score, reason, time });
+                }
+
+                recommendations.sort((a, b) => b.score - a.score);
+                recommendations = recommendations.slice(0, 3); 
+
+                if (recommendations.length === 0) {
+                     content.innerHTML = `
+                        <div class="text-center py-8 space-y-3">
+                            <span class="text-4xl">🌱</span>
+                            <p class="font-bold text-on-surface">아직 분석할 데이터가 부족해요.</p>
+                            <p class="text-xs text-outline leading-relaxed">학습 과제를 추가하고 메타인지 평가를<br/>진행해 학습 데이터를 쌓아보세요!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '<div class="space-y-3">';
+                recommendations.forEach((rec, idx) => {
+                    const medals = ['🥇', '🥈', '🥉'];
+                    html += `
+                        <div class="bg-slate-50 p-4 rounded-xl border border-outline-variant flex justify-between items-center hover:border-primary transition-colors">
+                            <div>
+                                <h4 class="font-bold text-on-surface text-base flex items-center gap-1.5">${medals[idx] || '🔹'} ${rec.subject}</h4>
+                                <p class="text-[11px] text-red-500 font-bold mt-1.5 bg-red-50 inline-block px-2 py-0.5 rounded-full border border-red-100">${rec.reason}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-2xl font-black text-primary">${rec.time}<span class="text-sm font-bold text-outline ml-0.5">분</span></span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                html += `
+                    <div class="mt-4 p-3 bg-indigo-50 rounded-xl border border-indigo-100 flex gap-2">
+                        <span class="material-symbols-outlined text-indigo-500 text-sm mt-0.5">info</span>
+                        <p class="text-[10px] text-indigo-700 font-semibold leading-relaxed">학습 데이터(목표 디데이, 남은 과제 수, 최근 메타인지 이해도)를 분석하여 계산한 맞춤형 추천입니다.</p>
+                    </div>
+                `;
+
+                content.innerHTML = html;
+            }, 800);
+        }
+
         function updateGlobalExamDateUI() {
-            const ddayLabel = document.getElementById('home-global-dday');
-            if (!ddayLabel) return;
+            const ddayLarge = document.getElementById('home-global-dday-large');
+            const ddaySub = document.getElementById('home-global-dday-sub');
+            if (!ddayLarge || !ddaySub) return;
             
             if (!currentUser) {
-                ddayLabel.innerText = '시험일 미설정';
-                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full";
+                ddayLarge.innerText = 'D-Day';
+                ddaySub.innerText = '시험일 미설정';
+                ddayLarge.className = "text-4xl sm:text-5xl font-black text-indigo-600 tracking-tighter";
+                ddaySub.className = "text-xs font-semibold text-indigo-400 mt-1";
                 return;
             }
 
@@ -1328,8 +1714,10 @@
             const examDateStr = localStorage.getItem(key);
 
             if (!examDateStr) {
-                ddayLabel.innerText = '시험일 미설정';
-                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full";
+                ddayLarge.innerText = 'D-Day';
+                ddaySub.innerText = '시험일 미설정';
+                ddayLarge.className = "text-4xl sm:text-5xl font-black text-indigo-600 tracking-tighter";
+                ddaySub.className = "text-xs font-semibold text-indigo-400 mt-1";
                 return;
             }
 
@@ -1344,14 +1732,20 @@
             const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
             if (diffDays === 0) {
-                ddayLabel.innerText = "D-Day (시험 당일!)";
-                ddayLabel.className = "text-[10px] font-bold bg-red-100 text-red-600 border border-red-200";
+                ddayLarge.innerText = "D-Day";
+                ddaySub.innerText = "오늘이 시험일입니다!";
+                ddayLarge.className = "text-4xl sm:text-5xl font-black text-red-600 tracking-tighter";
+                ddaySub.className = "text-xs font-semibold text-red-500 mt-1";
             } else if (diffDays < 0) {
-                ddayLabel.innerText = `시험 종료 (D+${Math.abs(diffDays)})`;
-                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200";
+                ddayLarge.innerText = `D+${Math.abs(diffDays)}`;
+                ddaySub.innerText = "시험이 종료되었습니다";
+                ddayLarge.className = "text-4xl sm:text-5xl font-black text-slate-400 tracking-tighter";
+                ddaySub.className = "text-xs font-semibold text-slate-400 mt-1";
             } else {
-                ddayLabel.innerText = `시험 D-${diffDays}`;
-                ddayLabel.className = "text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-100";
+                ddayLarge.innerText = `D-${diffDays}`;
+                ddaySub.innerText = `시험까지 ${diffDays}일 남았습니다`;
+                ddayLarge.className = "text-4xl sm:text-5xl font-black text-indigo-600 tracking-tighter";
+                ddaySub.className = "text-xs font-semibold text-indigo-400 mt-1";
             }
         }
 
@@ -1364,6 +1758,351 @@
                 if (subjectInput) {
                     setTimeout(() => subjectInput.focus(), 500);
                 }
+            }
+        }
+
+        // --- Metacognitive Analysis Helpers ---
+        function getMetacognitiveStats() {
+            const subjectStats = {};
+            
+            tasks.forEach(task => {
+                if (task.completed && task.metaDifficulty !== undefined && task.metaDifficulty !== null) {
+                    const sub = task.subject.trim();
+                    if (!sub) return;
+
+                    if (!subjectStats[sub]) {
+                        subjectStats[sub] = {
+                            subject: sub,
+                            totalDifficulty: 0,
+                            totalUnderstanding: 0,
+                            count: 0,
+                            recentTakeaway: '',
+                            recentGap: '',
+                            recentDate: '',
+                            recentId: 0,
+                            examDate: task.examDate || ''
+                        };
+                    }
+                    
+                    subjectStats[sub].totalDifficulty += task.metaDifficulty;
+                    subjectStats[sub].totalUnderstanding += task.metaUnderstanding;
+                    subjectStats[sub].count += 1;
+                    
+                    if (task.id > subjectStats[sub].recentId) {
+                        subjectStats[sub].recentId = task.id;
+                        subjectStats[sub].recentTakeaway = task.metaTakeaway || '';
+                        subjectStats[sub].recentGap = task.metaGap || '';
+                        subjectStats[sub].recentDate = task.completedDate || '';
+                    }
+                    
+                    if (task.examDate && !subjectStats[sub].examDate) {
+                        subjectStats[sub].examDate = task.examDate;
+                    }
+                }
+            });
+
+            const statsArray = [];
+            Object.keys(subjectStats).forEach(sub => {
+                const item = subjectStats[sub];
+                item.avgDifficulty = parseFloat((item.totalDifficulty / item.count).toFixed(1));
+                item.avgUnderstanding = parseFloat((item.totalUnderstanding / item.count).toFixed(1));
+                statsArray.push(item);
+            });
+            
+            return statsArray;
+        }
+
+        let metaChart = null;
+
+        function updateMetacognitionTab() {
+            const stats = getMetacognitiveStats();
+            
+            updateMetaPriorityWarnings(stats);
+            updateMetaRecommendations(stats);
+            updateMetaSubjectDetails(stats);
+
+            const chartPlaceholder = document.getElementById('meta-chart-placeholder');
+            if (stats.length === 0) {
+                if (chartPlaceholder) chartPlaceholder.classList.remove('hidden');
+            } else {
+                if (chartPlaceholder) chartPlaceholder.classList.add('hidden');
+            }
+
+            setTimeout(() => {
+                updateMetacognitionChart(stats);
+            }, 50);
+        }
+
+        function updateMetaPriorityWarnings(stats) {
+            const warningsDiv = document.getElementById('meta-priority-warnings');
+            if (!warningsDiv) return;
+
+            const todayStr = getTodayString();
+            const today = new Date(todayStr);
+            today.setHours(0,0,0,0);
+
+            const activeWarnings = [];
+
+            stats.forEach(item => {
+                const key = `metastudy_exam_date_${currentUser.studentId}`;
+                const globalExamDate = localStorage.getItem(key);
+                const examDateStr = item.examDate || globalExamDate;
+                
+                if (examDateStr) {
+                    const exam = new Date(examDateStr);
+                    exam.setHours(0,0,0,0);
+                    const diffTime = exam - today;
+                    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+                    if (diffDays >= 0 && diffDays <= 7 && item.avgUnderstanding <= 2.5) {
+                        activeWarnings.push({
+                            subject: item.subject,
+                            diffDays: diffDays,
+                            avgUnderstanding: item.avgUnderstanding
+                        });
+                    }
+                }
+            });
+
+            if (activeWarnings.length === 0) {
+                warningsDiv.classList.add('hidden');
+                warningsDiv.innerHTML = '';
+                return;
+            }
+
+            warningsDiv.classList.remove('hidden');
+            let html = '';
+            activeWarnings.forEach(w => {
+                const ddayText = w.diffDays === 0 ? 'D-Day' : `D-${w.diffDays}`;
+                html += `
+                    <div class="bg-red-50 text-red-700 border border-red-200 p-4 rounded-xl flex items-start gap-3 shadow-sm animate-pulse">
+                        <span class="material-symbols-outlined text-red-500 text-2xl font-bold mt-0.5">warning</span>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-sm text-red-800">[긴급 복습] ${w.subject} 시험이 ${ddayText} 앞으로 다가왔습니다!</h4>
+                            <p class="text-xs text-red-700 mt-1">이해도 평균이 ${w.avgUnderstanding}로 낮습니다. 시험 준비를 위해 우선순위 복습을 추천합니다.</p>
+                        </div>
+                    </div>
+                `;
+            });
+            warningsDiv.innerHTML = html;
+        }
+
+        function updateMetaRecommendations(stats) {
+            const container = document.getElementById('meta-review-recommendations-list');
+            if (!container) return;
+
+            const recommendations = [];
+
+            stats.forEach(item => {
+                const needsReview = item.avgUnderstanding <= 3.0 || item.avgDifficulty >= 4.0;
+                if (needsReview) {
+                    let reason = '';
+                    if (item.avgUnderstanding <= 3.0 && item.avgDifficulty >= 4.0) {
+                        reason = '이해도가 낮고 난이도가 높음';
+                    } else if (item.avgUnderstanding <= 3.0) {
+                        reason = `이해도가 낮음 (평균 ${item.avgUnderstanding})`;
+                    } else {
+                        reason = `난이도가 높음 (평균 ${item.avgDifficulty})`;
+                    }
+
+                    recommendations.push({
+                        subject: item.subject,
+                        avgUnderstanding: item.avgUnderstanding,
+                        avgDifficulty: item.avgDifficulty,
+                        reason: reason
+                    });
+                }
+            });
+
+            if (stats.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/50 rounded-xl text-outline text-xs">
+                        <span class="material-symbols-outlined text-2xl mb-1 opacity-60">info</span>
+                        <p class="font-bold text-on-surface dark:text-slate-200">분석을 위한 학습 완료 데이터가 없습니다.</p>
+                        <p class="text-[10px] text-outline mt-1">학습 과제를 추가하고 공부를 마친 뒤 메타인지 평가를 저장하면 추천이 생성됩니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (recommendations.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8 bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/50 rounded-xl text-outline text-xs">
+                        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-500">check_circle</span>
+                        <p class="font-bold text-on-surface dark:text-slate-200">현재 복습 추천 과목이 없습니다!</p>
+                        <p class="text-[10px] text-outline mt-1">모든 과목의 평균 이해도가 양호하며, 난이도가 잘 관리되고 있습니다. 👍</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            recommendations.forEach(r => {
+                html += `
+                    <div class="bg-amber-50/50 border border-amber-200/60 p-4 rounded-xl flex items-center justify-between shadow-sm">
+                        <div>
+                            <span class="font-bold text-sm text-amber-800 block">${r.subject}</span>
+                            <span class="text-xs text-amber-600 mt-1 font-semibold block">이유: ${r.reason}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] font-bold text-outline block">평균 이해도</span>
+                            <span class="text-sm font-bold text-amber-700">${r.avgUnderstanding} / 5.0</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function updateMetaSubjectDetails(stats) {
+            const container = document.getElementById('meta-subject-details-container');
+            if (!container) return;
+
+            if (stats.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700/50 rounded-xl text-outline text-xs">
+                        <span class="material-symbols-outlined text-3xl mb-2 text-outline/50">psychology</span>
+                        <p class="font-bold text-on-surface dark:text-slate-200">기록된 메타인지 평가 데이터가 없습니다.</p>
+                        <p class="text-[10px] text-outline mt-1">학습 완료 시 과제 카드의 체크 버튼을 길게 눌러(Long Press) 스스로의 학습 상태를 회고하고 저장해 보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            stats.forEach(item => {
+                const takeawayText = item.recentTakeaway ? `"${item.recentTakeaway}"` : '요약 기록 없음';
+                const gapText = item.recentGap ? `"${item.recentGap}"` : '취약점 기록 없음';
+                
+                let diffLabel = '보통';
+                if (item.avgDifficulty >= 4.5) diffLabel = '매우 어려움';
+                else if (item.avgDifficulty >= 3.5) diffLabel = '어려움';
+                else if (item.avgDifficulty >= 2.5) diffLabel = '보통';
+                else if (item.avgDifficulty >= 1.5) diffLabel = '쉬움';
+                else diffLabel = '매우 쉬움';
+
+                let undLabel = '보통';
+                if (item.avgUnderstanding >= 4.5) undLabel = '설명 가능';
+                else if (item.avgUnderstanding >= 3.5) undLabel = '잘 이해함';
+                else if (item.avgUnderstanding >= 2.5) undLabel = '보통';
+                else if (item.avgUnderstanding >= 1.5) undLabel = '조금 이해';
+                else undLabel = '전혀 모름';
+
+                html += `
+                    <div class="bg-white dark:bg-slate-800 border border-outline-variant dark:border-slate-700 p-5 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+                                <span class="font-bold text-base text-primary">${item.subject}</span>
+                                <span class="text-[10px] font-bold bg-slate-100 dark:bg-slate-900 text-outline px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">총 ${item.count}회 학습 완료</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3 pt-3">
+                                <div class="bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 text-center">
+                                    <span class="text-[10px] font-bold text-outline block">평균 난이도</span>
+                                    <span class="text-lg font-bold text-amber-600 block mt-0.5">${item.avgDifficulty}</span>
+                                    <span class="text-[9px] text-outline font-semibold block">${diffLabel}</span>
+                                </div>
+                                <div class="bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-100 dark:border-slate-700 text-center">
+                                    <span class="text-[10px] font-bold text-outline block">평균 이해도</span>
+                                    <span class="text-lg font-bold text-emerald-600 block mt-0.5">${item.avgUnderstanding}</span>
+                                    <span class="text-[9px] text-outline font-semibold block">${undLabel}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2.5 pt-1">
+                            <div class="text-xs text-left">
+                                <span class="font-bold text-primary block">💡 최근 핵심 요약 (${item.recentDate || '기록 없음'})</span>
+                                <p class="text-on-surface dark:text-slate-200 leading-relaxed italic mt-0.5 text-xs bg-slate-50/50 dark:bg-slate-900/50 p-2 rounded-lg border border-slate-100/50 dark:border-slate-700/50">${takeawayText}</p>
+                            </div>
+                            <div class="text-xs text-left">
+                                <span class="font-bold text-amber-600 block">⚠️ 부족한 취약 부분</span>
+                                <p class="text-on-surface dark:text-slate-200 leading-relaxed italic mt-0.5 text-xs bg-slate-50/50 dark:bg-slate-900/50 p-2 rounded-lg border border-slate-100/50 dark:border-slate-700/50">${gapText}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function updateMetacognitionChart(stats) {
+            const canvas = document.getElementById('metaAnalysisChart');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            const labels = stats.map(item => item.subject);
+            const understandings = stats.map(item => item.avgUnderstanding);
+            const difficulties = stats.map(item => item.avgDifficulty);
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
+            const textColor = isDark ? '#f8fafc' : '#475569';
+
+            if (metaChart) {
+                metaChart.data.labels = labels.length > 0 ? labels : ['과목 없음'];
+                metaChart.data.datasets[0].data = understandings.length > 0 ? understandings : [0];
+                metaChart.data.datasets[1].data = difficulties.length > 0 ? difficulties : [0];
+                metaChart.options.scales.x.ticks.color = textColor;
+                metaChart.options.scales.y.ticks.color = textColor;
+                metaChart.options.scales.x.grid.color = gridColor;
+                metaChart.options.scales.y.grid.color = gridColor;
+                metaChart.update();
+            } else {
+                metaChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.length > 0 ? labels : ['과목 없음'],
+                        datasets: [
+                            {
+                                label: '평균 이해도',
+                                data: understandings.length > 0 ? understandings : [0],
+                                backgroundColor: '#10b981',
+                                borderRadius: 6,
+                                borderWidth: 0
+                            },
+                            {
+                                label: '평균 난이도',
+                                data: difficulties.length > 0 ? difficulties : [0],
+                                backgroundColor: '#f59e0b',
+                                borderRadius: 6,
+                                borderWidth: 0
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    color: textColor,
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: gridColor },
+                                ticks: { color: textColor, font: { weight: 'bold' } }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 5,
+                                grid: { color: gridColor },
+                                ticks: {
+                                    color: textColor,
+                                    stepSize: 1,
+                                    callback: function(value) { return value + '점'; }
+                                }
+                            }
+                        }
+                    }
+                });
             }
         }
 
@@ -1495,6 +2234,7 @@
                 document.getElementById('auth-container').classList.add('hidden');
                 document.getElementById('app-container').classList.remove('hidden');
                 document.body.classList.add('pb-36', 'md:pb-36');
+                loadUserTasks();
             }
 
             // Clean up old mentor localStorage if it exists
@@ -1525,6 +2265,7 @@
             updateMotivation();
             updateSubjectStats();
             updateStudyTimeDisplay();
+            updateTimerSubjectUI();
             updateDrawerProfile();
             updateHeaderProfile();
             updateGlobalExamDateUI();
@@ -1534,7 +2275,6 @@
             if (globalExamDate) {
                 document.getElementById('exam-date').value = globalExamDate;
             }
-            updateExistingSubjectsSelects();
         }
 
         function switchTab(tabId) {
@@ -1554,7 +2294,9 @@
 
             if (tabId === 'stats') {
                 updateDashboard();
-                setTimeout(updateProgressChart, 50);
+                setTimeout(updateSubjectCumulativeTimeList, 50);
+            } else if (tabId === 'metacognition') {
+                updateMetacognitionTab();
             }
         }
 
@@ -1676,22 +2418,36 @@
         }
 
         function updateStudySubjectSelect() {
-            const select = document.getElementById('study-subject');
-            if (!select) return;
-            
-            const currentValue = select.value;
             const defaultSubjects = ["자료구조", "알고리즘", "데이터베이스", "운영체제"];
             const taskSubjects = [...new Set(tasks.map(t => t.subject.trim()))].filter(s => s !== "");
             const allSubjects = [...new Set([...defaultSubjects, ...taskSubjects])];
             
-            let html = '';
-            allSubjects.forEach(sub => {
-                html += `<option value="${sub}">${sub}</option>`;
-            });
-            select.innerHTML = html;
-            
-            if (allSubjects.includes(currentValue)) {
-                select.value = currentValue;
+            // 1. Update subject-select in task creation form
+            const subjectSelect = document.getElementById('subject-select');
+            if (subjectSelect) {
+                const curVal = subjectSelect.value;
+                let html = '<option value="">-- 선택 --</option>';
+                allSubjects.forEach(sub => {
+                    html += `<option value="${sub}">${sub}</option>`;
+                });
+                subjectSelect.innerHTML = html;
+                if (allSubjects.includes(curVal)) {
+                    subjectSelect.value = curVal;
+                }
+            }
+
+            // 2. Update edit-subject-select in task editing form
+            const editSubjectSelect = document.getElementById('edit-subject-select');
+            if (editSubjectSelect) {
+                const curVal = editSubjectSelect.value;
+                let html = '<option value="">-- 선택 --</option>';
+                allSubjects.forEach(sub => {
+                    html += `<option value="${sub}">${sub}</option>`;
+                });
+                editSubjectSelect.innerHTML = html;
+                if (allSubjects.includes(curVal)) {
+                    editSubjectSelect.value = curVal;
+                }
             }
         }
 
@@ -1730,42 +2486,334 @@
             }
         }
 
-        function toggleTask(id) {
-            tasks = tasks.map(task => {
-                if (task.id === id) {
-                    const nextCompleted = !task.completed;
-                    let actual = task.actualMinutes;
-                    let completedDate = task.completedDate || null;
-                    
-                    if (nextCompleted) {
-                        const expected = task.expectedMinutes || task.estTime || 0;
-                        const userInput = prompt(`이 과제를 완료하는 데 실제로 몇 분이 걸렸나요?`, expected);
-                        const parsed = parseInt(userInput);
-                        actual = (!isNaN(parsed) && parsed > 0) ? parsed : expected;
-                        completedDate = getTodayString();
-                        
-                        // studyHistory에 오늘 날짜 추가
-                        const todayStr = getTodayString();
+        function selectMetaOption(type, val) {
+            for (let i = 1; i <= 5; i++) {
+                const label = document.getElementById(`lbl-${type}-${i}`);
+                if (label) {
+                    label.className = "cursor-pointer text-center border border-outline-variant dark:border-slate-700 rounded-xl p-2.5 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 flex flex-col items-center gap-1 transition-all text-on-surface dark:text-slate-200";
+                }
+            }
+            const activeLabel = document.getElementById(`lbl-${type}-${val}`);
+            if (activeLabel) {
+                activeLabel.className = "cursor-pointer text-center border-2 border-primary rounded-xl p-2.5 bg-primary/10 dark:bg-primary/20 flex flex-col items-center gap-1 transition-all ring-1 ring-primary text-primary dark:text-blue-400";
+                const radio = activeLabel.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            }
+        }
+
+        // --- Long Press & Short Click COMPLETE Handlers ---
+        let pressTimer = null;
+        let activePressTaskId = null;
+        let isLongPressTriggered = false;
+        let lastTouchTime = 0;
+
+        function handleTaskPressStart(e, taskId, isCompleted) {
+            // Prevent double-firing (touchstart + mousedown)
+            if (e.type === 'touchstart') {
+                lastTouchTime = Date.now();
+            } else if (e.type === 'mousedown') {
+                if (Date.now() - lastTouchTime < 500) {
+                    return;
+                }
+            }
+
+            activePressTaskId = taskId;
+            isLongPressTriggered = false;
+
+            // If task is already completed, short click is the only action needed. No progress animation.
+            if (isCompleted) {
+                return;
+            }
+
+            const btn = e.currentTarget;
+            if (btn) {
+                btn.classList.add('pressing');
+            }
+
+            if (pressTimer) clearTimeout(pressTimer);
+
+            pressTimer = setTimeout(() => {
+                isLongPressTriggered = true;
+                if (btn) btn.classList.remove('pressing');
+                
+                // Long Press -> Open metacognitive evaluation modal!
+                toggleTask(taskId);
+            }, 800);
+        }
+
+        function handleTaskPressEnd(e) {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+            const btn = e.currentTarget;
+            if (btn) {
+                btn.classList.remove('pressing');
+            }
+        }
+
+        function handleTaskPressCancel(e) {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+            const btn = e.currentTarget;
+            if (btn) {
+                btn.classList.remove('pressing');
+            }
+            activePressTaskId = null;
+            isLongPressTriggered = false;
+        }
+
+        function handleTaskClick(e, taskId, isCompleted) {
+            e.stopPropagation();
+
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+            const btn = e.currentTarget;
+            if (btn) {
+                btn.classList.remove('pressing');
+            }
+
+            if (isLongPressTriggered) {
+                isLongPressTriggered = false;
+                activePressTaskId = null;
+                return;
+            }
+
+            // Short click -> Instant completion/incompletion toggle
+            toggleTaskInstant(taskId, isCompleted);
+            activePressTaskId = null;
+        }
+
+        function toggleTaskInstant(id, isCompleted) {
+            if (isCompleted) {
+                // Instantly mark incomplete
+                tasks = tasks.map(t => {
+                    if (t.id === id) {
+                        return {
+                            ...t,
+                            completed: false,
+                            completedDate: null,
+                            actualMinutes: null,
+                            actualDuration: null,
+                            metaDifficulty: null,
+                            metaUnderstanding: null,
+                            metaTakeaway: null,
+                            metaGap: null
+                        };
+                    }
+                    return t;
+                });
+                saveTasks();
+            } else {
+                // Instantly complete (no ratings, actualMinutes = expectedMinutes)
+                const task = tasks.find(t => t.id === id);
+                if (!task) return;
+
+                const actualMinutes = task.expectedMinutes || task.estTime || 0;
+                const todayStr = getTodayString();
+
+                tasks = tasks.map(t => {
+                    if (t.id === id) {
                         if (!studyHistory.includes(todayStr)) {
                             studyHistory.push(todayStr);
                         }
-                    } else {
-                        actual = null;
-                        completedDate = null;
+
+                        todayStudyMinutes += actualMinutes;
+                        if (!dailyStudyLog[todayStr]) {
+                            dailyStudyLog[todayStr] = 0;
+                        }
+                        dailyStudyLog[todayStr] += actualMinutes;
+
+                        if (!subjectStudyTime[t.subject]) {
+                            subjectStudyTime[t.subject] = 0;
+                        }
+                        subjectStudyTime[t.subject] += actualMinutes;
+                        totalStudyMinutes += actualMinutes;
+
+                        if (!lastStudyDate) {
+                            studyStreak = 1;
+                            lastStudyDate = todayStr;
+                        } else if (lastStudyDate === todayStr) {
+                            // 변동 없음
+                        } else {
+                            const diffDays = getDateDiffInDays(lastStudyDate, todayStr);
+                            if (diffDays === 1) {
+                                studyStreak += 1;
+                                lastStudyDate = todayStr;
+                            } else {
+                                studyStreak = 1;
+                                lastStudyDate = todayStr;
+                            }
+                        }
+
+                        return {
+                            ...t,
+                            completed: true,
+                            completedDate: todayStr,
+                            actualMinutes: actualMinutes,
+                            actualDuration: actualMinutes,
+                            metaDifficulty: null,
+                            metaUnderstanding: null,
+                            metaTakeaway: null,
+                            metaGap: null
+                        };
                     }
+                    return t;
+                });
+                saveTasks();
+            }
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            if (!task.completed) {
+                document.getElementById('meta-eval-task-id').value = id;
+                document.getElementById('meta-actual-minutes').value = task.expectedMinutes || task.estTime || 0;
+                document.getElementById('meta-takeaway').value = '';
+                document.getElementById('meta-gap').value = '';
+                
+                // Clear highlights
+                for (let i = 1; i <= 5; i++) {
+                    const labelDiff = document.getElementById(`lbl-diff-${i}`);
+                    if (labelDiff) labelDiff.className = "cursor-pointer text-center border border-outline-variant rounded-xl p-2.5 bg-slate-50 hover:bg-slate-100 flex flex-col items-center gap-1 transition-all";
+                    const labelUnd = document.getElementById(`lbl-und-${i}`);
+                    if (labelUnd) labelUnd.className = "cursor-pointer text-center border border-outline-variant rounded-xl p-2.5 bg-slate-50 hover:bg-slate-100 flex flex-col items-center gap-1 transition-all";
                     
+                    const radioDiff = document.querySelector(`input[name="meta-difficulty"][value="${i}"]`);
+                    if (radioDiff) radioDiff.checked = false;
+                    const radioUnd = document.querySelector(`input[name="meta-understanding"][value="${i}"]`);
+                    if (radioUnd) radioUnd.checked = false;
+                }
+
+                document.getElementById('meta-eval-modal').classList.remove('hidden');
+            } else {
+                if (confirm('이 과제를 미완료 상태로 변경하시겠습니까? 메타인지 평가 데이터도 함께 삭제됩니다.')) {
+                    tasks = tasks.map(t => {
+                        if (t.id === id) {
+                            return {
+                                ...t,
+                                completed: false,
+                                completedDate: null,
+                                actualMinutes: null,
+                                actualDuration: null,
+                                metaDifficulty: null,
+                                metaUnderstanding: null,
+                                metaTakeaway: null,
+                                metaGap: null
+                            };
+                        }
+                        return t;
+                    });
+                    saveTasks();
+                }
+            }
+        }
+
+        function saveMetacognitiveEvaluation(e) {
+            e.preventDefault();
+            const taskId = parseInt(document.getElementById('meta-eval-task-id').value);
+            const actualMinutes = parseInt(document.getElementById('meta-actual-minutes').value);
+            
+            const diffRadios = document.getElementsByName('meta-difficulty');
+            let difficulty = null;
+            for (const radio of diffRadios) {
+                if (radio.checked) {
+                    difficulty = parseInt(radio.value);
+                    break;
+                }
+            }
+
+            const undRadios = document.getElementsByName('meta-understanding');
+            let understanding = null;
+            for (const radio of undRadios) {
+                if (radio.checked) {
+                    understanding = parseInt(radio.value);
+                    break;
+                }
+            }
+
+            if (!difficulty || !understanding) {
+                alert('난이도와 이해도 평가를 선택해 주세요.');
+                return;
+            }
+
+            const takeaway = document.getElementById('meta-takeaway').value.trim();
+            const gap = document.getElementById('meta-gap').value.trim();
+
+            if (isNaN(actualMinutes) || actualMinutes <= 0) {
+                alert('올바른 실제 공부 시간을 입력해 주세요.');
+                return;
+            }
+
+            tasks = tasks.map(task => {
+                if (task.id === taskId) {
+                    const todayStr = getTodayString();
+                    
+                    if (!studyHistory.includes(todayStr)) {
+                        studyHistory.push(todayStr);
+                    }
+
+                    todayStudyMinutes += actualMinutes;
+                    if (!dailyStudyLog[todayStr]) {
+                        dailyStudyLog[todayStr] = 0;
+                    }
+                    dailyStudyLog[todayStr] += actualMinutes;
+
+                    if (!subjectStudyTime[task.subject]) {
+                        subjectStudyTime[task.subject] = 0;
+                    }
+                    subjectStudyTime[task.subject] += actualMinutes;
+                    totalStudyMinutes += actualMinutes;
+
+                    if (!lastStudyDate) {
+                        studyStreak = 1;
+                        lastStudyDate = todayStr;
+                    } else if (lastStudyDate === todayStr) {
+                        // 변동 없음
+                    } else {
+                        const diffDays = getDateDiffInDays(lastStudyDate, todayStr);
+                        if (diffDays === 1) {
+                            studyStreak += 1;
+                            lastStudyDate = todayStr;
+                        } else {
+                            studyStreak = 1;
+                            lastStudyDate = todayStr;
+                        }
+                    }
+
                     return {
                         ...task,
-                        completed: nextCompleted,
-                        expectedMinutes: task.expectedMinutes || task.estTime || 0,
-                        actualMinutes: actual,
-                        actualDuration: actual,
-                        completedDate: completedDate
+                        completed: true,
+                        completedDate: todayStr,
+                        actualMinutes: actualMinutes,
+                        actualDuration: actualMinutes,
+                        metaDifficulty: difficulty,
+                        metaUnderstanding: understanding,
+                        metaTakeaway: takeaway,
+                        metaGap: gap
                     };
                 }
                 return task;
             });
+
             saveTasks();
+            closeMetacognitiveModal();
+            alert('평가가 저장되었으며 과제가 완료 처리되었습니다!');
+        }
+
+        function cancelMetacognitiveEvaluation() {
+            closeMetacognitiveModal();
+        }
+
+        function closeMetacognitiveModal() {
+            document.getElementById('meta-eval-modal').classList.add('hidden');
+            document.getElementById('meta-eval-form').reset();
         }
 
         function deleteTask(id) {
@@ -1975,7 +3023,7 @@
                 homeCompletedCount.innerText = `${completedCount}개`;
             }
 
-            updateProgressChart();
+            updateSubjectCumulativeTimeList();
             updateSubjectProgress();
             updateGapAnalysisUI();
         }
@@ -2124,46 +3172,123 @@
             }
         }
 
-        function updateProgressChart() {
-            const canvas = document.getElementById('progressChart');
-            if (!canvas || typeof Chart === 'undefined') return;
+        function getSubjectColor(subject) {
+            const fixedColors = {
+                "자료구조": "#2563eb", // 파랑
+                "기계진동": "#10b981", // 초록
+                "자동제어": "#f97316", // 주황
+                "열전달": "#ef4444",   // 빨강
+                "공업수학": "#8b5cf6", // 보라
+                "유체역학": "#06b6d4"  // 청록
+            };
+            const cleanSub = subject.trim();
+            if (fixedColors[cleanSub]) {
+                return fixedColors[cleanSub];
+            }
+            
+            const cycleColors = [
+                "#db2777", // 핑크
+                "#eab308", // 노랑
+                "#84cc16", // 라임
+                "#6366f1", // 인디고
+                "#ec4899", // 핫핑크
+                "#14b8a6", // 청록(Teal)
+                "#f43f5e", // 로즈
+                "#a855f7"  // 퍼플
+            ];
+            
+            // simple hash code to make color consistent
+            let hash = 0;
+            for (let i = 0; i < cleanSub.length; i++) {
+                hash = cleanSub.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const idx = Math.abs(hash) % cycleColors.length;
+            return cycleColors[idx];
+        }
 
-            const completed = tasks.filter(t => t.completed).length;
-            const remaining = tasks.length - completed;
-
-            if (progressChart) {
-                progressChart.data.datasets[0].data = [completed, remaining];
-                progressChart.update();
-            } else {
-                progressChart = new Chart(canvas, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['완료', '미완료'],
-                        datasets: [{
-                            label: '학습 진행률',
-                            data: [completed, remaining],
-                            backgroundColor: ['#059669', '#dbeafe'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    boxWidth: 12,
-                                    font: {
-                                        size: 11,
-                                        weight: 'bold'
-                                    }
-                                }
-                            }
-                        }
+        const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw(chart) {
+                const { ctx } = chart;
+                const centerOpts = chart.config.options.plugins?.centerText;
+                if (!centerOpts || !centerOpts.display) return;
+                
+                const activeDataset = chart.getDatasetMeta(0);
+                if (activeDataset && activeDataset.data && activeDataset.data.length > 0) {
+                    const firstElement = activeDataset.data[0];
+                    if (firstElement) {
+                        const x = firstElement.x;
+                        const y = firstElement.y;
+                        
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        
+                        const isDark = document.documentElement.classList.contains('dark');
+                        const titleColor = isDark ? '#94a3b8' : '#64748b';
+                        const valColor = isDark ? '#f8fafc' : '#0f172a';
+                        
+                        // Draw "총 공부시간"
+                        ctx.font = "bold 10px 'Outfit', 'Inter', sans-serif";
+                        ctx.fillStyle = titleColor;
+                        ctx.fillText('총 공부시간', x, y - 9);
+                        
+                        // Draw value
+                        ctx.font = "bold 14px 'Outfit', 'Inter', sans-serif";
+                        ctx.fillStyle = valColor;
+                        ctx.fillText(centerOpts.text || '0분', x, y + 9);
+                        ctx.restore();
                     }
+                }
+            }
+        };
+
+        function updateSubjectCumulativeTimeList() {
+            const container = document.getElementById('subject-cumulative-time-list');
+            if (!container) return;
+
+            const subjects = Object.keys(subjectStudyTime).filter(s => subjectStudyTime[s] > 0);
+            
+            // Sort subjects by study time in descending order
+            subjects.sort((a, b) => subjectStudyTime[b] - subjectStudyTime[a]);
+
+            if (subjects.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-center text-outline italic text-xs py-8">
+                        <span class="material-symbols-outlined text-3xl mb-1 text-outline/40" style="font-size: 28px;">hourglass_empty</span>
+                        기록된 공부 시간이 없습니다.
+                    </div>
+                `;
+            } else {
+                const totalTime = subjects.reduce((sum, sub) => sum + subjectStudyTime[sub], 0);
+
+                let html = '';
+                subjects.forEach((sub, idx) => {
+                    const mins = subjectStudyTime[sub];
+                    const hours = Math.floor(mins / 60);
+                    const m = mins % 60;
+                    const timeStr = hours > 0 ? `${hours}시간 ${m}분` : `${m}분`;
+                    const percentage = totalTime > 0 ? Math.round((mins / totalTime) * 100) : 0;
+                    
+                    const colorHex = getSubjectColor(sub);
+
+                    html += `
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-bold text-on-surface flex items-center gap-1.5 truncate max-w-[70%]">
+                                    <span class="w-2 h-2 rounded-full" style="background-color: ${colorHex}"></span>
+                                    ${sub}
+                                </span>
+                                <span class="font-bold text-primary flex-shrink-0">${timeStr}</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500" style="width: ${percentage}%; background-color: ${colorHex}"></div>
+                            </div>
+                        </div>
+                    `;
                 });
+
+                container.innerHTML = html;
             }
 
             // 2. 주간 공부시간 그래프 (최근 7일 막대그래프)
@@ -2184,10 +3309,15 @@
                     last7DaysLabels.push(`${m}/${day}`);
                     last7DaysData.push(dailyStudyLog[dateKey] || 0);
                 }
+
+                const maxVal = Math.max(...last7DaysData);
+                const niceMax = maxVal === 0 ? 60 : Math.ceil(maxVal / 50) * 50;
                 
                 if (weeklyStudyChart) {
                     weeklyStudyChart.data.labels = last7DaysLabels;
                     weeklyStudyChart.data.datasets[0].data = last7DaysData;
+                    weeklyStudyChart.options.scales.y.max = niceMax;
+                    weeklyStudyChart.options.scales.y.ticks.stepSize = niceMax / 5;
                     weeklyStudyChart.update();
                 } else {
                     weeklyStudyChart = new Chart(canvas2, {
@@ -2211,7 +3341,9 @@
                             scales: {
                                 y: {
                                     beginAtZero: true,
+                                    max: niceMax,
                                     ticks: {
+                                        stepSize: niceMax / 5,
                                         callback: function(value) { return value + '분'; }
                                     }
                                 }
@@ -2224,25 +3356,44 @@
             // 3. 과목별 공부시간 그래프 (누적 도넛차트)
             const canvas3 = document.getElementById('subjectStudyChart');
             if (canvas3) {
-                const subjects = Object.keys(subjectStudyTime).filter(s => subjectStudyTime[s] > 0);
-                const dataValues = subjects.map(s => subjectStudyTime[s]);
-                const colors = ['#2563eb', '#059669', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#64748b'];
+                const activeSubjects = Object.keys(subjectStudyTime).filter(s => subjectStudyTime[s] > 0);
+                const dataValues = activeSubjects.map(s => subjectStudyTime[s]);
+                const subjectsColors = activeSubjects.map(s => getSubjectColor(s));
+                
+                // Calculate total time
+                const totalMinutes = activeSubjects.reduce((sum, sub) => sum + subjectStudyTime[sub], 0);
+                const totalHours = Math.floor(totalMinutes / 60);
+                const totalMins = totalMinutes % 60;
+                const totalTimeStr = totalHours > 0 ? `${totalHours}시간 ${totalMins}분` : `${totalMins}분`;
+
+                const chartLabels = activeSubjects.map(sub => {
+                    const mins = subjectStudyTime[sub];
+                    const hours = Math.floor(mins / 60);
+                    const m = mins % 60;
+                    const timeStr = hours > 0 ? `${hours}시간 ${m}분` : `${m}분`;
+                    return `${sub} (${timeStr})`;
+                });
                 
                 if (subjectStudyChart) {
-                    subjectStudyChart.data.labels = subjects;
-                    subjectStudyChart.data.datasets[0].data = dataValues;
+                    subjectStudyChart.data.labels = chartLabels.length > 0 ? chartLabels : ['기록 없음'];
+                    subjectStudyChart.data.datasets[0].data = dataValues.length > 0 ? dataValues : [1];
+                    subjectStudyChart.data.datasets[0].backgroundColor = dataValues.length > 0 ? subjectsColors : ['#f1f5f9'];
+                    if (subjectStudyChart.options.plugins.centerText) {
+                        subjectStudyChart.options.plugins.centerText.text = totalTimeStr;
+                    }
                     subjectStudyChart.update();
                 } else {
                     subjectStudyChart = new Chart(canvas3, {
                         type: 'doughnut',
                         data: {
-                            labels: subjects.length > 0 ? subjects : ['기록 없음'],
+                            labels: chartLabels.length > 0 ? chartLabels : ['기록 없음'],
                             datasets: [{
                                 data: dataValues.length > 0 ? dataValues : [1],
-                                backgroundColor: dataValues.length > 0 ? colors.slice(0, dataValues.length) : ['#f1f5f9'],
+                                backgroundColor: dataValues.length > 0 ? subjectsColors : ['#f1f5f9'],
                                 borderWidth: 0
                             }]
                         },
+                        plugins: [centerTextPlugin],
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
@@ -2257,10 +3408,67 @@
                                             weight: 'bold'
                                         }
                                     }
+                                },
+                                centerText: {
+                                    display: true,
+                                    text: totalTimeStr
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.raw || 0;
+                                            const hours = Math.floor(value / 60);
+                                            const m = value % 60;
+                                            const timeStr = hours > 0 ? `${hours}시간 ${m}분` : `${m}분`;
+                                            return ` ${label.split(' (')[0]}: ${timeStr}`;
+                                        }
+                                    }
                                 }
                             }
                         }
                     });
+                }
+
+                // 4. 과목별 공부시간 순위 표시
+                const rankingDiv = document.getElementById('subject-study-ranking');
+                if (rankingDiv) {
+                    if (activeSubjects.length === 0) {
+                        rankingDiv.innerHTML = `
+                            <div class="text-center py-4 text-outline italic text-xs">
+                                순위 데이터가 없습니다.
+                            </div>
+                        `;
+                    } else {
+                        // activeSubjects is sorted implicitly because they were filtered from sorted subjects
+                        const sortedActiveSubjects = [...activeSubjects].sort((a, b) => subjectStudyTime[b] - subjectStudyTime[a]);
+                        
+                        let html = '<div class="text-xs font-bold text-outline mb-3">🏆 과목별 공부시간 순위</div>';
+                        html += '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">';
+                        sortedActiveSubjects.forEach((sub, idx) => {
+                            const mins = subjectStudyTime[sub];
+                            const hours = Math.floor(mins / 60);
+                            const m = mins % 60;
+                            const timeStr = hours > 0 ? `${hours}시간 ${m}분` : `${m}분`;
+                            
+                            let medal = '';
+                            if (idx === 0) medal = '🥇';
+                            else if (idx === 1) medal = '🥈';
+                            else if (idx === 2) medal = '🥉';
+                            else medal = `<span class="inline-block w-5 text-center font-bold text-outline text-xs">${idx + 1}</span>`;
+
+                            html += `
+                                <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 px-3 py-2 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                                    <span class="font-bold text-xs text-on-surface flex items-center gap-1.5 truncate">
+                                        ${medal} ${sub}
+                                    </span>
+                                    <span class="font-bold text-xs text-primary">${timeStr}</span>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        rankingDiv.innerHTML = html;
+                    }
                 }
             }
         }
@@ -2319,11 +3527,26 @@
                 const recTimeHtml = recTime ? `<span class="bg-tertiary-container text-tertiary px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">${recTime}</span>` : '';
 
                 card.innerHTML = `
-                    <!-- Checkbox Button (48px Touch Area) -->
-                    <button onclick="toggleTask(${task.id})" class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-slate-100 active:scale-90 transition-all focus:outline-none" aria-label="Toggle task completion">
+                    <!-- Checkbox Button (48px Touch Area) with Long Press Support -->
+                    <button 
+                        onmousedown="handleTaskPressStart(event, ${task.id}, ${task.completed})" 
+                        onmouseup="handleTaskPressEnd(event)" 
+                        onmouseleave="handleTaskPressCancel(event)"
+                        ontouchstart="handleTaskPressStart(event, ${task.id}, ${task.completed})" 
+                        ontouchend="handleTaskPressEnd(event)"
+                        ontouchcancel="handleTaskPressCancel(event)"
+                        onclick="handleTaskClick(event, ${task.id}, ${task.completed})"
+                        class="task-complete-btn relative w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-slate-100 focus:outline-none" 
+                        aria-label="Toggle task completion">
+                        
+                        <!-- SVG Progress Ring for Long Press Feedback -->
+                        <svg class="progress-ring absolute inset-0 w-full h-full -rotate-90 hidden pointer-events-none" viewBox="0 0 48 48">
+                            <circle class="progress-ring__circle stroke-primary" stroke-width="3" fill="transparent" r="20" cx="24" cy="24" stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round"/>
+                        </svg>
+
                         ${task.completed ? 
-                            `<span class="material-symbols-outlined filled text-tertiary text-2xl">check_circle</span>` : 
-                            `<span class="material-symbols-outlined text-outline hover:text-primary text-2xl">radio_button_unchecked</span>`
+                            `<span class="material-symbols-outlined filled text-tertiary text-2xl transition-all duration-200">check_circle</span>` : 
+                            `<span class="material-symbols-outlined text-outline hover:text-primary text-2xl transition-all duration-200">radio_button_unchecked</span>`
                         }
                     </button>
                     
@@ -2353,6 +3576,11 @@
                     
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-1">
+                        ${!task.completed ? `
+                        <button onclick="startStudyForTask('${task.subject.replace(/'/g, "\\'")}')" class="w-11 h-11 flex items-center justify-center rounded-full text-primary hover:bg-primary-container/40 active:scale-95 transition-all focus:outline-none" title="공부 시작" aria-label="Start study for this task">
+                            <span class="material-symbols-outlined text-lg">play_arrow</span>
+                        </button>
+                        ` : ''}
                         <button onclick="editTask(${task.id})" class="w-11 h-11 flex items-center justify-center rounded-full text-outline hover:text-primary hover:bg-slate-100 active:scale-95 transition-all focus:outline-none" aria-label="Edit task">
                             <span class="material-symbols-outlined text-lg">edit</span>
                         </button>
@@ -2402,28 +3630,116 @@
             totalStudyTimeDisplay.innerText = `${hours}시간 ${mins}분`;
         }
 
-        document.getElementById('start-study').addEventListener('click', () => {
-            currentStudySubject = document.getElementById('study-subject').value.trim();
+        function updateTimerSubjectUI() {
+            const labelEl = document.getElementById('study-status-label');
+            const subjectNameEl = document.getElementById('study-status-subject-name');
+            if (!labelEl || !subjectNameEl) return;
+            
+            const subject = currentStudySubject || "선택된 과목 없음";
+            subjectNameEl.innerText = subject;
+            
+            if (studyStartTime) {
+                labelEl.innerText = "현재 학습 중";
+                labelEl.className = "text-xs text-red-500 font-bold uppercase tracking-wider animate-pulse";
+                subjectNameEl.parentElement.classList.add('text-primary');
+            } else {
+                labelEl.innerText = "최근 학습 과목";
+                labelEl.className = "text-xs text-outline font-semibold uppercase tracking-wider";
+                subjectNameEl.parentElement.classList.remove('text-primary');
+            }
+        }
 
-            if (!currentStudySubject) {
-                alert('공부할 과목을 선택하거나 등록해주세요.');
+        function startStudyForTask(subject) {
+            currentStudySubject = subject;
+            updateTimerSubjectUI();
+            
+            // Scroll to the study timer section
+            const startBtn = document.getElementById('start-study');
+            if (startBtn) {
+                const timerSection = startBtn.closest('section');
+                if (timerSection) {
+                    timerSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            // Check if study is already in progress
+            if (studyStartTime || isStudyPaused) {
+                alert(`현재 [${currentStudySubject}] 과목으로 공부 시간이 측정되고 있습니다. 새 과목을 시작하려면 먼저 기존 측정을 종료해 주세요.`);
                 return;
             }
+            
+            // Start study automatically
+            setTimeout(() => {
+                const startBtn = document.getElementById('start-study');
+                if (startBtn) startBtn.click();
+            }, 400);
+        }
 
-            if (studyStartTime) {
+        document.getElementById('start-study').addEventListener('click', () => {
+            if (!currentStudySubject) {
+                const defaultSub = tasks.length > 0 ? tasks[0].subject : '자료구조';
+                const sub = prompt('공부할 과목을 입력해 주세요:', defaultSub);
+                if (!sub || !sub.trim()) return;
+                currentStudySubject = sub.trim();
+            }
+
+            if (studyStartTime || isStudyPaused) {
                 alert('이미 공부가 시작되었습니다.');
                 return;
             }
 
             studyStartTime = Date.now();
+            studyPausedSeconds = 0;
+            isStudyPaused = false;
+            updateTimerSubjectUI();
             
-            // Disable start button, enable visual feedback
-            const startBtn = document.getElementById('start-study');
-            startBtn.disabled = true;
-            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('start-study').classList.add('hidden');
+            document.getElementById('pause-study').classList.remove('hidden');
 
+            startTimerInterval();
+            
+            alert(`[${currentStudySubject}] 공부 시작! 집중해서 화이팅하세요.`);
+        });
+
+        document.getElementById('pause-study').addEventListener('click', () => {
+            if (!studyStartTime) return;
+            
+            isStudyPaused = true;
+            studyPausedSeconds += Math.floor((Date.now() - studyStartTime) / 1000);
+            studyStartTime = null;
+            clearInterval(timerInterval);
+            
+            document.getElementById('pause-study').classList.add('hidden');
+            document.getElementById('resume-study').classList.remove('hidden');
+            
+            const mins = Math.floor(studyPausedSeconds / 60);
+            const secs = studyPausedSeconds % 60;
+            totalStudyTimeDisplay.innerHTML = `
+                <span class="flex items-center gap-2 text-amber-500">
+                    ${mins}분 ${secs}초
+                    <span class="material-symbols-outlined text-sm">pause_circle</span>
+                    <span class="text-xs font-bold">일시정지 중</span>
+                </span>
+            `;
+            updateTimerSubjectUI();
+        });
+
+        document.getElementById('resume-study').addEventListener('click', () => {
+            if (!isStudyPaused) return;
+            
+            isStudyPaused = false;
+            studyStartTime = Date.now();
+            
+            document.getElementById('resume-study').classList.add('hidden');
+            document.getElementById('pause-study').classList.remove('hidden');
+            
+            startTimerInterval();
+            updateTimerSubjectUI();
+        });
+
+        function startTimerInterval() {
             timerInterval = setInterval(() => {
-                const elapsedSeconds = Math.floor((Date.now() - studyStartTime) / 1000);
+                const elapsedSeconds = studyPausedSeconds + Math.floor((Date.now() - studyStartTime) / 1000);
                 const mins = Math.floor(elapsedSeconds / 60);
                 const secs = elapsedSeconds % 60;
 
@@ -2435,19 +3751,21 @@
                     </span>
                 `;
             }, 1000);
-            
-            alert(`[${currentStudySubject}] 공부 시작! 집중해서 화이팅하세요.`);
-        });
+        }
 
         document.getElementById('stop-study').addEventListener('click', () => {
-            if (!studyStartTime) {
+            if (!studyStartTime && !isStudyPaused) {
                 alert('먼저 공부 시작을 눌러주세요.');
                 return;
             }
 
             clearInterval(timerInterval);
 
-            const elapsedMinutes = Math.round((Date.now() - studyStartTime) / 1000 / 60);
+            let totalSecs = studyPausedSeconds;
+            if (studyStartTime) {
+                totalSecs += Math.floor((Date.now() - studyStartTime) / 1000);
+            }
+            const elapsedMinutes = Math.round(totalSecs / 60);
             totalStudyMinutes += elapsedMinutes;
 
             if (!subjectStudyTime[currentStudySubject]) {
@@ -2455,16 +3773,19 @@
             }
             subjectStudyTime[currentStudySubject] += elapsedMinutes;
 
-            // Restore start button state
-            const startBtn = document.getElementById('start-study');
-            startBtn.disabled = false;
-            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            // Restore buttons
+            document.getElementById('start-study').classList.remove('hidden');
+            document.getElementById('pause-study').classList.add('hidden');
+            document.getElementById('resume-study').classList.add('hidden');
 
             updateSubjectStats();
             updateStudyTimeDisplay();
             updateSubjectProgress();
 
             studyStartTime = null;
+            studyPausedSeconds = 0;
+            isStudyPaused = false;
+            updateTimerSubjectUI(); // Update UI to show "최근 학습 과목"
 
             // 오늘 공부 시간 및 로그 누적
             todayStudyMinutes += elapsedMinutes;
@@ -2605,7 +3926,7 @@
                         분석할 완료 과제 데이터가 아직 없습니다.
                     </div>
                 `;
-                adviceDiv.innerHTML = "과제를 완료하고 실제 소요시간을 기록하면 AI 계획 추천을 드립니다.";
+                adviceDiv.innerHTML = "과제를 완료하고 실제 소요시간을 기록하면 맞춤 계획 추천을 드립니다.";
                 return;
             }
 
@@ -2706,60 +4027,6 @@
                     tipEl.innerText = '';
                 }
             }
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text
-                .toString()
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function selectExistingSubject(val) {
-            if (!val) return;
-            const input = document.getElementById('subject');
-            if (input) {
-                input.value = val;
-                input.dispatchEvent(new Event('input'));
-            }
-            const select = document.getElementById('existing-subjects');
-            if (select) {
-                select.value = "";
-            }
-        }
-
-        function selectEditExistingSubject(val) {
-            if (!val) return;
-            const input = document.getElementById('edit-subject');
-            if (input) {
-                input.value = val;
-                input.dispatchEvent(new Event('input'));
-            }
-            const select = document.getElementById('edit-existing-subjects');
-            if (select) {
-                select.value = "";
-            }
-        }
-
-        function updateExistingSubjectsSelects() {
-            const dropdownAdd = document.getElementById('existing-subjects');
-            const dropdownEdit = document.getElementById('edit-existing-subjects');
-            if (!dropdownAdd || !dropdownEdit) return;
-
-            // Extract unique non-empty subject names, trimmed, sorted
-            const subjectList = [...new Set(tasks.map(t => t.subject ? t.subject.trim() : ""))].filter(s => s !== "").sort();
-
-            let optionsHtml = '<option value="">기존 과목 선택</option>';
-            subjectList.forEach(sub => {
-                optionsHtml += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
-            });
-
-            dropdownAdd.innerHTML = optionsHtml;
-            dropdownEdit.innerHTML = optionsHtml;
         }
 
         if (subjectInput && subjectGapTip) {
