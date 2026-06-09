@@ -1,75 +1,76 @@
 <!DOCTYPE html>
-
-<html class="light" lang="ko"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Adaptive Study Planner</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Chart.js: 학습 통계 그래프 -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="light" lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>StudyFit Planner - 스마트 스터디 플래너</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Chart.js: 학습 통계 그래프 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
               "colors": {
-                      "on-primary-container": "#eeefff",
+                      "on-primary-container": "#001d4a",
                       "on-secondary-fixed": "#001a42",
-                      "outline-variant": "#c3c6d7",
-                      "surface-tint": "#0053db",
-                      "surface-container-low": "#f2f4f6",
-                      "error": "#ba1a1a",
-                      "surface-container-highest": "#e0e3e5",
-                      "on-primary-fixed-variant": "#003ea8",
-                      "primary-container": "#2563eb",
-                      "tertiary-fixed-dim": "#4edea3",
-                      "surface-variant": "#e0e3e5",
-                      "surface-dim": "#d8dadc",
-                      "surface-container-high": "#e6e8ea",
-                      "on-surface": "#191c1e",
-                      "on-secondary-fixed-variant": "#004395",
-                      "primary-fixed-dim": "#b4c5ff",
+                      "outline-variant": "#e2e8f0",
+                      "surface-tint": "#2563eb",
+                      "surface-container-low": "#f8fafc",
+                      "error": "#ef4444",
+                      "surface-container-highest": "#f1f5f9",
+                      "on-primary-fixed-variant": "#1d4ed8",
+                      "primary-container": "#dbeafe",
+                      "tertiary-fixed-dim": "#86efac",
+                      "surface-variant": "#f1f5f9",
+                      "surface-dim": "#cbd5e1",
+                      "surface-container-high": "#f1f5f9",
+                      "on-surface": "#0f172a",
+                      "on-secondary-fixed-variant": "#1e3a8a",
+                      "primary-fixed-dim": "#bfdbfe",
                       "on-tertiary": "#ffffff",
-                      "tertiary": "#006242",
-                      "outline": "#737686",
-                      "on-error-container": "#93000a",
+                      "tertiary": "#059669",
+                      "outline": "#64748b",
+                      "on-error-container": "#7f1d1d",
                       "on-error": "#ffffff",
-                      "on-secondary-container": "#fefcff",
-                      "on-background": "#191c1e",
+                      "on-secondary-container": "#ffffff",
+                      "on-background": "#0f172a",
                       "on-secondary": "#ffffff",
-                      "error-container": "#ffdad6",
-                      "on-primary-fixed": "#00174b",
-                      "inverse-surface": "#2d3133",
-                      "tertiary-fixed": "#6ffbbe",
-                      "surface-bright": "#f7f9fb",
-                      "on-tertiary-fixed-variant": "#005236",
-                      "on-tertiary-container": "#bdffdb",
-                      "surface": "#f7f9fb",
-                      "on-surface-variant": "#434655",
-                      "background": "#f7f9fb",
-                      "primary-fixed": "#dbe1ff",
-                      "inverse-primary": "#b4c5ff",
-                      "inverse-on-surface": "#eff1f3",
-                      "on-tertiary-fixed": "#002113",
+                      "error-container": "#fee2e2",
+                      "on-primary-fixed": "#1e3a8a",
+                      "inverse-surface": "#1e293b",
+                      "tertiary-fixed": "#d1fae5",
+                      "surface-bright": "#ffffff",
+                      "on-tertiary-fixed-variant": "#065f46",
+                      "on-tertiary-container": "#064e3b",
+                      "surface": "#ffffff",
+                      "on-surface-variant": "#475569",
+                      "background": "#f8fafc",
+                      "primary-fixed": "#dbeafe",
+                      "inverse-primary": "#bfdbfe",
+                      "inverse-on-surface": "#f8fafc",
+                      "on-tertiary-fixed": "#022c22",
                       "on-primary": "#ffffff",
-                      "secondary-container": "#2170e4",
-                      "primary": "#004ac6",
+                      "secondary-container": "#eff6ff",
+                      "primary": "#2563eb",
                       "surface-container-lowest": "#ffffff",
-                      "surface-container": "#eceef0",
-                      "secondary-fixed": "#d8e2ff",
-                      "tertiary-container": "#007d55",
-                      "secondary-fixed-dim": "#adc6ff",
-                      "secondary": "#0058be"
+                      "surface-container": "#f1f5f9",
+                      "secondary-fixed": "#dbeafe",
+                      "tertiary-container": "#ecfdf5",
+                      "secondary-fixed-dim": "#bfdbfe",
+                      "secondary": "#3b82f6"
               },
               "borderRadius": {
-                      "DEFAULT": "0.25rem",
+                      "DEFAULT": "0.375rem",
                       "lg": "0.5rem",
                       "xl": "0.75rem",
+                      "2xl": "1rem",
                       "full": "9999px"
               },
               "spacing": {
@@ -78,57 +79,38 @@
                       "gutter": "24px",
                       "base": "8px",
                       "margin-mobile": "16px"
-              },
-              "fontFamily": {
-                      "label-sm": ["Inter"],
-                      "headline-xl-mobile": ["Inter"],
-                      "headline-lg": ["Inter"],
-                      "headline-xl": ["Inter"],
-                      "body-sm": ["Inter"],
-                      "label-md": ["Inter"],
-                      "headline-md": ["Inter"],
-                      "body-md": ["Inter"],
-                      "body-lg": ["Inter"]
-              },
-              "fontSize": {
-                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
-                      "headline-xl-mobile": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                      "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
-                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
               }
             },
           },
         }
     </script>
-<style>
+    <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
         .progress-spring {
-            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-            background: #c3c6d7;
+            background: #cbd5e1;
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #737686;
+            background: #94a3b8;
         }
         .procrastination-active .task-item:nth-child(n+4) {
             display: none;
@@ -139,274 +121,825 @@
         .tab-content.active {
             display: block;
         }
+        
+        /* Dark Mode Custom Styles */
+        html.dark body {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+        html.dark header, 
+        html.dark nav,
+        html.dark #drawer-content,
+        html.dark .bg-white,
+        html.dark #edit-modal > div,
+        html.dark #exam-date-modal > div {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        html.dark .bg-slate-50,
+        html.dark .bg-slate-50\/50,
+        html.dark #drawer-menu .bg-slate-50\/50,
+        html.dark .bg-slate-100 {
+            background-color: #0f172a !important;
+        }
+        html.dark .border-outline-variant,
+        html.dark .border-slate-100,
+        html.dark .border-slate-200\/60 {
+            border-color: #334155 !important;
+        }
+        html.dark .text-on-surface {
+            color: #f8fafc !important;
+        }
+        html.dark .text-outline {
+            color: #94a3b8 !important;
+        }
+        html.dark input,
+        html.dark select,
+        html.dark textarea {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        html.dark input:focus,
+        html.dark select:focus {
+            background-color: #0f172a !important;
+            border-color: #2563eb !important;
+        }
+        html.dark .task-item {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        html.dark .task-item.bg-slate-50 {
+            background-color: #1e293b !important;
+            opacity: 0.65;
+        }
     </style>
 </head>
-<body class="bg-background text-on-surface pb-24 md:pb-0">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 bg-background flex items-center justify-between px-margin-mobile h-16 w-full max-w-container-max mx-auto border-b border-outline-variant">
-<div class="flex items-center gap-4">
-<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity duration-200 active:scale-95" data-icon="menu">menu</button>
-<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Adaptive Study Planner</h1>
-</div>
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold overflow-hidden">
-<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzuDgyxrW8ILzt-Xa3CTh7s3I1Xq3oNd4Xh6ETQ9j06ChiqjumQX1EXYVzc-Sdt2G2FgmwtEQ3fxZ7V6dJh6B6dfsJNcA2IuaXuq3bNJ_MLWsf_zYcmNvdRw_ajhzZuIegw_6KcuWDudskVCNHMGky3FxuGlhz-ic6Fn2PQttHVrXmpOVrzx-8Ax9gQez-hnC9bJ-3ZJID_hLIxjzr87o9IKyVfYBl3jPzaoqN3h2yw2fpjoM2ya69ALJN32zSWfmz6WsbwI97xaA"/>
-</div>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="pt-24 px-4 pb-24 max-w-4xl mx-auto">
-<!-- Tab: Plan (Main View) -->
-<div class="tab-content active space-y-8" id="tab-plan">
-<!-- 공부시간 측정 -->
-<section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-    <h2 class="font-headline-md mb-4">
-        총 공부시간
-    </h2>
+<body class="bg-background text-on-surface pb-36 md:pb-36">
+    <!-- Auth Container (Start, Login, Signup screens) -->
+    <div id="auth-container" class="min-h-screen flex items-center justify-center p-4 bg-background">
+        <!-- 1. Start Screen -->
+        <div id="view-start" class="w-full max-w-md bg-white rounded-2xl border border-outline-variant p-8 shadow-md space-y-8 animate-in fade-in duration-200">
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto text-primary">
+                    <span class="material-symbols-outlined text-4xl">menu_book</span>
+                </div>
+                <h2 class="text-3xl font-bold tracking-tight text-primary">MetaStudy Planner</h2>
+                <p class="text-sm text-outline font-semibold">스마트 스터디 계획과 학습 분석의 통합 솔루션</p>
+            </div>
+            <div class="space-y-3 pt-4">
+                <button onclick="showAuthView('login')" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-sm min-h-[48px]">
+                    <span class="material-symbols-outlined text-lg">login</span>
+                    로그인
+                </button>
+                <button onclick="showAuthView('signup')" class="w-full bg-slate-100 text-on-surface font-bold py-4 rounded-xl hover:bg-slate-200 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base min-h-[48px]">
+                    <span class="material-symbols-outlined text-lg">person_add</span>
+                    회원가입
+                </button>
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-4 text-xs font-bold text-outline uppercase tracking-wider">또는</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+                <button onclick="guestLogin()" class="w-full bg-emerald-50 text-emerald-600 font-bold py-4 rounded-xl hover:bg-emerald-100 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base border border-emerald-200/50 min-h-[48px]">
+                    <span class="material-symbols-outlined text-lg">bolt</span>
+                    체험하기
+                </button>
+            </div>
+        </div>
 
-    <p id="total-study-time" class="text-3xl font-bold text-primary">
-        0시간 0분
-    </p>
-<select id="study-subject"
-    class="w-full p-2 border rounded-lg mb-3">
-    <option value="자료구조">자료구조</option>
-    <option value="알고리즘">알고리즘</option>
-    <option value="데이터베이스">데이터베이스</option>
-    <option value="운영체제">운영체제</option>
-</select>
+        <!-- 2. Login Screen -->
+        <div id="view-login" class="w-full max-w-md bg-white rounded-2xl border border-outline-variant p-8 shadow-md space-y-6 hidden animate-in fade-in duration-200">
+            <div class="flex items-center justify-between">
+                <button onclick="showAuthView('start')" class="w-10 h-10 flex items-center justify-center rounded-full text-outline hover:bg-slate-100 transition-all">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2 class="text-xl font-bold text-on-surface">로그인</h2>
+                <div class="w-10"></div>
+            </div>
+            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline px-1 block" for="login-student-id">학번</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="login-student-id" placeholder="예: 202612345" required type="text"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline px-1 block" for="login-password">비밀번호</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="login-password" placeholder="비밀번호 입력" required type="password"/>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-sm min-h-[48px]">
+                        로그인
+                    </button>
+                </div>
+            </form>
+        </div>
 
- <div id="subject-stats"
-     class="mt-3 text-sm text-gray-600">
-</div>
-    <div class="flex gap-3 mt-4">
-        <button id="start-study"
-            class="bg-primary text-white px-4 py-2 rounded-lg">
-            공부 시작
-        </button>
-
-        <button id="stop-study"
-            class="bg-red-500 text-white px-4 py-2 rounded-lg">
-            공부 종료
-        </button>
+        <!-- 3. Signup Screen -->
+        <div id="view-signup" class="w-full max-w-md bg-white rounded-2xl border border-outline-variant p-8 shadow-md space-y-6 hidden animate-in fade-in duration-200">
+            <div class="flex items-center justify-between">
+                <button onclick="showAuthView('start')" class="w-10 h-10 flex items-center justify-center rounded-full text-outline hover:bg-slate-100 transition-all">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2 class="text-xl font-bold text-on-surface">회원가입</h2>
+                <div class="w-10"></div>
+            </div>
+            <form id="signup-form" class="space-y-4" onsubmit="handleSignup(event)">
+                <!-- Profile Photo Upload -->
+                <div class="flex flex-col items-center space-y-2 mb-4">
+                    <div class="relative w-24 h-24 rounded-full bg-slate-100 border border-outline-variant flex items-center justify-center overflow-hidden group shadow-inner">
+                        <img id="signup-profile-preview" class="w-full h-full object-cover hidden" alt="Profile preview"/>
+                        <span id="signup-profile-placeholder" class="material-symbols-outlined text-4xl text-outline/40">person</span>
+                        <label class="absolute inset-0 bg-black/45 flex items-center justify-center text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer font-bold">
+                            수정
+                            <input type="file" id="signup-profile-input" accept="image/*" class="hidden" onchange="previewProfilePhoto(event)"/>
+                        </label>
+                    </div>
+                    <span class="text-[10px] text-outline font-semibold">프로필 사진 업로드 (선택)</span>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline px-1 block" for="signup-name">이름</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="signup-name" placeholder="예: 홍길동" required type="text"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline px-1 block" for="signup-student-id">학번</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="signup-student-id" placeholder="예: 202612345" required type="text"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline px-1 block" for="signup-password">비밀번호</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="signup-password" placeholder="비밀번호 설정" required type="password"/>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-sm min-h-[48px]">
+                        가입 완료
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-     <div id="subject-stats"
-     class="mt-4 p-4 border rounded-lg">
-</div>   
-</section>
-<!-- Motivation System (Top Area) -->
-<section class="bg-surface-container-highest p-5 rounded-xl border border-outline-variant flex flex-col gap-4">
-<div class="flex items-center justify-between">
-<h2 class="font-headline-md text-on-surface flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
-                        오늘의 동기부여 메시지
-                    </h2>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant relative shadow-sm">
-<span class="material-symbols-outlined absolute -top-3 -left-2 bg-primary text-on-primary rounded-full p-1 text-sm">format_quote</span>
-<p class="font-body-lg text-on-surface italic leading-relaxed text-center" id="motivation-message">
+
+    <!-- Main App Container (shown when logged in) -->
+    <div id="app-container" class="hidden">
+        <!-- TopAppBar -->
+        <header class="fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md flex items-center justify-between px-6 h-16 border-b border-outline-variant shadow-sm">
+            <div class="flex items-center gap-3">
+                <button onclick="openDrawer()" class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-slate-100 active:scale-95 transition-all focus:outline-none" aria-label="Open navigation menu">
+                    <span class="material-symbols-outlined text-2xl font-bold">menu</span>
+                </button>
+                <h1 class="text-xl font-bold text-primary tracking-tight">MetaStudy Planner</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <div onclick="openDrawer()" class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-primary font-bold overflow-hidden border border-primary/20 cursor-pointer hover:opacity-85 transition-opacity">
+                    <img id="header-profile-img" alt="User profile" class="w-full h-full object-cover hidden" src=""/>
+                    <span id="header-profile-placeholder" class="material-symbols-outlined text-lg">person</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Left Navigation Drawer -->
+        <div id="drawer-menu" class="fixed inset-0 z-50 hidden">
+            <!-- Backdrop -->
+            <div onclick="closeDrawer()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0" id="drawer-backdrop"></div>
+            <!-- Drawer content -->
+            <div class="absolute top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white border-r border-outline-variant flex flex-col shadow-2xl transition-transform duration-300 -translate-x-full" id="drawer-content">
+                <!-- Profile Area -->
+                <div class="p-6 border-b border-outline-variant bg-slate-50/50 flex flex-col items-center text-center space-y-3">
+                    <div class="w-20 h-20 rounded-full bg-primary-container overflow-hidden border-2 border-primary/20 flex items-center justify-center shadow-sm">
+                        <img id="drawer-profile-img" class="w-full h-full object-cover hidden" alt="Profile picture"/>
+                        <span id="drawer-profile-placeholder" class="material-symbols-outlined text-4xl text-primary font-bold">person</span>
+                    </div>
+                    <div>
+                        <h3 id="drawer-profile-name" class="font-bold text-lg text-on-surface">학습자님</h3>
+                        <p id="drawer-profile-id" class="text-xs text-outline font-semibold">학번: -</p>
+                    </div>
+                </div>
+                <!-- Menu Options -->
+                <div class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+                    <button onclick="openExamDateModal()" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-50 active:scale-95 transition-all text-left text-sm font-semibold text-on-surface">
+                        <span class="material-symbols-outlined text-primary">calendar_month</span>
+                        시험일 설정
+                    </button>
+                    <button onclick="toggleTheme()" class="w-full flex items-center justify-between px-4 py-3.5 rounded-xl hover:bg-slate-50 active:scale-95 transition-all text-left text-sm font-semibold text-on-surface">
+                        <div class="flex items-center gap-3">
+                            <span id="drawer-theme-icon" class="material-symbols-outlined text-primary">dark_mode</span>
+                            테마 설정 (다크모드)
+                        </div>
+                        <span id="drawer-theme-status" class="text-xs text-outline font-bold">꺼짐</span>
+                    </button>
+                    <button onclick="exportData()" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-50 active:scale-95 transition-all text-left text-sm font-semibold text-on-surface">
+                        <span class="material-symbols-outlined text-primary">download</span>
+                        데이터 백업 (.json)
+                    </button>
+                    <label class="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-50 active:scale-95 transition-all text-left text-sm font-semibold text-on-surface cursor-pointer">
+                        <span class="material-symbols-outlined text-primary">upload</span>
+                        데이터 복원 (.json)
+                        <input type="file" id="drawer-import-file-input" accept=".json" onchange="importData(event)" class="hidden">
+                    </label>
+                </div>
+                <!-- Logout Button -->
+                <div class="p-4 border-t border-outline-variant">
+                    <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-2 bg-red-50 text-red-500 hover:bg-red-100 font-bold py-3.5 rounded-xl active:scale-[0.98] transition-all text-sm min-h-[48px]">
+                        <span class="material-symbols-outlined text-lg">logout</span>
+                        로그아웃
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- Main Content Canvas -->
+    <main class="pt-24 px-4 max-w-4xl mx-auto space-y-6">
+        
+        <!-- Tab: Plan (Main View) -->
+        <div class="tab-content active space-y-6" id="tab-plan">
+            
+            <!-- MetaStudy Home Dashboard Hero -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 오늘 학습 현황 Card -->
+                <div class="bg-gradient-to-br from-primary to-blue-700 text-white p-5 rounded-2xl shadow-sm flex flex-col justify-between min-h-[140px] relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider opacity-85">⏱️ 오늘 학습 현황</p>
+                        <h3 id="home-today-time" class="text-2xl font-bold mt-2">0분</h3>
+                    </div>
+                    <div class="space-y-1.5 z-10">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="opacity-85">오늘 목표 달성률</span>
+                            <span id="home-today-progress-text" class="font-bold">0%</span>
+                        </div>
+                        <div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+                            <div id="home-today-progress-bar" class="h-full bg-white progress-spring" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 과제 현황 요약 Card (예정 과제 & 완료 과제) -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm grid grid-cols-2 gap-4 min-h-[140px]">
+                    <div class="flex flex-col justify-between border-r border-slate-100 pr-2">
+                        <div>
+                            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">📝 예정 과제</p>
+                            <h3 id="home-pending-count" class="text-3xl font-bold text-on-surface mt-2">0개</h3>
+                        </div>
+                        <p class="text-[9px] text-outline font-semibold">미완료 학습 항목</p>
+                    </div>
+                    <div class="flex flex-col justify-between pl-2">
+                        <div>
+                            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">✅ 완료 과제</p>
+                            <h3 id="home-completed-count" class="text-3xl font-bold text-tertiary mt-2">0개</h3>
+                        </div>
+                        <p class="text-[9px] text-outline font-semibold">완료된 학습 항목</p>
+                    </div>
+                </div>
+
+                <!-- 학습 추가 버튼 & 글로벌 D-Day Card -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[140px]">
+                    <div class="flex items-center justify-between">
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">🎯 목표 디데이</p>
+                        <span id="home-global-dday" class="text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full">시험일 미설정</span>
+                    </div>
+                    <button onclick="scrollToTaskForm()" class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white font-bold py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm shadow-sm min-h-[44px]">
+                        <span class="material-symbols-outlined text-lg">add_circle</span>
+                        학습 추가하기
+                    </button>
+                </div>
+            </section>
+
+            <!-- 공부시간 측정 -->
+            <section class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                <h2 class="font-bold text-lg flex items-center gap-2 text-on-surface">
+                    <span class="material-symbols-outlined text-primary text-xl">timer</span>
+                    공부시간 측정
+                </h2>
+
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <div>
+                        <p class="text-xs text-outline mb-1 font-semibold uppercase tracking-wider">누적 총 공부 시간</p>
+                        <p id="total-study-time" class="text-3xl font-bold text-primary tracking-tight">
+                            0시간 0분
+                        </p>
+                    </div>
+                    <div class="w-full sm:w-auto space-y-1">
+                        <label class="block text-xs font-semibold text-outline" for="study-subject">과목 선택</label>
+                        <select id="study-subject" class="w-full sm:w-48 p-2.5 bg-white border border-outline-variant rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all cursor-pointer min-h-[44px]">
+                            <!-- Dynamically loaded subjects -->
+                        </select>
+                    </div>
+                </div>
+
+                <div id="subject-stats-timer" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <!-- Timer Subject Stats -->
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button id="start-study" class="flex-1 bg-primary text-white font-bold py-3.5 px-6 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
+                        <span class="material-symbols-outlined text-lg">play_arrow</span>
+                        공부 시작
+                    </button>
+
+                    <button id="stop-study" class="flex-1 bg-red-500 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-red-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-sm min-h-[48px]">
+                        <span class="material-symbols-outlined text-lg">stop</span>
+                        공부 종료
+                    </button>
+                </div>
+            </section>
+
+            <!-- Motivation System -->
+            <section class="bg-slate-50 p-5 rounded-2xl border border-outline-variant flex flex-col gap-3">
+                <h2 class="font-bold text-sm text-outline flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-lg" data-icon="auto_awesome">auto_awesome</span>
+                    오늘의 동기부여 메시지
+                </h2>
+                <div class="bg-white p-5 rounded-xl border border-outline-variant relative shadow-sm">
+                    <span class="material-symbols-outlined absolute -top-3.5 -left-2 bg-primary text-white rounded-full p-1.5 text-xs font-bold shadow-sm">format_quote</span>
+                    <p class="font-body-md text-on-surface italic leading-relaxed text-center font-medium pt-2" id="motivation-message">
                         "공부는 습관입니다. 지금 바로 시작하세요!"
                     </p>
-<p class="text-right text-sm font-bold text-primary mt-3" id="instructor-name-display">- AI 멘토</p>
-</div>
-</section>
-<!-- Summary Dashboard (Bento Style) -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="md:col-span-2 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-[0px_4px_6px_rgba(0,0,0,0.05)]">
-<h2 class="font-headline-md text-headline-md mb-4 flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
-                        오늘의 학습 요약
-                    </h2>
-<div class="space-y-4">
-<div class="flex justify-between items-end">
-<span class="text-4xl font-bold text-primary" id="progress-text">0%</span>
-<span class="font-body-md text-on-surface-variant" id="task-stats">0 / 0 완료됨</span>
-</div>
-<div class="h-4 w-full bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-primary to-secondary progress-spring" id="progress-bar" style="width: 0%"></div>
-</div>
-<p class="font-body-sm text-on-surface-variant italic" id="dynamic-encouragement">꾸준함이 실력을 만듭니다. 오늘도 화이팅!</p>
-</div>
-</div>
-<div class="bg-primary text-on-primary p-6 rounded-xl shadow-lg flex flex-col justify-between">
-<div>
-<p class="font-label-md uppercase opacity-80">남은 학습량</p>
-<h3 class="text-5xl font-bold mt-2" id="remaining-count">0</h3>
-</div>
-<div class="flex items-center gap-2 mt-4">
-<span class="material-symbols-outlined" data-icon="timer">timer</span>
-<span class="font-body-md" id="remaining-time">0분 예상</span>
-</div>
-</div>
-</section>
-<!-- Task Input Form -->
-<section class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-[0px_4px_6px_rgba(0,0,0,0.05)]">
-<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+                    <p class="text-right text-xs font-bold text-primary mt-3" id="instructor-name-display">- AI 멘토</p>
+                </div>
+            </section>
+
+            <!-- 오늘 공부 상태 요약 카드 (2열 배치) -->
+            <section class="grid grid-cols-2 gap-4">
+                <!-- 오늘 공부시간 카드 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[120px]">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">⏱️ 오늘 공부시간</p>
+                        <h3 id="plan-today-study-time" class="text-2xl sm:text-3xl font-bold text-primary mt-2">0분</h3>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold mt-1">완료 과제 기준</p>
+                </div>
+                <!-- 연속 공부일 카드 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[120px]">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">🔥 연속 공부일</p>
+                        <h3 id="plan-study-streak" class="text-2xl sm:text-3xl font-bold text-amber-500 mt-2">0일</h3>
+                    </div>
+                    <p id="plan-streak-status" class="text-[10px] text-outline font-semibold mt-1">꾸준히 도전해보세요!</p>
+                </div>
+            </section>
+
+            <!-- Summary Dashboard (Bento Style) -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Progress & Today Summary -->
+                <div class="sm:col-span-2 md:col-span-2 bg-white p-6 rounded-2xl border border-outline-variant shadow-sm grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h2 class="font-bold text-base flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-xl">analytics</span>
+                            전체 진행률
+                        </h2>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end">
+                                <span class="text-3xl font-bold text-primary tracking-tight" id="progress-text">0%</span>
+                                <span class="text-xs font-semibold text-outline" id="task-stats">0 / 0 완료됨</span>
+                            </div>
+                            <div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-primary to-secondary progress-spring" id="progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4 border-t sm:border-t-0 sm:border-l border-outline-variant pt-4 sm:pt-0 sm:pl-6">
+                        <h2 class="font-bold text-base flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-500 text-xl">today</span>
+                            오늘의 학습 요약
+                        </h2>
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-outline uppercase tracking-wider">오늘 완료</p>
+                                <p class="text-2xl font-bold text-tertiary mt-1" id="today-completed-count">0</p>
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                <p class="text-[10px] font-bold text-outline uppercase tracking-wider">오늘 남음</p>
+                                <p class="text-2xl font-bold text-red-500 mt-1" id="today-remaining-count">0</p>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-outline font-semibold">오늘의 목표 달성률</span>
+                                <span id="today-progress-text" class="font-bold text-primary">0%</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                                <div id="today-progress-bar" class="h-full bg-primary progress-spring" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Remaining Count/Time Card -->
+                <div class="bg-primary text-white p-6 rounded-2xl shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider opacity-85">남은 총 학습량</p>
+                        <h3 class="text-4xl font-bold mt-2 tracking-tight" id="remaining-count">0</h3>
+                    </div>
+                    <div class="flex items-center gap-2 mt-4 text-sm font-semibold">
+                        <span class="material-symbols-outlined text-lg">schedule</span>
+                        <span id="remaining-time">0분 예상</span>
+                    </div>
+                </div>
+
+                <!-- Streak Card -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">🔥 연속 공부일</p>
+                        <h3 class="text-4xl font-bold mt-2 tracking-tight text-on-surface" id="streak-count">0일</h3>
+                    </div>
+                    <div class="text-[10px] text-outline font-semibold mt-4 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">calendar_month</span>
+                        <span id="last-study-date-display">마지막 공부: 없음</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Input Form -->
+            <section class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm">
+                <h2 class="font-bold text-lg mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-xl">edit_note</span>
                     학습 항목 추가
                 </h2>
-<form class="grid grid-cols-1 md:grid-cols-2 gap-6" id="task-form">
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1">과목명</label>
-<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="subject" placeholder="예: 수학, 영어, 경제학" required="" type="text"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1">공부 내용</label>
-<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="content" placeholder="예: 미분과 적분 복습" required="" type="text"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1">마감일</label>
-<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="due-date" required="" type="date"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1">시험일 (권장 시간 계산용)</label>
-<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="exam-date" type="date"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1 flex justify-between">
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-5" id="task-form">
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1">과목명</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <input class="col-span-2 w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="subject" placeholder="예: 수학, 영어, 자료구조" required="" type="text"/>
+                            <select id="existing-subjects" class="col-span-1 bg-slate-50 border border-outline-variant rounded-xl px-2.5 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" onchange="selectExistingSubject(this.value)">
+                                <option value="">기존 과목 선택</option>
+                            </select>
+                        </div>
+                        <p id="subject-gap-tip" class="text-[11px] text-amber-600 mt-1 font-semibold hidden"></p>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1">공부할 내용</label>
+                        <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="content" placeholder="예: 백준 알고리즘 2문제 풀기" required="" type="text"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1">마감일</label>
+                        <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" id="due-date" required="" type="date"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1">시험일 (권장 공부 시간 계산용 - 선택)</label>
+                        <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" id="exam-date" type="date"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1 flex justify-between">
                             과목 난이도 (1-5)
                             <span class="text-primary font-bold" id="diff-val">3</span>
-</label>
-<input class="w-full h-10 accent-primary" id="difficulty" max="5" min="1" oninput="document.getElementById('diff-val').innerText = this.value" step="1" type="range" value="3"/>
-</div>
-<div class="space-y-1">
-<label class="font-label-md text-on-surface-variant px-1">예상 소요 시간 (분)</label>
-<select class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="est-time">
-<option value="15">15분</option>
-<option value="30">30분</option>
-<option value="45">45분</option>
-<option value="60">1시간</option>
-<option value="90">1시간 30분</option>
-<option value="120">2시간</option>
-</select>
-</div>
-<div class="md:col-span-2 pt-2">
-<button class="w-full bg-primary text-on-primary font-bold py-4 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
-<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+                        </label>
+                        <input class="w-full h-10 accent-primary cursor-pointer" id="difficulty" max="5" min="1" oninput="document.getElementById('diff-val').innerText = this.value" step="1" type="range" value="3"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline px-1">예상 소요 시간</label>
+                        <select class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" id="est-time">
+                            <option value="15">15분</option>
+                            <option value="30">30분</option>
+                            <option value="45">45분</option>
+                            <option value="60">1시간</option>
+                            <option value="90">1시간 30분</option>
+                            <option value="120">2시간</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2 pt-2">
+                        <button class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-base shadow-sm min-h-[48px]" type="submit">
+                            <span class="material-symbols-outlined text-lg">add_circle</span>
                             추가하기
                         </button>
-</div>
-</form>
-</section>
-<!-- Study List Controls -->
-<section class="space-y-4">
-<div class="flex items-center justify-between px-2">
-<div class="flex items-center gap-4">
-<h2 class="font-headline-md text-headline-md flex items-center gap-2">
-<span class="material-symbols-outlined text-primary" data-icon="checklist">checklist</span>
-                            학습 목록
-                        </h2>
-<div class="font-label-sm text-on-surface-variant bg-surface-container-high px-3 py-1 rounded-full" id="filter-stats">
-                            전체 0개
+                    </div>
+                </form>
+            </section>
+
+            <!-- Study List Controls -->
+            <section class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-1">
+                    <h2 class="font-bold text-lg flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">checklist</span>
+                        학습 목록
+                    </h2>
+                    
+                    <!-- Concentration Mode toggle -->
+                    <div class="flex items-center gap-3 self-end sm:self-auto">
+                        <span class="text-xs font-bold text-outline">벼락치기 방지</span>
+                        <button class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-full border border-outline-variant hover:bg-slate-50 transition-colors shadow-sm active:scale-95 min-h-[40px]" id="procrastination-toggle-main" onclick="toggleProcrastinationMode()">
+                            <span class="material-symbols-outlined text-base text-primary" id="proc-icon-main">visibility</span>
+                            <span class="text-xs font-bold text-on-surface" id="proc-text-main">집중 모드 끄기</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabs Filter (오늘의 학습 vs 전체 학습) -->
+                <div class="flex border-b border-outline-variant bg-white p-1 rounded-t-xl">
+                    <button id="filter-btn-all" onclick="setTaskFilter('all')" class="flex-1 py-3 text-center border-b-2 border-primary font-bold text-primary text-sm transition-all focus:outline-none min-h-[44px]">
+                        전체 학습 (<span id="count-all">0</span>)
+                    </button>
+                    <button id="filter-btn-today" onclick="setTaskFilter('today')" class="flex-1 py-3 text-center border-b-2 border-transparent font-semibold text-outline hover:text-on-surface text-sm transition-all focus:outline-none min-h-[44px]">
+                        오늘의 학습 (<span id="count-today">0</span>)
+                    </button>
+                </div>
+
+                <div class="space-y-3" id="tasks-container">
+                    <div class="text-center py-20 bg-white rounded-2xl border border-outline-variant" id="empty-state">
+                        <span class="material-symbols-outlined text-5xl text-outline/40">auto_stories</span>
+                        <p class="mt-4 text-sm font-semibold text-outline leading-relaxed">등록된 학습 일정이 없습니다.<br/>새로운 목표를 추가해 보세요!</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Tab: Stats -->
+        <div class="tab-content space-y-6" id="tab-stats">
+            <h2 class="text-2xl font-bold text-primary tracking-tight">학습 리포트</h2>
+
+            <!-- Stats Dashboard Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Card 1: 학습 완료율 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">📊 학습 완료율</p>
+                        <h3 id="stats-progress" class="text-3xl font-bold text-blue-600 mt-1">0%</h3>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold mt-2">
+                        <span id="stats-completed">0</span> / <span id="stats-total">0</span> 완료됨
+                    </p>
+                </div>
+
+                <!-- Card 2: 오늘 공부 시간 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">⏱️ 오늘 공부 시간</p>
+                        <h3 id="stats-today-study" class="text-3xl font-bold text-primary mt-1">0분</h3>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold mt-2">오늘 누적 공부 시간</p>
+                </div>
+
+                <!-- Card 3: 연속 공부일 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">🔥 연속 공부일</p>
+                        <h3 id="stats-streak" class="text-3xl font-bold text-amber-500 mt-1">0일</h3>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold mt-2" id="stats-streak-last-date">마지막 공부: 없음</p>
+                </div>
+
+                <!-- Card 4: 학습 점수 -->
+                <div class="bg-white p-5 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-bold text-outline uppercase tracking-wider">⭐ 학습 점수</p>
+                        <h3 id="stats-learning-score" class="text-3xl font-bold text-tertiary mt-1">0점</h3>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold mt-2" id="stats-score-eval">오늘도 화이팅!</p>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Completion Rate Chart (기존) -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <h3 class="text-base font-bold mb-4 text-on-surface">학습 완료 분포</h3>
+                    <div class="relative h-64 flex items-center justify-center">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Weekly Study Time Bar Chart (최근 7일) -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <h3 class="text-base font-bold mb-4 text-on-surface">주간 공부시간 (최근 7일)</h3>
+                    <div class="relative h-64 flex items-center justify-center">
+                        <canvas id="weeklyStudyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Subject-wise Cumulative Study Time Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                    <h3 class="text-base font-bold mb-4 text-on-surface">과목별 누적 공부시간</h3>
+                    <div class="relative h-64 flex items-center justify-center">
+                        <canvas id="subjectStudyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report and Details Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Subject-wise Progress (기존) -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">bar_chart</span>
+                        과목별 학습 분석
+                    </h3>
+                    <div id="subject-progress-container" class="grid grid-cols-1 gap-3 max-h-[300px] overflow-y-auto pr-1">
+                        <!-- Dynamic rendered cards -->
+                    </div>
+                </div>
+
+                <!-- 학습 소요시간 괴리 분석 (Gap Analysis) -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-500 text-xl">query_stats</span>
+                            학습 소요시간 괴리 분석
+                        </h3>
+                        <p class="text-xs text-outline leading-relaxed mt-1">
+                            계획한 시간 대비 실제 공부 시간의 과부족 분석입니다.<br/>
+                            (양수: 예상보다 초과 공부, 음수: 예상보다 빨리 완료)
+                        </p>
+                        <div id="gap-analysis-container" class="grid grid-cols-1 gap-3 max-h-[200px] overflow-y-auto pr-1 mt-4">
+                            <!-- Dynamic rendered gap bars -->
                         </div>
-</div>
-<div class="flex items-center gap-2">
-<span class="text-xs font-bold text-on-surface-variant hidden md:inline">벼락치기 방지 모드</span>
-<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-highest transition-colors" id="procrastination-toggle-main" onclick="toggleProcrastinationMode()">
-<span class="material-symbols-outlined text-xl" id="proc-icon-main">visibility</span>
-<span class="text-sm font-bold" id="proc-text-main">집중 모드 끄기</span>
-</button>
-</div>
-</div>
-<div class="space-y-3" id="tasks-container">
-<div class="text-center py-20 opacity-40" id="empty-state">
-<span class="material-symbols-outlined text-6xl" data-icon="auto_stories">auto_stories</span>
-<p class="mt-4 font-body-md">등록된 학습 일정이 없습니다.<br/>새로운 목표를 추가해보세요!</p>
-</div>
-</div>
-</section>
-</div>
-<!-- Tab: Stats -->
-<div class="tab-content space-y-8" id="tab-stats">
+                    </div>
+                    <div class="border-t border-slate-200/60 pt-4 mt-2">
+                        <p class="text-xs font-bold text-primary mb-1">💡 AI 학습 계획 권장사항</p>
+                        <div id="gap-ai-advice" class="text-xs text-outline leading-relaxed italic space-y-1">
+                            데이터를 수집 중입니다...
+                        </div>
+                    </div>
+                </div>
 
-    <h2 class="font-headline-xl text-primary">학습 통계</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-            <p class="text-sm text-on-surface-variant">전체 과제</p>
-            <h3 id="stats-total" class="text-4xl font-bold text-primary">0</h3>
+                <!-- Weekly Report Card -->
+                <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-500 text-xl">description</span>
+                        이번 주 학습 리포트
+                    </h3>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 space-y-3.5 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-outline font-semibold">📊 주간 총 공부시간</span>
+                            <span id="report-weekly-time" class="font-bold text-on-surface">0시간 0분</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-outline font-semibold">✅ 완료한 과제 수</span>
+                            <span id="report-completed-count" class="font-bold text-on-surface">0개</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-outline font-semibold">✍️ 가장 많이 공부한 과목</span>
+                            <span id="report-favorite-subject" class="font-bold text-on-surface">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-outline font-semibold">🔥 현재 연속 공부일</span>
+                            <span id="report-streak" class="font-bold text-on-surface">0일</span>
+                        </div>
+                        <div class="border-t border-slate-200/60 pt-3.5 mt-2">
+                            <p class="text-xs font-bold text-primary mb-1">💡 AI 학습 추천</p>
+                            <p id="report-recommendation" class="text-xs text-outline leading-relaxed italic">데이터를 수집 중입니다...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-            <p class="text-sm text-on-surface-variant">완료 과제</p>
-            <h3 id="stats-completed" class="text-4xl font-bold text-green-600">0</h3>
+        <!-- Tab: Focus -->
+        <div class="tab-content space-y-6" id="tab-focus">
+            <div class="bg-white p-8 rounded-2xl border border-outline-variant text-center space-y-6 shadow-sm">
+                <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <span class="material-symbols-outlined text-4xl">timer</span>
+                </div>
+                <h2 class="text-xl font-bold text-on-surface">집중 모드 (벼락치기 방지)</h2>
+                <p class="text-sm text-outline leading-relaxed max-w-md mx-auto">
+                    집중 모드를 활성화하면 가장 우선순위가 높은 상위 3개의 과제만 목록에 보여주어, 한눈을 팔지 않고 눈앞의 학습 목표에 몰입할 수 있도록 돕습니다.
+                </p>
+                <div class="flex justify-center pt-2">
+                    <button class="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-xl text-base font-bold shadow-sm hover:bg-blue-700 active:scale-95 transition-all min-h-[48px]" id="focus-tab-toggle" onclick="toggleProcrastinationMode()">
+                        <span class="material-symbols-outlined text-lg" id="proc-icon-focus">bolt</span>
+                        <span id="proc-text-focus">집중 모드 시작하기</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-            <p class="text-sm text-on-surface-variant">진행률</p>
-            <h3 id="stats-progress" class="text-4xl font-bold text-blue-600">0%</h3>
-        </div>
+        <!-- Tab: Profile (Settings) -->
+        <div class="tab-content space-y-6" id="tab-profile">
+            <h2 class="text-2xl font-bold text-primary tracking-tight">프로필 &amp; 설정</h2>
+            <div class="bg-white p-6 rounded-2xl border border-outline-variant shadow-sm space-y-6">
+                
+                <div class="flex items-center gap-4 border-b border-outline-variant pb-6">
+                    <div class="w-14 h-14 rounded-full bg-primary-container overflow-hidden border border-primary/20">
+                        <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzuDgyxrW8ILzt-Xa3CTh7s3I1Xq3oNd4Xh6ETQ9j06ChiqjumQX1EXYVzc-Sdt2G2FgmwtEQ3fxZ7V6dJh6B6dfsJNcA2IuaXuq3bNJ_MLWsf_zYcmNvdRw_ajhzZuIegw_6KcuWDudskVCNHMGky3FxuGlhz-ic6Fn2PQttHVrXmpOVrzx-8Ax9gQez-hnC9bJ-3ZJID_hLIxjzr87o9IKyVfYBl3jPzaoqN3h2yw2fpjoM2ya69ALJN32zSWfmz6WsbwI97xaA"/>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-on-surface">학습자님</h3>
+                        <p class="text-xs text-outline font-semibold">스마트 스터디 계획을 수립 중입니다.</p>
+                    </div>
+                </div>
 
+
+
+                <!-- Data Backup & Restore -->
+                <div class="pt-6 border-t border-outline-variant space-y-3">
+                    <label class="text-xs font-bold text-outline block">학습 데이터 저장 및 불러오기</label>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="exportData()" class="flex-1 flex items-center justify-center gap-2 bg-slate-100 text-on-surface font-bold py-3 px-4 rounded-xl hover:bg-slate-200 active:scale-95 transition-all text-sm min-h-[48px]">
+                            <span class="material-symbols-outlined text-lg">download</span>
+                            데이터 백업 (.json)
+                        </button>
+                        <label class="flex-1 flex items-center justify-center gap-2 bg-primary text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 active:scale-95 transition-all text-sm min-h-[48px] cursor-pointer text-center">
+                            <span class="material-symbols-outlined text-lg">upload</span>
+                            데이터 복원 (.json)
+                            <input type="file" id="import-file-input" accept=".json" onchange="importData(event)" class="hidden">
+                        </label>
+                    </div>
+                    <p class="text-[10px] text-outline font-semibold leading-relaxed">* 현재 브라우저에 저장된 학습 항목과 공부 시간 데이터를 파일로 내보내거나 백업 파일에서 복원할 수 있습니다.</p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- BottomNavBar -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl z-40 bg-white/95 backdrop-blur-md flex justify-around items-center h-20 px-4 border-t border-outline-variant rounded-t-2xl shadow-[0px_-4px_12px_rgba(0,0,0,0.05)]">
+        <button class="tab-btn flex flex-col items-center justify-center text-primary bg-primary-container rounded-2xl w-16 h-14 active:scale-90 transition-all" id="btn-tab-plan" onclick="switchTab('plan')">
+            <span class="material-symbols-outlined text-xl">calendar_today</span>
+            <span class="text-[10px] font-bold mt-1">Plan</span>
+        </button>
+        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-stats" onclick="switchTab('stats')">
+            <span class="material-symbols-outlined text-xl">bar_chart</span>
+            <span class="text-[10px] font-semibold mt-1">Stats</span>
+        </button>
+        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-focus" onclick="switchTab('focus')">
+            <span class="material-symbols-outlined text-xl">timer</span>
+            <span class="text-[10px] font-semibold mt-1">Focus</span>
+        </button>
+        <button class="tab-btn flex flex-col items-center justify-center text-outline w-16 h-14 hover:text-on-surface active:scale-90 transition-all" id="btn-tab-profile" onclick="switchTab('profile')">
+            <span class="material-symbols-outlined text-xl">person</span>
+            <span class="text-[10px] font-semibold mt-1">Profile</span>
+        </button>
+    </nav>
+
+    <!-- Edit Task Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white border border-outline-variant p-6 rounded-2xl w-full max-w-lg shadow-xl space-y-4 animate-in fade-in duration-200">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-on-surface">
+                <span class="material-symbols-outlined text-primary text-xl">edit</span>
+                학습 항목 수정
+            </h3>
+            <form id="edit-form" class="space-y-4">
+                <input type="hidden" id="edit-task-id">
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">과목명</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <input class="col-span-2 w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-subject" required type="text"/>
+                        <select id="edit-existing-subjects" class="col-span-1 bg-slate-50 border border-outline-variant rounded-xl px-2.5 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px] cursor-pointer" onchange="selectEditExistingSubject(this.value)">
+                            <option value="">기존 과목 선택</option>
+                        </select>
+                    </div>
+                    <p id="edit-subject-gap-tip" class="text-[11px] text-amber-600 mt-1 font-semibold hidden"></p>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">공부 내용</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-content" required type="text"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">마감일</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-due-date" required type="date"/>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">시험일 (선택)</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-exam-date" type="date"/>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline block flex justify-between">
+                            난이도 (1-5)
+                            <span class="text-primary font-bold" id="edit-diff-val">3</span>
+                        </label>
+                        <input class="w-full h-10 accent-primary cursor-pointer" id="edit-difficulty" max="5" min="1" oninput="document.getElementById('edit-diff-val').innerText = this.value" step="1" type="range" value="3"/>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold text-outline block">예상 소요 시간</label>
+                        <select class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="edit-est-time">
+                            <option value="15">15분</option>
+                            <option value="30">30분</option>
+                            <option value="45">45분</option>
+                            <option value="60">1시간</option>
+                            <option value="90">1시간 30분</option>
+                            <option value="120">2시간</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="flex-1 bg-slate-100 text-on-surface font-bold py-3.5 rounded-xl hover:bg-slate-200 transition-all text-sm min-h-[48px]">취소</button>
+                    <button type="submit" class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-all text-sm min-h-[48px]">저장</button>
+                </div>
+            </form>
+        </div>
     </div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-    <h3 class="text-xl font-bold mb-4">학습 진행률 그래프</h3>
-    <div class="relative h-64 md:h-80">
-        <canvas id="progressChart"></canvas>
+
+    <!-- Exam Date Modal -->
+    <div id="exam-date-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white border border-outline-variant p-6 rounded-2xl w-full max-w-sm shadow-xl space-y-4 animate-in fade-in duration-200">
+            <h3 class="text-lg font-bold flex items-center gap-2 text-on-surface">
+                <span class="material-symbols-outlined text-primary text-xl">calendar_month</span>
+                글로벌 시험일 설정
+            </h3>
+            <form id="exam-date-form" class="space-y-4" onsubmit="saveGlobalExamDate(event)">
+                <div class="space-y-1">
+                    <label class="text-xs font-semibold text-outline block">목표 시험일</label>
+                    <input class="w-full bg-slate-50 border border-outline-variant rounded-xl p-3 focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all text-sm min-h-[48px]" id="global-exam-date-input" required type="date"/>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeExamDateModal()" class="flex-1 bg-slate-100 text-on-surface font-bold py-3.5 rounded-xl hover:bg-slate-200 transition-all text-sm min-h-[48px]">취소</button>
+                    <button type="submit" class="flex-1 bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-all text-sm min-h-[48px]">저장</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-</div>
-<!-- Tab: Focus (Mode Controller) -->
-<div class="tab-content space-y-8" id="tab-focus">
-<div class="bg-surface-container-highest p-8 rounded-2xl border border-outline-variant text-center space-y-6">
-<span class="material-symbols-outlined text-7xl text-primary" data-icon="timer">timer</span>
-<h2 class="font-headline-xl">집중 모드 (미루기 방지)</h2>
-<p class="text-on-surface-variant">집중 모드를 켜면 가장 우선순위가 높은 3개의 과제만 보여주어 학습 효율을 극대화합니다.</p>
-<div class="flex justify-center">
-<button class="flex items-center gap-4 bg-primary text-on-primary px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:scale-105 transition-transform" id="focus-tab-toggle" onclick="toggleProcrastinationMode()">
-<span class="material-symbols-outlined text-2xl" id="proc-icon-focus">bolt</span>
-<span id="proc-text-focus">집중 모드 시작하기</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Tab: Profile (Settings) -->
-<div class="tab-content space-y-8" id="tab-profile">
-<h2 class="font-headline-xl text-primary">프로필 &amp; 설정</h2>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant space-y-6">
-<div class="flex items-center gap-4 border-b border-outline-variant pb-6">
-<div class="w-16 h-16 rounded-full bg-primary-container overflow-hidden">
-<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzuDgyxrW8ILzt-Xa3CTh7s3I1Xq3oNd4Xh6ETQ9j06ChiqjumQX1EXYVzc-Sdt2G2FgmwtEQ3fxZ7V6dJh6B6dfsJNcA2IuaXuq3bNJ_MLWsf_zYcmNvdRw_ajhzZuIegw_6KcuWDudskVCNHMGky3FxuGlhz-ic6Fn2PQttHVrXmpOVrzx-8Ax9gQez-hnC9bJ-3ZJID_hLIxjzr87o9IKyVfYBl3jPzaoqN3h2yw2fpjoM2ya69ALJN32zSWfmz6WsbwI97xaA"/>
-</div>
-<div>
-<h3 class="font-headline-md">학습자님</h3>
-<p class="text-on-surface-variant text-sm">목표를 향해 나아가는 중입니다.</p>
-</div>
-</div>
-<div class="space-y-4">
-<div>
-<label class="font-label-md text-on-surface-variant block mb-2">멘토 스타일 선택</label>
-<select class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" id="mentor-style-select" onchange="updateInstructorPreference()">
-<option value="General">일반 응원 (Standard)</option>
-<option value="Seung-je Jung">정승제 스타일 (생선님)</option>
-<option value="Woo-jin Hyun">현우진 스타일 (뉴런)</option>
-<option value="Han-gil Jeon">전한길 스타일 (난공불락)</option>
-</select>
-<p class="text-[10px] text-on-surface-variant mt-1 px-1">* 멘토에 따라 동기부여 메시지의 어조가 달라집니다.</p>
-</div>
-</div>
-</div>
-</div>
-</main>
-<!-- BottomNavBar (Mobile Only) -->
-<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest flex justify-around items-center h-20 px-4 pb-safe border-t border-outline-variant rounded-t-xl shadow-[0px_-4px_6px_rgba(0,0,0,0.05)]">
-<button class="tab-btn flex flex-col items-center justify-center text-primary bg-primary-container rounded-full px-4 py-1 active:scale-90 transition-transform" id="btn-tab-plan" onclick="switchTab('plan')">
-<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
-<span class="font-label-sm mt-1">Plan</span>
-</button>
-<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-stats" onclick="switchTab('stats')">
-<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
-<span class="font-label-sm mt-1">Stats</span>
-</button>
-<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-focus" onclick="switchTab('focus')">
-<span class="material-symbols-outlined" data-icon="timer">timer</span>
-<span class="font-label-sm mt-1">Focus</span>
-</button>
-<button class="tab-btn flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high active:scale-90 transition-transform" id="btn-tab-profile" onclick="switchTab('profile')">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-<span class="font-label-sm mt-1">Profile</span>
-</button>
-</nav>
-<script>
+
+    <!-- Scripts -->
+    <script>
         const taskForm = document.getElementById('task-form');
         const tasksContainer = document.getElementById('tasks-container');
         const emptyState = document.getElementById('empty-state');
@@ -415,11 +948,9 @@
         const taskStats = document.getElementById('task-stats');
         const remainingCountDisplay = document.getElementById('remaining-count');
         const remainingTimeDisplay = document.getElementById('remaining-time');
-        const filterStatsDisplay = document.getElementById('filter-stats');
         const dynamicEncouragement = document.getElementById('dynamic-encouragement');
         let progressChart = null;
         
-        const mentorStyleSelect = document.getElementById('mentor-style-select');
         const motivationMessage = document.getElementById('motivation-message');
         const instructorNameDisplay = document.getElementById('instructor-name-display');
         
@@ -429,35 +960,581 @@
         const procTextFocus = document.getElementById('proc-text-focus');
         const focusTabBtn = document.getElementById('focus-tab-toggle');
 
-        let tasks = JSON.parse(localStorage.getItem('study_planner_tasks')) || [];
-        let instructorPreference = localStorage.getItem('study_planner_instructor') || 'General';
+        let tasks = [];
         let isProcrastinationMode = JSON.parse(localStorage.getItem('study_planner_proc_mode')) || false;
+        let currentTaskFilter = 'all'; // 'all' or 'today'
 
-        const instructorQuotes = {
-            "General": {
-                push: ["한 걸음씩 나아가세요.", "계획은 실천할 때 가치가 있습니다.", "오늘 할 일을 내일로 미루지 마세요."],
-                praise: ["잘하고 있습니다!", "이대로만 계속하세요.", "성취감이 느껴지시나요?"]
-            },
-            "Seung-je Jung": {
-                push: ["생선님이야! 이거 안 하면 대학 못 가!", "5단계 복습 안 했지? 빨리 해!", "야! 정신 안 차려? 너 인생이 장난이야?"],
-                praise: ["완전 대박! 너는 천재야!", "그렇지! 그렇게 하는 거야!", "생선님의 자랑스러운 제자구나!"]
-            },
-            "Woo-jin Hyun": {
-                push: ["뉴런 좀 보세요. 대충 하면 망해요.", "이해 안 가요? 다시 봐야죠.", "현실적으로 말할게요. 더 하셔야 합니다."],
-                praise: ["깔끔하네요. 합격권입니다.", "훌륭한 사고의 전개입니다.", "이게 바로 뉴런의 힘이죠."]
-            },
-            "Han-gil Jeon": {
-                push: ["이 새X야! 정신 차려!", "죽어라 해야 붙는 거야!", "난공불락 알지? 독하게 마음먹어!"],
-                praise: ["니가 최고다! 진짜 합격이다!", "그래, 이게 한길 정신이다!", "자랑스럽다! 너는 무조건 된다!"]
+        // Streak State Variables
+        let studyStreak = 0;
+        let lastStudyDate = "";
+
+        // Daily Study Tracking variables
+        let todayStudyMinutes = 0;
+        let todayStudyDate = "";
+        let dailyStudyLog = {};
+        let subjectGapRates = {};
+        let studyHistory = [];
+
+        // Timer State Variables
+        let studyStartTime = null;
+        let timerInterval = null;
+        let currentStudySubject = "";
+        let totalStudyMinutes = 0;
+        let subjectStudyTime = {};
+        const totalStudyTimeDisplay = document.getElementById('total-study-time');
+
+        // --- Session & User Management variables ---
+        let currentUser = JSON.parse(localStorage.getItem('metastudy_current_user')) || null;
+
+        // --- Authentication & User Session Management ---
+        function showAuthView(viewName) {
+            document.getElementById('view-start').classList.add('hidden');
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-signup').classList.add('hidden');
+            
+            if (viewName === 'start') {
+                document.getElementById('view-start').classList.remove('hidden');
+            } else if (viewName === 'login') {
+                document.getElementById('view-login').classList.remove('hidden');
+            } else if (viewName === 'signup') {
+                document.getElementById('view-signup').classList.remove('hidden');
             }
-        };
+        }
 
-        function init() {
-            mentorStyleSelect.value = instructorPreference;
-            updateProcrastinationUI();
+        function getRegisteredUsers() {
+            return JSON.parse(localStorage.getItem('metastudy_users')) || [];
+        }
+
+        function saveRegisteredUsers(users) {
+            localStorage.setItem('metastudy_users', JSON.stringify(users));
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value.trim();
+            const studentId = document.getElementById('signup-student-id').value.trim();
+            const password = document.getElementById('signup-password').value.trim();
+            const previewImg = document.getElementById('signup-profile-preview');
+            const profilePic = previewImg.classList.contains('hidden') ? '' : previewImg.src;
+
+            if (!name || !studentId || !password) {
+                alert('모든 필수 정보를 입력해 주세요.');
+                return;
+            }
+
+            const users = getRegisteredUsers();
+            const existingUser = users.find(u => u.studentId === studentId);
+            if (existingUser) {
+                alert('이미 가입된 학번입니다.');
+                return;
+            }
+
+            const newUser = {
+                name,
+                studentId,
+                password,
+                profilePic
+            };
+
+            users.push(newUser);
+            saveRegisteredUsers(users);
+
+            alert('회원가입이 완료되었습니다! 로그인해 주세요.');
+            document.getElementById('signup-form').reset();
+            previewImg.classList.add('hidden');
+            document.getElementById('signup-profile-placeholder').classList.remove('hidden');
+            showAuthView('login');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('login-student-id').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            if (!studentId || !password) {
+                alert('학번과 비밀번호를 모두 입력해 주세요.');
+                return;
+            }
+
+            const users = getRegisteredUsers();
+            const user = users.find(u => u.studentId === studentId && u.password === password);
+
+            if (!user) {
+                alert('학번 또는 비밀번호가 잘못되었습니다.');
+                return;
+            }
+
+            loginUser(user);
+        }
+
+        function guestLogin() {
+            const guestUser = {
+                name: '게스트',
+                studentId: 'guest',
+                profilePic: ''
+            };
+            loginUser(guestUser);
+        }
+
+        function loginUser(user) {
+            currentUser = user;
+            localStorage.setItem('metastudy_current_user', JSON.stringify(user));
+            
+            // UI Transition
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.body.classList.add('pb-36', 'md:pb-36');
+
+            // Initialize User Data
+            loadUserTasks();
+            updateDrawerProfile();
+            updateHeaderProfile();
+            updateGlobalExamDateUI();
+            initTheme();
+            
+            // Re-run original init logic
+            init();
+            
+            // If they switched to stats tab previously, refresh graphs
+            const activeTab = document.querySelector('.tab-content.active');
+            if (activeTab && activeTab.id === 'tab-stats') {
+                updateProgressChart();
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                currentUser = null;
+                localStorage.removeItem('metastudy_current_user');
+                
+                // UI Transition
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('auth-container').classList.remove('hidden');
+                document.body.classList.remove('pb-36', 'md:pb-36');
+                
+                // Clear inputs
+                document.getElementById('login-form').reset();
+                showAuthView('start');
+                closeDrawer();
+            }
+        }
+
+        // File reader for profile upload
+        function previewProfilePhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const previewImg = document.getElementById('signup-profile-preview');
+                const placeholder = document.getElementById('signup-profile-placeholder');
+                previewImg.src = event.target.result;
+                previewImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateDrawerProfile() {
+            const nameEl = document.getElementById('drawer-profile-name');
+            const idEl = document.getElementById('drawer-profile-id');
+            const imgEl = document.getElementById('drawer-profile-img');
+            const placeholderEl = document.getElementById('drawer-profile-placeholder');
+
+            if (currentUser) {
+                nameEl.innerText = currentUser.name;
+                idEl.innerText = currentUser.studentId === 'guest' ? '체험 계정' : `학번: ${currentUser.studentId}`;
+                
+                if (currentUser.profilePic) {
+                    imgEl.src = currentUser.profilePic;
+                    imgEl.classList.remove('hidden');
+                    placeholderEl.classList.add('hidden');
+                } else {
+                    imgEl.classList.add('hidden');
+                    placeholderEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        function updateHeaderProfile() {
+            const imgEl = document.getElementById('header-profile-img');
+            const placeholderEl = document.getElementById('header-profile-placeholder');
+
+            if (currentUser && currentUser.profilePic) {
+                imgEl.src = currentUser.profilePic;
+                imgEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+                placeholderEl.classList.remove('hidden');
+            }
+        }
+
+        // --- Scoped User LocalStorage Helpers ---
+        function loadUserTasks() {
+            const suffix = currentUser ? currentUser.studentId : 'guest';
+            const userKey = `metastudy_tasks_${suffix}`;
+            let userTasks = localStorage.getItem(userKey);
+            
+            if (!userTasks) {
+                const oldTasks = localStorage.getItem('study_planner_tasks');
+                if (oldTasks) {
+                    localStorage.setItem(userKey, oldTasks);
+                    userTasks = oldTasks;
+                } else {
+                    userTasks = '[]';
+                }
+            }
+            
+            tasks = JSON.parse(userTasks);
+            
+            subjectStudyTime = JSON.parse(localStorage.getItem(`metastudy_subjectStudyTime_${suffix}`)) || {};
+            totalStudyMinutes = parseInt(localStorage.getItem(`metastudy_totalStudyMinutes_${suffix}`)) || 0;
+            studyStreak = parseInt(localStorage.getItem(`metastudy_study_streak_${suffix}`)) || 0;
+            lastStudyDate = localStorage.getItem(`metastudy_last_study_date_${suffix}`) || "";
+            todayStudyMinutes = parseInt(localStorage.getItem(`metastudy_today_study_minutes_${suffix}`)) || 0;
+            todayStudyDate = localStorage.getItem(`metastudy_today_study_date_${suffix}`) || "";
+            dailyStudyLog = JSON.parse(localStorage.getItem(`metastudy_daily_study_log_${suffix}`)) || {};
+            subjectGapRates = JSON.parse(localStorage.getItem(`metastudy_subject_gap_rates_${suffix}`)) || {};
+            studyHistory = JSON.parse(localStorage.getItem(`metastudy_study_history_${suffix}`)) || [];
+        }
+
+        function saveUserTasks() {
+            const suffix = currentUser ? currentUser.studentId : 'guest';
+            localStorage.setItem(`metastudy_tasks_${suffix}`, JSON.stringify(tasks));
+            localStorage.setItem(`metastudy_subjectStudyTime_${suffix}`, JSON.stringify(subjectStudyTime));
+            localStorage.setItem(`metastudy_totalStudyMinutes_${suffix}`, totalStudyMinutes);
+            localStorage.setItem(`metastudy_study_streak_${suffix}`, studyStreak);
+            localStorage.setItem(`metastudy_last_study_date_${suffix}`, lastStudyDate);
+            localStorage.setItem(`metastudy_today_study_minutes_${suffix}`, todayStudyMinutes);
+            localStorage.setItem(`metastudy_today_study_date_${suffix}`, todayStudyDate);
+            localStorage.setItem(`metastudy_daily_study_log_${suffix}`, JSON.stringify(dailyStudyLog));
+            localStorage.setItem(`metastudy_subject_gap_rates_${suffix}`, JSON.stringify(subjectGapRates));
+            localStorage.setItem(`metastudy_study_history_${suffix}`, JSON.stringify(studyHistory));
+            
+            updateStudySubjectSelect();
             renderTasks();
             updateDashboard();
             updateMotivation();
+            updateExistingSubjectsSelects();
+        }
+
+        function saveTasks() {
+            saveUserTasks();
+        }
+
+        // --- Drawer Navigation ---
+        function openDrawer() {
+            const drawer = document.getElementById('drawer-menu');
+            const backdrop = document.getElementById('drawer-backdrop');
+            const content = document.getElementById('drawer-content');
+
+            drawer.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.replace('opacity-0', 'opacity-100');
+                content.classList.replace('-translate-x-full', 'translate-x-0');
+            }, 10);
+        }
+
+        function closeDrawer() {
+            const backdrop = document.getElementById('drawer-backdrop');
+            const content = document.getElementById('drawer-content');
+
+            backdrop.classList.replace('opacity-100', 'opacity-0');
+            content.classList.replace('translate-x-0', '-translate-x-full');
+
+            setTimeout(() => {
+                document.getElementById('drawer-menu').classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Theme Settings (Dark Mode) ---
+        function toggleTheme() {
+            const htmlEl = document.documentElement;
+            const themeStatus = document.getElementById('drawer-theme-status');
+            const themeIcon = document.getElementById('drawer-theme-icon');
+            
+            const isDark = htmlEl.classList.contains('dark');
+            if (isDark) {
+                htmlEl.classList.replace('dark', 'light');
+                if (themeStatus) themeStatus.innerText = '꺼짐';
+                if (themeIcon) themeIcon.innerText = 'dark_mode';
+                localStorage.setItem('metastudy_theme', 'light');
+            } else {
+                htmlEl.classList.replace('light', 'dark');
+                if (themeStatus) themeStatus.innerText = '켜짐';
+                if (themeIcon) themeIcon.innerText = 'light_mode';
+                localStorage.setItem('metastudy_theme', 'dark');
+            }
+            
+            updateProgressChart();
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('metastudy_theme') || 'light';
+            const htmlEl = document.documentElement;
+            const themeStatus = document.getElementById('drawer-theme-status');
+            const themeIcon = document.getElementById('drawer-theme-icon');
+            
+            if (savedTheme === 'dark') {
+                htmlEl.classList.replace('light', 'dark');
+                if (themeStatus) themeStatus.innerText = '켜짐';
+                if (themeIcon) themeIcon.innerText = 'light_mode';
+            } else {
+                htmlEl.classList.replace('dark', 'light');
+                if (themeStatus) themeStatus.innerText = '꺼짐';
+                if (themeIcon) themeIcon.innerText = 'dark_mode';
+            }
+        }
+
+        // --- Global Exam Date Settings ---
+        function openExamDateModal() {
+            if (!currentUser) return;
+            const key = `metastudy_exam_date_${currentUser.studentId}`;
+            const currentExamDate = localStorage.getItem(key) || '';
+            document.getElementById('global-exam-date-input').value = currentExamDate;
+            document.getElementById('exam-date-modal').classList.remove('hidden');
+            closeDrawer();
+        }
+
+        function closeExamDateModal() {
+            document.getElementById('exam-date-modal').classList.add('hidden');
+        }
+
+        function saveGlobalExamDate(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            const dateVal = document.getElementById('global-exam-date-input').value;
+            const key = `metastudy_exam_date_${currentUser.studentId}`;
+            localStorage.setItem(key, dateVal);
+            
+            closeExamDateModal();
+            updateGlobalExamDateUI();
+            updateDashboard();
+            alert('글로벌 시험일이 설정되었습니다!');
+        }
+
+        function updateGlobalExamDateUI() {
+            const ddayLabel = document.getElementById('home-global-dday');
+            if (!ddayLabel) return;
+            
+            if (!currentUser) {
+                ddayLabel.innerText = '시험일 미설정';
+                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full";
+                return;
+            }
+
+            const key = `metastudy_exam_date_${currentUser.studentId}`;
+            const examDateStr = localStorage.getItem(key);
+
+            if (!examDateStr) {
+                ddayLabel.innerText = '시험일 미설정';
+                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-outline px-2 py-0.5 rounded-full";
+                return;
+            }
+
+            const todayStr = getTodayString();
+            const today = new Date(todayStr);
+            const exam = new Date(examDateStr);
+            
+            today.setHours(0,0,0,0);
+            exam.setHours(0,0,0,0);
+            
+            const diffTime = exam - today;
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) {
+                ddayLabel.innerText = "D-Day (시험 당일!)";
+                ddayLabel.className = "text-[10px] font-bold bg-red-100 text-red-600 border border-red-200";
+            } else if (diffDays < 0) {
+                ddayLabel.innerText = `시험 종료 (D+${Math.abs(diffDays)})`;
+                ddayLabel.className = "text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200";
+            } else {
+                ddayLabel.innerText = `시험 D-${diffDays}`;
+                ddayLabel.className = "text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-100";
+            }
+        }
+
+        // --- Scroll Helper ---
+        function scrollToTaskForm() {
+            const taskFormSection = document.getElementById('task-form');
+            if (taskFormSection) {
+                taskFormSection.scrollIntoView({ behavior: 'smooth' });
+                const subjectInput = document.getElementById('subject');
+                if (subjectInput) {
+                    setTimeout(() => subjectInput.focus(), 500);
+                }
+            }
+        }
+
+        const studyQuotes = [
+            { text: "작은 진전도 꾸준함 앞에서는 큰 결과가 됩니다.", author: "동기부여" },
+            { text: "오늘의 1시간이 미래의 실력을 만듭니다.", author: "동기부여" },
+            { text: "완벽함보다 꾸준함이 더 중요합니다.", author: "동기부여" },
+            { text: "실패는 다시 시작할 수 있는 기회이다. 이번에는 더 현명하게 시작하자.", author: "헨리 포드" },
+            { text: "천재는 1%의 영감과 99%의 땀으로 만들어진다.", author: "토마스 에디슨" },
+            { text: "성공은 매일 반복되는 작은 노력의 합이다.", author: "로버트 콜리어" },
+            { text: "시작하는 방법은 말하는 것을 그만두고 행동하는 것이다.", author: "월트 디즈니" },
+            { text: "도망쳐서 도착한 곳에 낙원은 없다.", author: "베르세르크" },
+            { text: "할 수 있다고 믿는 사람은 결국 할 수 있고, 할 수 없다고 믿는 사람은 결국 할 수 없다.", author: "헨리 포드" },
+            { text: "오늘 할 수 있는 일에 온 힘을 다해라. 그러면 내일은 한 걸음 더 나아가 있을 것이다.", author: "아이작 뉴턴" },
+            { text: "미래를 예측하는 가장 좋은 방법은 미래를 직접 창조하는 것이다.", author: "피터 드러커" },
+            { text: "노력하지 않는 자에게 기적은 일어나지 않는다.", author: "마라톤 명언" },
+            { text: "배우나 생각하지 않으면 어둡고, 생각하나 배우지 않으면 위태롭다.", author: "공자" },
+            { text: "포기하는 것은 언제나 가장 쉬운 선택이지만, 끝까지 버티는 것은 가장 아름다운 선택이다.", author: "인생 명언" },
+            { text: "당신이 멈추지 않는 한, 얼마나 천천히 가느냐는 중요하지 않다.", author: "공자" },
+            { text: "배움에 대한 열정은 세상을 바라보는 눈을 넓혀줍니다.", author: "배움 명언" },
+            { text: "가장 위대한 영광은 한 번도 넘어지지 않는 것이 아니라, 넘어질 때마다 다시 일어서는 것이다.", author: "넬슨 만델라" },
+            { text: "행동은 모든 성공의 기초가 되는 열쇠이다.", author: "파블로 피카소" },
+            { text: "습관을 바꾸면 인생이 바뀐다. 좋은 학습 습관이 좋은 미래를 만듭니다.", author: "교육 명언" },
+            { text: "지식에 투자하는 것이 가장 높은 이자를 지불한다.", author: "벤자민 프랭클린" },
+            { text: "오늘의 땀방울은 내일의 웃음꽃이 됩니다.", author: "희망 명언" },
+            { text: "끝까지 해내는 힘, 그것이 진짜 실력입니다.", author: "실천 명언" }
+        ];
+
+        function getDateDiffInDays(dateStr1, dateStr2) {
+            if (!dateStr1 || !dateStr2) return -1;
+            const d1 = new Date(dateStr1);
+            const d2 = new Date(dateStr2);
+            d1.setHours(0,0,0,0);
+            d2.setHours(0,0,0,0);
+            const diffTime = Math.abs(d2 - d1);
+            return Math.round(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function calculateSubjectGapRates() {
+            const subjectGaps = {};
+            const subjectCounts = {};
+            
+            tasks.forEach(task => {
+                if (task.completed && task.expectedMinutes !== undefined && task.expectedMinutes !== null && task.actualMinutes !== undefined && task.actualMinutes !== null) {
+                    const subject = task.subject.trim();
+                    if (!subject) return;
+                    
+                    const expected = Number(task.expectedMinutes);
+                    const actual = Number(task.actualMinutes);
+                    
+                    if (expected > 0) {
+                        const gap = (actual - expected) / expected;
+                        if (!subjectGaps[subject]) {
+                            subjectGaps[subject] = 0;
+                            subjectCounts[subject] = 0;
+                        }
+                        subjectGaps[subject] += gap;
+                        subjectCounts[subject] += 1;
+                    }
+                }
+            });
+            
+            const averageGaps = {};
+            Object.keys(subjectGaps).forEach(sub => {
+                const count = subjectCounts[sub];
+                if (count > 0) {
+                    averageGaps[sub] = Math.round((subjectGaps[sub] / count) * 100);
+                }
+            });
+            
+            subjectGapRates = averageGaps;
+            localStorage.setItem('subject_gap_rates', JSON.stringify(averageGaps));
+            return averageGaps;
+        }
+
+        function calculateStreak(historyArray) {
+            if (!historyArray || historyArray.length === 0) return 0;
+            
+            const sortedDates = [...new Set(historyArray)]
+                .map(dStr => new Date(dStr))
+                .filter(d => !isNaN(d.getTime()))
+                .sort((a, b) => a - b);
+                
+            if (sortedDates.length === 0) return 0;
+            
+            const todayStr = getTodayString();
+            const today = new Date(todayStr);
+            const yesterday = new Date(todayStr);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            const lastDate = sortedDates[sortedDates.length - 1];
+            lastDate.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            yesterday.setHours(0,0,0,0);
+            
+            if (lastDate < yesterday) {
+                return 0;
+            }
+            
+            let streak = 1;
+            let current = lastDate;
+            
+            for (let i = sortedDates.length - 2; i >= 0; i--) {
+                const prev = sortedDates[i];
+                prev.setHours(0,0,0,0);
+                
+                const diffTime = current - prev;
+                const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 1) {
+                    streak++;
+                    current = prev;
+                } else if (diffDays > 1) {
+                    break;
+                }
+            }
+            return streak;
+        }
+
+        function init() {
+            // First check if user is logged in
+            if (!currentUser) {
+                document.getElementById('app-container').classList.add('hidden');
+                document.getElementById('auth-container').classList.remove('hidden');
+                document.body.classList.remove('pb-36', 'md:pb-36');
+                showAuthView('start');
+                return;
+            } else {
+                document.getElementById('auth-container').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                document.body.classList.add('pb-36', 'md:pb-36');
+            }
+
+            // Clean up old mentor localStorage if it exists
+            localStorage.removeItem('study_planner_instructor');
+            
+            // Streak reset verification on startup
+            const todayStr = getTodayString();
+            if (lastStudyDate) {
+                const diffDays = getDateDiffInDays(lastStudyDate, todayStr);
+                if (diffDays > 1) {
+                    studyStreak = 0;
+                    localStorage.setItem(`metastudy_study_streak_${currentUser.studentId}`, studyStreak);
+                }
+            }
+
+            // Today's study time reset verification on startup
+            if (todayStudyDate !== todayStr) {
+                todayStudyMinutes = 0;
+                todayStudyDate = todayStr;
+                localStorage.setItem(`metastudy_today_study_minutes_${currentUser.studentId}`, todayStudyMinutes);
+                localStorage.setItem(`metastudy_today_study_date_${currentUser.studentId}`, todayStudyDate);
+            }
+            
+            updateProcrastinationUI();
+            updateStudySubjectSelect();
+            renderTasks();
+            updateDashboard();
+            updateMotivation();
+            updateSubjectStats();
+            updateStudyTimeDisplay();
+            updateDrawerProfile();
+            updateHeaderProfile();
+            updateGlobalExamDateUI();
+
+            // Set global exam date as default for task exam date input
+            const globalExamDate = localStorage.getItem(`metastudy_exam_date_${currentUser.studentId}`);
+            if (globalExamDate) {
+                document.getElementById('exam-date').value = globalExamDate;
+            }
+            updateExistingSubjectsSelects();
         }
 
         function switchTab(tabId) {
@@ -467,15 +1544,14 @@
             
             document.querySelectorAll('.tab-btn').forEach(el => {
                 el.classList.remove('bg-primary-container', 'text-primary');
-                el.classList.add('text-on-surface-variant');
+                el.classList.add('text-outline');
             });
             const activeBtn = document.getElementById(`btn-tab-${tabId}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-on-surface-variant');
+                activeBtn.classList.remove('text-outline');
                 activeBtn.classList.add('bg-primary-container', 'text-primary');
             }
 
-            // Stats 탭에 들어갈 때마다 저장된 tasks 기준으로 통계를 다시 계산합니다.
             if (tabId === 'stats') {
                 updateDashboard();
                 setTimeout(updateProgressChart, 50);
@@ -483,17 +1559,10 @@
         }
 
         function saveTasks() {
-            localStorage.setItem('study_planner_tasks', JSON.stringify(tasks));
-            renderTasks();
-            updateDashboard();
-            updateMotivation();
+            saveUserTasks();
         }
 
-        function updateInstructorPreference() {
-            instructorPreference = mentorStyleSelect.value;
-            localStorage.setItem('study_planner_instructor', instructorPreference);
-            updateMotivation();
-        }
+
 
         function toggleProcrastinationMode() {
             isProcrastinationMode = !isProcrastinationMode;
@@ -509,7 +1578,7 @@
                 // Main List UI
                 procIconMain.innerText = 'visibility_off';
                 procTextMain.innerText = '집중 모드 켜짐';
-                procIconMain.parentElement.classList.add('bg-primary-container', 'text-on-primary-container');
+                procIconMain.parentElement.classList.add('bg-primary-container', 'text-primary');
                 
                 // Focus Tab UI
                 procIconFocus.innerText = 'lock';
@@ -521,7 +1590,7 @@
                 // Main List UI
                 procIconMain.innerText = 'visibility';
                 procTextMain.innerText = '집중 모드 끄기';
-                procIconMain.parentElement.classList.remove('bg-primary-container', 'text-on-primary-container');
+                procIconMain.parentElement.classList.remove('bg-primary-container', 'text-primary');
                 
                 // Focus Tab UI
                 procIconFocus.innerText = 'bolt';
@@ -531,16 +1600,14 @@
         }
 
         function updateMotivation() {
-            const completed = tasks.filter(t => t.completed).length;
-            const total = tasks.length;
-            const progress = total === 0 ? 100 : (completed / total) * 100;
-            
-            const quotes = instructorQuotes[instructorPreference];
-            const list = progress < 50 ? quotes.push : quotes.praise;
-            const randomQuote = list[Math.floor(Math.random() * list.length)];
-            
-            motivationMessage.innerText = `"${randomQuote}"`;
-            instructorNameDisplay.innerText = `- ${instructorPreference === 'General' ? 'AI 멘토' : (instructorPreference === 'Seung-je Jung' ? '생선님 정승제' : (instructorPreference === 'Woo-jin Hyun' ? '현우진' : '전한길'))}`;
+            const randomIndex = Math.floor(Math.random() * studyQuotes.length);
+            const quote = studyQuotes[randomIndex];
+            if (motivationMessage) {
+                motivationMessage.innerText = `"${quote.text}"`;
+            }
+            if (instructorNameDisplay) {
+                instructorNameDisplay.innerText = quote.author ? `- ${quote.author}` : "- 오늘의 응원";
+            }
         }
 
         function calculatePriority(task) {
@@ -565,10 +1632,73 @@
             return `${recommendedMins}분 권장`;
         }
 
+        function getTodayString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getDDayString(dueDateStr) {
+            const todayStr = getTodayString();
+            const today = new Date(todayStr);
+            const due = new Date(dueDateStr);
+            
+            today.setHours(0,0,0,0);
+            due.setHours(0,0,0,0);
+            
+            const diffTime = due - today;
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return { text: "D-Day", class: "bg-red-100 text-red-600 border border-red-200" };
+            } else if (diffDays < 0) {
+                return { text: `D+${Math.abs(diffDays)} (연체)`, class: "bg-red-50 text-red-600 border border-red-200 animate-pulse" };
+            } else {
+                return { text: `D-${diffDays}`, class: "bg-blue-50 text-blue-600 border border-blue-100" };
+            }
+        }
+
+        function setTaskFilter(filter) {
+            currentTaskFilter = filter;
+            const btnAll = document.getElementById('filter-btn-all');
+            const btnToday = document.getElementById('filter-btn-today');
+            
+            if (filter === 'all') {
+                btnAll.className = "flex-1 py-3 text-center border-b-2 border-primary font-bold text-primary text-sm transition-all focus:outline-none min-h-[44px]";
+                btnToday.className = "flex-1 py-3 text-center border-b-2 border-transparent font-semibold text-outline hover:text-on-surface text-sm transition-all focus:outline-none min-h-[44px]";
+            } else {
+                btnAll.className = "flex-1 py-3 text-center border-b-2 border-transparent font-semibold text-outline hover:text-on-surface text-sm transition-all focus:outline-none min-h-[44px]";
+                btnToday.className = "flex-1 py-3 text-center border-b-2 border-primary font-bold text-primary text-sm transition-all focus:outline-none min-h-[44px]";
+            }
+            renderTasks();
+        }
+
+        function updateStudySubjectSelect() {
+            const select = document.getElementById('study-subject');
+            if (!select) return;
+            
+            const currentValue = select.value;
+            const defaultSubjects = ["자료구조", "알고리즘", "데이터베이스", "운영체제"];
+            const taskSubjects = [...new Set(tasks.map(t => t.subject.trim()))].filter(s => s !== "");
+            const allSubjects = [...new Set([...defaultSubjects, ...taskSubjects])];
+            
+            let html = '';
+            allSubjects.forEach(sub => {
+                html += `<option value="${sub}">${sub}</option>`;
+            });
+            select.innerHTML = html;
+            
+            if (allSubjects.includes(currentValue)) {
+                select.value = currentValue;
+            }
+        }
+
         function addTask(e) {
             e.preventDefault();
-            const subject = document.getElementById('subject').value;
-            const content = document.getElementById('content').value;
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('content').value.trim();
             const dueDate = document.getElementById('due-date').value;
             const examDate = document.getElementById('exam-date').value;
             const difficulty = parseInt(document.getElementById('difficulty').value);
@@ -582,6 +1712,10 @@
                 examDate,
                 difficulty,
                 estTime,
+                expectedMinutes: estTime,
+                actualMinutes: null,
+                actualDuration: null,
+                completedDate: null,
                 completed: false
             };
 
@@ -589,12 +1723,48 @@
             saveTasks();
             taskForm.reset();
             document.getElementById('diff-val').innerText = '3';
+            const subjectGapTip = document.getElementById('subject-gap-tip');
+            if (subjectGapTip) {
+                subjectGapTip.classList.add('hidden');
+                subjectGapTip.innerText = '';
+            }
         }
 
         function toggleTask(id) {
-            tasks = tasks.map(task => 
-                task.id === id ? { ...task, completed: !task.completed } : task
-            );
+            tasks = tasks.map(task => {
+                if (task.id === id) {
+                    const nextCompleted = !task.completed;
+                    let actual = task.actualMinutes;
+                    let completedDate = task.completedDate || null;
+                    
+                    if (nextCompleted) {
+                        const expected = task.expectedMinutes || task.estTime || 0;
+                        const userInput = prompt(`이 과제를 완료하는 데 실제로 몇 분이 걸렸나요?`, expected);
+                        const parsed = parseInt(userInput);
+                        actual = (!isNaN(parsed) && parsed > 0) ? parsed : expected;
+                        completedDate = getTodayString();
+                        
+                        // studyHistory에 오늘 날짜 추가
+                        const todayStr = getTodayString();
+                        if (!studyHistory.includes(todayStr)) {
+                            studyHistory.push(todayStr);
+                        }
+                    } else {
+                        actual = null;
+                        completedDate = null;
+                    }
+                    
+                    return {
+                        ...task,
+                        completed: nextCompleted,
+                        expectedMinutes: task.expectedMinutes || task.estTime || 0,
+                        actualMinutes: actual,
+                        actualDuration: actual,
+                        completedDate: completedDate
+                    };
+                }
+                return task;
+            });
             saveTasks();
         }
 
@@ -609,14 +1779,66 @@
             const task = tasks.find(t => t.id === id);
             if (!task) return;
 
-            const newContent = prompt('공부 내용을 수정하세요:', task.content);
-            if (newContent !== null) {
-                tasks = tasks.map(t => t.id === id ? { ...t, content: newContent } : t);
-                saveTasks();
+            document.getElementById('edit-task-id').value = task.id;
+            document.getElementById('edit-subject').value = task.subject;
+            document.getElementById('edit-content').value = task.content;
+            document.getElementById('edit-due-date').value = task.dueDate;
+            document.getElementById('edit-exam-date').value = task.examDate || '';
+            document.getElementById('edit-difficulty').value = task.difficulty;
+            document.getElementById('edit-diff-val').innerText = task.difficulty;
+            document.getElementById('edit-est-time').value = task.estTime;
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+
+            const editSubjectInput = document.getElementById('edit-subject');
+            const editSubjectGapTip = document.getElementById('edit-subject-gap-tip');
+            if (editSubjectInput && editSubjectGapTip) {
+                handleSubjectInput(editSubjectInput, editSubjectGapTip);
             }
         }
 
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            const editSubjectGapTip = document.getElementById('edit-subject-gap-tip');
+            if (editSubjectGapTip) {
+                editSubjectGapTip.classList.add('hidden');
+                editSubjectGapTip.innerText = '';
+            }
+        }
+
+        document.getElementById('edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-task-id').value);
+            const subject = document.getElementById('edit-subject').value.trim();
+            const content = document.getElementById('edit-content').value.trim();
+            const dueDate = document.getElementById('edit-due-date').value;
+            const examDate = document.getElementById('edit-exam-date').value;
+            const difficulty = parseInt(document.getElementById('edit-difficulty').value);
+            const estTime = parseInt(document.getElementById('edit-est-time').value);
+
+            tasks = tasks.map(t => {
+                if (t.id === id) {
+                    const expected = (t.estTime !== estTime) ? estTime : (t.expectedMinutes || t.estTime || 0);
+                    return {
+                        ...t,
+                        subject,
+                        content,
+                        dueDate,
+                        examDate,
+                        difficulty,
+                        estTime,
+                        expectedMinutes: expected
+                    };
+                }
+                return t;
+            });
+
+            saveTasks();
+            closeEditModal();
+        });
+
         function updateDashboard() {
+            calculateSubjectGapRates();
             const total = tasks.length;
             const completed = tasks.filter(t => t.completed).length;
             const remaining = total - completed;
@@ -636,29 +1858,270 @@
             if (remainingTimeDisplay) {
                 remainingTimeDisplay.innerText = hours > 0 ? `${hours}시간 ${minutes}분 예상` : `${minutes}분 예상`;
             }
-            if (filterStatsDisplay) filterStatsDisplay.innerText = `전체 ${total}개`;
 
+            // Today's specific statistics
+            const todayStr = getTodayString();
+            const todayTasks = tasks.filter(t => t.dueDate === todayStr);
+            const todayCompleted = todayTasks.filter(t => t.completed).length;
+            const todayRemaining = todayTasks.length - todayCompleted;
+            
+            document.getElementById('today-completed-count').innerText = todayCompleted;
+            document.getElementById('today-remaining-count').innerText = todayRemaining;
+
+            // 오늘의 목표 달성률 계산 및 UI 반영
+            const todayTotal = todayTasks.length;
+            const todayPercentage = todayTotal === 0 ? 0 : Math.round((todayCompleted / todayTotal) * 100);
+            
+            const todayProgressText = document.getElementById('today-progress-text');
+            const todayProgressBar = document.getElementById('today-progress-bar');
+            if (todayProgressText) todayProgressText.innerText = `${todayPercentage}%`;
+            if (todayProgressBar) todayProgressBar.style.width = `${todayPercentage}%`;
+
+
+
+            // Filter counts updates
+            const countAllDisplay = document.getElementById('count-all');
+            const countTodayDisplay = document.getElementById('count-today');
+            if (countAllDisplay) countAllDisplay.innerText = total;
+            if (countTodayDisplay) countTodayDisplay.innerText = todayTasks.length;
+
+            // Streak UI update (Plan Tab)
+            const streakVal = calculateStreak(studyHistory);
+            const streakCountDisplay = document.getElementById('streak-count');
+            const lastStudyDateDisplay = document.getElementById('last-study-date-display');
+            if (streakCountDisplay) streakCountDisplay.innerText = `${streakVal}일`;
+            if (lastStudyDateDisplay) {
+                lastStudyDateDisplay.innerText = lastStudyDate ? `마지막 공부: ${lastStudyDate}` : "마지막 공부: 없음";
+            }
+
+            // 오늘 공부시간 & 연속 공부일 Plan Tab 대시보드 카드 갱신
+            const planTodayStudyTime = document.getElementById('plan-today-study-time');
+            const planStudyStreak = document.getElementById('plan-study-streak');
+            const planStreakStatus = document.getElementById('plan-streak-status');
+
+            // Calculate today's completed tasks total duration
+            const completedToday = tasks.filter(t => t.completed && t.completedDate === todayStr);
+            const todayCompletedMinutes = completedToday.reduce((sum, t) => sum + Number(t.actualMinutes || t.actualDuration || 0), 0);
+
+            const todayHours = Math.floor(todayCompletedMinutes / 60);
+            const todayMins = todayCompletedMinutes % 60;
+            const todayTimeStr = todayHours > 0 ? `${todayHours}시간 ${todayMins}분` : `${todayMins}분`;
+
+            if (planTodayStudyTime) {
+                planTodayStudyTime.innerText = todayTimeStr;
+            }
+            if (planStudyStreak) {
+                planStudyStreak.innerText = `${streakVal}일`;
+            }
+            if (planStreakStatus) {
+                planStreakStatus.innerText = streakVal > 0 ? "꾸준히 잘하고 계십니다! 🔥" : "첫 걸음을 떼어보세요!";
+            }
+
+            // Stats Dashboard Card updates
+            const statsProgress = document.getElementById('stats-progress');
             const statsTotal = document.getElementById('stats-total');
             const statsCompleted = document.getElementById('stats-completed');
-            const statsProgress = document.getElementById('stats-progress');
-
+            
+            if (statsProgress) statsProgress.innerText = `${percentage}%`;
             if (statsTotal) statsTotal.innerText = total;
             if (statsCompleted) statsCompleted.innerText = completed;
-            if (statsProgress) statsProgress.innerText = `${percentage}%`;
 
-            if (dynamicEncouragement) {
-                if (total === 0) {
-                    dynamicEncouragement.innerText = '새로운 학습 항목을 추가해보세요.';
-                } else if (percentage === 100) {
-                    dynamicEncouragement.innerText = '오늘 학습을 모두 완료했습니다. 정말 잘하셨습니다!';
-                } else if (percentage >= 50) {
-                    dynamicEncouragement.innerText = '절반 이상 완료했습니다. 조금만 더 가면 됩니다.';
-                } else {
-                    dynamicEncouragement.innerText = '꾸준함이 실력을 만듭니다. 오늘도 화이팅!';
-                }
+            // 1. 오늘 공부시간 카드 갱신
+            const statsTodayStudy = document.getElementById('stats-today-study');
+            if (statsTodayStudy) {
+                statsTodayStudy.innerText = todayTimeStr;
+            }
+
+            // 2. 연속 공부일 카드 갱신
+            const statsStreak = document.getElementById('stats-streak');
+            const statsStreakLastDate = document.getElementById('stats-streak-last-date');
+            if (statsStreak) statsStreak.innerText = `${streakVal}일`;
+            if (statsStreakLastDate) {
+                statsStreakLastDate.innerText = lastStudyDate ? `마지막 공부: ${lastStudyDate}` : "마지막 공부: 없음";
+            }
+
+            // 3. 학습 점수 카드 갱신
+            const score = calculateLearningScore();
+            const statsScore = document.getElementById('stats-learning-score');
+            const statsScoreEval = document.getElementById('stats-score-eval');
+            if (statsScore) statsScore.innerText = `${score}점`;
+            if (statsScoreEval) {
+                if (score >= 90) statsScoreEval.innerText = "🏆 완벽해요! 명예의 전당급";
+                else if (score >= 80) statsScoreEval.innerText = "✨ 훌륭한 학구열입니다!";
+                else if (score >= 50) statsScoreEval.innerText = "👍 아주 좋은 페이스입니다!";
+                else statsScoreEval.innerText = "🌱 차근차근 시작해보아요!";
+            }
+
+            // 4. 이번 주 학습 리포트 요약 생성
+            generateWeeklyReport();
+
+            // MetaStudy Home Dashboard updates
+            const homeTodayTime = document.getElementById('home-today-time');
+            const homeTodayProgressText = document.getElementById('home-today-progress-text');
+            const homeTodayProgressBar = document.getElementById('home-today-progress-bar');
+            const homePendingCount = document.getElementById('home-pending-count');
+            const homeCompletedCount = document.getElementById('home-completed-count');
+
+            if (homeTodayTime) homeTodayTime.innerText = todayTimeStr;
+            if (homeTodayProgressText) homeTodayProgressText.innerText = `${todayPercentage}%`;
+            if (homeTodayProgressBar) homeTodayProgressBar.style.width = `${todayPercentage}%`;
+            
+            if (homePendingCount) {
+                const pending = tasks.filter(t => !t.completed).length;
+                homePendingCount.innerText = `${pending}개`;
+            }
+            if (homeCompletedCount) {
+                const completedCount = tasks.filter(t => t.completed).length;
+                homeCompletedCount.innerText = `${completedCount}개`;
             }
 
             updateProgressChart();
+            updateSubjectProgress();
+            updateGapAnalysisUI();
+        }
+
+        function updateSubjectProgress() {
+            const container = document.getElementById('subject-progress-container');
+            if (!container) return;
+            
+            const subjects = [...new Set(tasks.map(t => t.subject.trim()))].filter(s => s !== "");
+            
+            if (subjects.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-outline italic text-xs">
+                        등록된 과목이 없습니다.
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            subjects.forEach(sub => {
+                const subTasks = tasks.filter(t => t.subject.trim() === sub);
+                const total = subTasks.length;
+                const completed = subTasks.filter(t => t.completed).length;
+                const rate = total === 0 ? 0 : Math.round((completed / total) * 100);
+                
+                const studyTime = subjectStudyTime[sub] || 0;
+                const hours = Math.floor(studyTime / 60);
+                const mins = studyTime % 60;
+                const timeStr = hours > 0 ? `${hours}시간 ${mins}분` : `${mins}분`;
+                
+                html += `
+                    <div class="bg-slate-50 p-4 rounded-xl border border-outline-variant flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-sm text-primary">${sub}</span>
+                                <span class="text-[10px] font-bold text-outline bg-white px-2 py-0.5 rounded-full border border-slate-100">${completed}/${total} 완료</span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="h-2 flex-grow bg-slate-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary" style="width: ${rate}%"></div>
+                                </div>
+                                <span class="text-xs font-bold text-primary min-w-[28px] text-right">${rate}%</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200/60 pt-2 mt-1 flex items-center justify-between text-[10px] text-outline font-semibold">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">schedule</span>
+                                누적 공부 시간
+                            </span>
+                            <span class="text-on-surface font-bold">${timeStr}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        let weeklyStudyChart = null;
+        let subjectStudyChart = null;
+
+        function calculateLearningScore() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const completionRate = total === 0 ? 0 : (completed / total);
+            
+            // 완료율 점수 (50점 만점)
+            const completionScore = completionRate * 50;
+            
+            // 오늘 공부시간 점수 (30점 만점) - 하루 120분 기준
+            const timeScore = Math.min(30, (todayStudyMinutes / 120) * 30);
+            
+            // 연속 공부일 점수 (20점 만점) - 10일 연속 기준
+            const streakScore = Math.min(20, studyStreak * 2);
+            
+            return Math.round(completionScore + timeScore + streakScore);
+        }
+
+        function generateWeeklyReport() {
+            // 📊 주간 총 공부시간 (최근 7일 합계)
+            let weeklyTotalMinutes = 0;
+            const today = new Date();
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - i);
+                const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                weeklyTotalMinutes += (dailyStudyLog[dateKey] || 0);
+            }
+            const weeklyHours = Math.floor(weeklyTotalMinutes / 60);
+            const weeklyMins = weeklyTotalMinutes % 60;
+            const reportWeeklyTime = document.getElementById('report-weekly-time');
+            if (reportWeeklyTime) {
+                reportWeeklyTime.innerText = weeklyHours > 0 ? `${weeklyHours}시간 ${weeklyMins}분` : `${weeklyMins}분`;
+            }
+
+            // ✅ 완료한 과제 수
+            const completedCount = tasks.filter(t => t.completed).length;
+            const reportCompletedCount = document.getElementById('report-completed-count');
+            if (reportCompletedCount) {
+                reportCompletedCount.innerText = `${completedCount}개`;
+            }
+
+            // ✍️ 가장 많이 공부한 과목
+            let maxSubject = "-";
+            let maxMins = 0;
+            Object.keys(subjectStudyTime).forEach(sub => {
+                if (subjectStudyTime[sub] > maxMins) {
+                    maxMins = subjectStudyTime[sub];
+                    maxSubject = sub;
+                }
+            });
+            const reportFavoriteSubject = document.getElementById('report-favorite-subject');
+            if (reportFavoriteSubject) {
+                reportFavoriteSubject.innerText = maxMins > 0 ? `${maxSubject} (${maxMins}분)` : "-";
+            }
+
+            // 🔥 현재 연속 공부일
+            const reportStreak = document.getElementById('report-streak');
+            if (reportStreak) {
+                reportStreak.innerText = `${studyStreak}일`;
+            }
+
+            // 💡 AI 학습 추천 문장 생성
+            const reportRecommendation = document.getElementById('report-recommendation');
+            if (reportRecommendation) {
+                const totalTasksCount = tasks.length;
+                const completionRate = totalTasksCount === 0 ? 0 : (completedCount / totalTasksCount);
+                
+                let recSentence = "";
+                if (totalTasksCount === 0) {
+                    recSentence = "새로운 학습 계획을 등록하여 스터디 플래너를 시작해보세요!";
+                } else if (completionRate < 0.4) {
+                    recSentence = "미완료된 과제 비중이 높습니다. 중요도가 높은 일정부터 집중적으로 끝마치는 습관을 가져보세요.";
+                } else if (studyStreak === 0) {
+                    recSentence = "연속 공부일 기록이 끊겼습니다. 오늘 15분만이라도 좋아하는 과목 타이머를 시작해보는 건 어떨까요?";
+                } else if (todayStudyMinutes < 30) {
+                    recSentence = "오늘 계획한 과목을 집중 측정 타이머로 공부하여 일일 공부 목표량을 높여보세요!";
+                } else if (studyStreak >= 3) {
+                    recSentence = `🔥 대단합니다! ${studyStreak}일 연속 공부를 잘 이어가고 있습니다. 집중력이 아주 높네요.`;
+                } else {
+                    recSentence = "오늘의 목표 달성률도 훌륭합니다. 이대로 좋은 습관을 계속 유지하세요!";
+                }
+                
+                reportRecommendation.innerText = recSentence;
+            }
         }
 
         function updateProgressChart() {
@@ -671,45 +2134,164 @@
             if (progressChart) {
                 progressChart.data.datasets[0].data = [completed, remaining];
                 progressChart.update();
-                return;
-            }
-
-            progressChart = new Chart(canvas, {
-                type: 'doughnut',
-                data: {
-                    labels: ['완료', '미완료'],
-                    datasets: [{
-                        label: '학습 진행률',
-                        data: [completed, remaining],
-                        backgroundColor: ['#16a34a', '#dbeafe'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '65%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
+            } else {
+                progressChart = new Chart(canvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['완료', '미완료'],
+                        datasets: [{
+                            label: '학습 진행률',
+                            data: [completed, remaining],
+                            backgroundColor: ['#059669', '#dbeafe'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    font: {
+                                        size: 11,
+                                        weight: 'bold'
+                                    }
+                                }
+                            }
                         }
                     }
+                });
+            }
+
+            // 2. 주간 공부시간 그래프 (최근 7일 막대그래프)
+            const canvas2 = document.getElementById('weeklyStudyChart');
+            if (canvas2) {
+                const last7DaysLabels = [];
+                const last7DaysData = [];
+                const today = new Date();
+                
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() - i);
+                    const y = d.getFullYear();
+                    const m = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const dateKey = `${y}-${m}-${day}`;
+                    
+                    last7DaysLabels.push(`${m}/${day}`);
+                    last7DaysData.push(dailyStudyLog[dateKey] || 0);
                 }
-            });
+                
+                if (weeklyStudyChart) {
+                    weeklyStudyChart.data.labels = last7DaysLabels;
+                    weeklyStudyChart.data.datasets[0].data = last7DaysData;
+                    weeklyStudyChart.update();
+                } else {
+                    weeklyStudyChart = new Chart(canvas2, {
+                        type: 'bar',
+                        data: {
+                            labels: last7DaysLabels,
+                            datasets: [{
+                                label: '공부 시간 (분)',
+                                data: last7DaysData,
+                                backgroundColor: '#2563eb',
+                                borderRadius: 6,
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) { return value + '분'; }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 3. 과목별 공부시간 그래프 (누적 도넛차트)
+            const canvas3 = document.getElementById('subjectStudyChart');
+            if (canvas3) {
+                const subjects = Object.keys(subjectStudyTime).filter(s => subjectStudyTime[s] > 0);
+                const dataValues = subjects.map(s => subjectStudyTime[s]);
+                const colors = ['#2563eb', '#059669', '#d97706', '#7c3aed', '#db2777', '#0891b2', '#64748b'];
+                
+                if (subjectStudyChart) {
+                    subjectStudyChart.data.labels = subjects;
+                    subjectStudyChart.data.datasets[0].data = dataValues;
+                    subjectStudyChart.update();
+                } else {
+                    subjectStudyChart = new Chart(canvas3, {
+                        type: 'doughnut',
+                        data: {
+                            labels: subjects.length > 0 ? subjects : ['기록 없음'],
+                            datasets: [{
+                                data: dataValues.length > 0 ? dataValues : [1],
+                                backgroundColor: dataValues.length > 0 ? colors.slice(0, dataValues.length) : ['#f1f5f9'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '70%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        boxWidth: 12,
+                                        font: {
+                                            size: 11,
+                                            weight: 'bold'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
         }
 
         function renderTasks() {
-            if (tasks.length === 0) {
+            let filteredTasks = [...tasks];
+            if (currentTaskFilter === 'today') {
+                const todayStr = getTodayString();
+                filteredTasks = filteredTasks.filter(t => t.dueDate === todayStr);
+            }
+
+            if (filteredTasks.length === 0) {
                 emptyState.style.display = 'block';
                 tasksContainer.innerHTML = '';
                 tasksContainer.appendChild(emptyState);
+                
+                const emptyText = emptyState.querySelector('p');
+                if (emptyText) {
+                    if (currentTaskFilter === 'today') {
+                        emptyText.innerHTML = "오늘 마감인 학습 일정이 없습니다.<br/>오늘 마감될 새로운 계획을 추가해보세요!";
+                    } else {
+                        emptyText.innerHTML = "등록된 학습 일정이 없습니다.<br/>새로운 목표를 추가해보세요!";
+                    }
+                }
                 return;
             }
 
             emptyState.style.display = 'none';
             tasksContainer.innerHTML = '';
 
-            const sortedTasks = [...tasks].sort((a, b) => {
+            const sortedTasks = [...filteredTasks].sort((a, b) => {
                 if (a.completed && !b.completed) return 1;
                 if (!a.completed && b.completed) return -1;
                 return calculatePriority(b) - calculatePriority(a);
@@ -717,175 +2299,481 @@
 
             const recommendedId = sortedTasks.find(t => !t.completed)?.id;
 
-            sortedTasks.forEach((task, index) => {
+            sortedTasks.forEach((task) => {
                 const card = document.createElement('div');
                 const isRecommended = task.id === recommendedId;
                 
-                card.className = `task-item group flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border-l-4 shadow-sm hover:shadow-md transition-all ${task.completed ? 'opacity-60 bg-surface-container-low grayscale' : ''}`;
+                card.className = `task-item group flex items-center gap-4 bg-white p-4 rounded-2xl border-l-4 shadow-sm hover:shadow-md transition-all ${task.completed ? 'opacity-65 bg-slate-50 border-slate-200' : ''}`;
                 
-                if (task.completed) card.classList.add('border-l-tertiary');
-                else if (isRecommended) card.classList.add('border-l-amber-500');
-                else card.classList.add('border-l-primary');
+                const dDay = getDDayString(task.dueDate);
+                
+                if (task.completed) {
+                    card.classList.add('border-l-tertiary');
+                } else if (isRecommended) {
+                    card.classList.add('border-l-amber-500');
+                } else {
+                    card.classList.add('border-l-primary');
+                }
 
                 const recTime = calculateRecommendedTime(task);
-                const recTimeHtml = recTime ? `<span class="bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded text-[10px] ml-auto font-bold">${recTime}</span>` : '';
+                const recTimeHtml = recTime ? `<span class="bg-tertiary-container text-tertiary px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">${recTime}</span>` : '';
 
                 card.innerHTML = `
-                    <div class="flex-shrink-0">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})" 
-                               class="w-6 h-6 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer transition-all">
-                    </div>
+                    <!-- Checkbox Button (48px Touch Area) -->
+                    <button onclick="toggleTask(${task.id})" class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-slate-100 active:scale-90 transition-all focus:outline-none" aria-label="Toggle task completion">
+                        ${task.completed ? 
+                            `<span class="material-symbols-outlined filled text-tertiary text-2xl">check_circle</span>` : 
+                            `<span class="material-symbols-outlined text-outline hover:text-primary text-2xl">radio_button_unchecked</span>`
+                        }
+                    </button>
+                    
                     <div class="flex-grow min-w-0">
                         <div class="flex items-center gap-2 flex-wrap">
-                            <span class="font-label-md text-primary bg-primary-fixed px-2 py-0.5 rounded text-[10px] uppercase">${task.subject}</span>
-                            ${isRecommended ? '<span class="font-label-md text-on-error-container bg-error-container px-2 py-0.5 rounded text-[10px] uppercase font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[10px] fill-1">star</span>TOP</span>' : ''}
-                            <span class="font-label-sm text-on-surface-variant flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="event">event</span>
+                            <span class="font-bold text-primary bg-primary-container px-2 py-0.5 rounded text-[10px] uppercase border border-blue-100">${task.subject}</span>
+                            ${isRecommended && !task.completed ? '<span class="text-white bg-amber-500 px-2 py-0.5 rounded text-[10px] uppercase font-bold flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px] filled">star</span>TOP</span>' : ''}
+                            <span class="font-semibold text-outline text-[10px] ${dDay.class} px-2 py-0.5 rounded-full">${dDay.text}</span>
+                        </div>
+                        <h3 class="font-bold text-base mt-1.5 text-on-surface truncate ${task.completed ? 'line-through text-outline' : ''}">${task.content}</h3>
+                        <div class="flex items-center gap-3 mt-1.5 text-xs text-outline font-semibold">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">event</span>
                                 ${task.dueDate}
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">schedule</span>
+                                ${task.estTime}분
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">grade</span>
+                                난이도 ${task.difficulty}
                             </span>
                             ${recTimeHtml}
                         </div>
-                        <h3 class="font-headline-md mt-1 truncate ${task.completed ? 'line-through' : ''}">${task.content}</h3>
-                        <div class="flex items-center gap-3 mt-1">
-                            <p class="font-body-sm text-on-surface-variant flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
-                                ${task.estTime}분
-                            </p>
-                            <p class="font-body-sm text-on-surface-variant flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]" data-icon="grade">grade</span>
-                                Lvl ${task.difficulty}
-                            </p>
-                        </div>
                     </div>
-                    <div class="flex items-center gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onclick="editTask(${task.id})" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-                            <span class="material-symbols-outlined" data-icon="edit">edit</span>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex items-center gap-1">
+                        <button onclick="editTask(${task.id})" class="w-11 h-11 flex items-center justify-center rounded-full text-outline hover:text-primary hover:bg-slate-100 active:scale-95 transition-all focus:outline-none" aria-label="Edit task">
+                            <span class="material-symbols-outlined text-lg">edit</span>
                         </button>
-                        <button onclick="deleteTask(${task.id})" class="p-2 text-on-surface-variant hover:text-error transition-colors">
-                            <span class="material-symbols-outlined" data-icon="delete">delete</span>
+                        <button onclick="deleteTask(${task.id})" class="w-11 h-11 flex items-center justify-center rounded-full text-outline hover:text-red-500 hover:bg-red-50 active:scale-95 transition-all focus:outline-none" aria-label="Delete task">
+                            <span class="material-symbols-outlined text-lg">delete</span>
                         </button>
                     </div>
                 `;
                 tasksContainer.appendChild(card);
             });
         }
-// ====================
-// 공부시간 측정 기능
-// ====================
 
-let studyStartTime = null;
-let timerInterval = null;
-let currentStudySubject = "";
+        // ====================
+        // 공부시간 측정 기능
+        // ====================
+
+        function updateSubjectStats() {
+            const statsDiv = document.getElementById('subject-stats-timer');
+            if (!statsDiv) return;
+
+            const keys = Object.keys(subjectStudyTime);
+            if (keys.length === 0) {
+                statsDiv.innerHTML = '<p class="col-span-full text-center text-outline italic text-xs py-1">기록된 공부 시간이 없습니다.</p>';
+                return;
+            }
+
+            let html = '';
+            keys.forEach(subject => {
+                const mins = subjectStudyTime[subject];
+                const hours = Math.floor(mins / 60);
+                const m = mins % 60;
+                const timeStr = hours > 0 ? `${hours}시간 ${m}분` : `${m}분`;
+                html += `
+                    <div class="bg-white border border-outline-variant px-3 py-2 rounded-xl flex items-center justify-between shadow-sm">
+                        <span class="font-bold text-xs text-primary truncate max-w-[80px]">${subject}</span>
+                        <span class="font-bold text-on-surface text-xs">${timeStr}</span>
+                    </div>
+                `;
+            });
+
+            statsDiv.innerHTML = html;
+        }
+
+        function updateStudyTimeDisplay() {
+            const hours = Math.floor(totalStudyMinutes / 60);
+            const mins = totalStudyMinutes % 60;
+            totalStudyTimeDisplay.innerText = `${hours}시간 ${mins}분`;
+        }
+
+        document.getElementById('start-study').addEventListener('click', () => {
+            currentStudySubject = document.getElementById('study-subject').value.trim();
+
+            if (!currentStudySubject) {
+                alert('공부할 과목을 선택하거나 등록해주세요.');
+                return;
+            }
+
+            if (studyStartTime) {
+                alert('이미 공부가 시작되었습니다.');
+                return;
+            }
+
+            studyStartTime = Date.now();
+            
+            // Disable start button, enable visual feedback
+            const startBtn = document.getElementById('start-study');
+            startBtn.disabled = true;
+            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            timerInterval = setInterval(() => {
+                const elapsedSeconds = Math.floor((Date.now() - studyStartTime) / 1000);
+                const mins = Math.floor(elapsedSeconds / 60);
+                const secs = elapsedSeconds % 60;
+
+                totalStudyTimeDisplay.innerHTML = `
+                    <span class="flex items-center gap-2">
+                        ${mins}분 ${secs}초
+                        <span class="inline-block w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></span>
+                        <span class="text-xs font-semibold text-red-500">측정 중...</span>
+                    </span>
+                `;
+            }, 1000);
+            
+            alert(`[${currentStudySubject}] 공부 시작! 집중해서 화이팅하세요.`);
+        });
+
+        document.getElementById('stop-study').addEventListener('click', () => {
+            if (!studyStartTime) {
+                alert('먼저 공부 시작을 눌러주세요.');
+                return;
+            }
+
+            clearInterval(timerInterval);
+
+            const elapsedMinutes = Math.round((Date.now() - studyStartTime) / 1000 / 60);
+            totalStudyMinutes += elapsedMinutes;
+
+            if (!subjectStudyTime[currentStudySubject]) {
+                subjectStudyTime[currentStudySubject] = 0;
+            }
+            subjectStudyTime[currentStudySubject] += elapsedMinutes;
+
+            // Restore start button state
+            const startBtn = document.getElementById('start-study');
+            startBtn.disabled = false;
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            updateSubjectStats();
+            updateStudyTimeDisplay();
+            updateSubjectProgress();
+
+            studyStartTime = null;
+
+            // 오늘 공부 시간 및 로그 누적
+            todayStudyMinutes += elapsedMinutes;
+            
+            const todayStr = getTodayString();
+            if (!dailyStudyLog[todayStr]) {
+                dailyStudyLog[todayStr] = 0;
+            }
+            dailyStudyLog[todayStr] += elapsedMinutes;
+
+            // studyHistory에 오늘 날짜 추가
+            if (elapsedMinutes > 0 && !studyHistory.includes(todayStr)) {
+                studyHistory.push(todayStr);
+            }
+
+            // 연속 공부일(Streak) 갱신 로직
+            if (!lastStudyDate) {
+                studyStreak = 1;
+                lastStudyDate = todayStr;
+            } else if (lastStudyDate === todayStr) {
+                // 오늘 이미 공부 완료함, 변동 없음
+            } else {
+                const diffDays = getDateDiffInDays(lastStudyDate, todayStr);
+                if (diffDays === 1) {
+                    studyStreak += 1;
+                    lastStudyDate = todayStr;
+                    
+                    // 달성 일수 축하 팝업
+                    if (studyStreak === 3 || studyStreak === 7 || studyStreak === 30) {
+                        setTimeout(() => {
+                            alert(`🎉 축하합니다! 연속 공부일 ${studyStreak}일을 달성하셨습니다! 🔥`);
+                        }, 500);
+                    }
+                } else {
+                    studyStreak = 1;
+                    lastStudyDate = todayStr;
+                }
+            }
+
+            saveUserTasks();
+
+            alert(`${elapsedMinutes}분 동안 열심히 공부하셨습니다! 수고하셨어요.`);
+        });
+
+        // ====================
+        // 데이터 백업 및 복원 기능
+        // ====================
         
-let totalStudyMinutes =
-    parseInt(localStorage.getItem('totalStudyMinutes')) || 0;
-let subjectStudyTime =
-    JSON.parse(localStorage.getItem('subjectStudyTime')) || {};
-const totalStudyTimeDisplay =
-    document.getElementById('total-study-time');
-function updateSubjectStats() {
+        function exportData() {
+            const backupData = {
+                tasks: tasks,
+                subjectStudyTime: subjectStudyTime,
+                totalStudyMinutes: totalStudyMinutes,
+                studyStreak: studyStreak,
+                lastStudyDate: lastStudyDate,
+                todayStudyMinutes: todayStudyMinutes,
+                todayStudyDate: todayStudyDate,
+                dailyStudyLog: dailyStudyLog,
+                subjectGapRates: subjectGapRates,
+                studyHistory: studyHistory
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            
+            const dateStr = getTodayString();
+            const filename = currentUser ? `metastudy_backup_${currentUser.studentId}_${dateStr}.json` : `metastudy_backup_guest_${dateStr}.json`;
+            downloadAnchor.setAttribute("download", filename);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
 
-    const statsDiv = document.getElementById('subject-stats');
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.tasks && Array.isArray(data.tasks)) {
+                        tasks = data.tasks;
+                        
+                        if (data.subjectStudyTime) {
+                            subjectStudyTime = data.subjectStudyTime;
+                        }
+                        if (data.totalStudyMinutes !== undefined) {
+                            totalStudyMinutes = data.totalStudyMinutes;
+                        }
+                        if (data.studyStreak !== undefined) {
+                            studyStreak = data.studyStreak;
+                        }
+                        if (data.lastStudyDate !== undefined) {
+                            lastStudyDate = data.lastStudyDate;
+                        }
+                        if (data.todayStudyMinutes !== undefined) {
+                            todayStudyMinutes = data.todayStudyMinutes;
+                        }
+                        if (data.todayStudyDate !== undefined) {
+                            todayStudyDate = data.todayStudyDate;
+                        }
+                        if (data.dailyStudyLog !== undefined) {
+                            dailyStudyLog = data.dailyStudyLog;
+                        }
+                        if (data.subjectGapRates !== undefined) {
+                            subjectGapRates = data.subjectGapRates;
+                        }
+                        if (data.studyHistory !== undefined) {
+                            studyHistory = data.studyHistory;
+                        }
+                        
+                        saveUserTasks();
+                        
+                        alert('데이터가 성공적으로 복원되었습니다!');
+                        location.reload();
+                    } else {
+                        alert('올바르지 않은 백업 파일 형식입니다.');
+                    }
+                } catch (err) {
+                    alert('파일 복원 도중 오류가 발생했습니다: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
 
-    if (!statsDiv) return;
+        function updateGapAnalysisUI() {
+            const container = document.getElementById('gap-analysis-container');
+            const adviceDiv = document.getElementById('gap-ai-advice');
+            if (!container || !adviceDiv) return;
 
-    let html = '';
+            const subjects = Object.keys(subjectGapRates);
 
-    for (const subject in subjectStudyTime) {
+            if (subjects.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-outline italic text-xs">
+                        분석할 완료 과제 데이터가 아직 없습니다.
+                    </div>
+                `;
+                adviceDiv.innerHTML = "과제를 완료하고 실제 소요시간을 기록하면 AI 계획 추천을 드립니다.";
+                return;
+            }
 
-        const mins = subjectStudyTime[subject];
+            let html = '';
+            let advices = [];
 
-        html += `
-            <p>${subject} : ${mins}분</p>
-        `;
-    }
+            subjects.forEach(sub => {
+                const gap = subjectGapRates[sub];
+                let colorClass = 'bg-primary'; // default blue
+                let labelClass = 'text-primary';
+                let statusText = '정확한 편';
 
-    statsDiv.innerHTML = html;
-}
-updateSubjectStats();
-function updateStudyTimeDisplay() {
-    const hours = Math.floor(totalStudyMinutes / 60);
-    const mins = totalStudyMinutes % 60;
+                if (gap > 10) {
+                    colorClass = 'bg-amber-500'; // orange/amber for underestimate
+                    labelClass = 'text-amber-600';
+                    statusText = '더 오래 걸림';
+                    const multiplier = (1 + gap / 100).toFixed(1);
+                    advices.push(`✍️ <strong>${sub}</strong>: 평소 예상보다 <strong>${gap}%</strong> 더 오래 걸립니다. 다음 계획 수립 시 <strong>${multiplier}배</strong>의 시간을 배정해보세요.`);
+                } else if (gap < -10) {
+                    colorClass = 'bg-blue-500'; // blue for overestimate
+                    labelClass = 'text-blue-600';
+                    statusText = '빨리 끝남';
+                    advices.push(`💡 <strong>${sub}</strong>: 평소 예상보다 <strong>${Math.abs(gap)}%</strong> 더 일찍 완료됩니다. 계획 시간을 조금 더 콤팩트하게 잡아보세요.`);
+                } else {
+                    colorClass = 'bg-emerald-500'; // green for accurate
+                    labelClass = 'text-emerald-600';
+                    statusText = '정확함';
+                    advices.push(`✅ <strong>${sub}</strong>: 계획과 실제 시간이 거의 일치합니다. 대단히 훌륭한 시간 예측력입니다!`);
+                }
 
-    totalStudyTimeDisplay.innerText =
-        `${hours}시간 ${mins}분`;
-}
+                const displayGap = Math.min(100, Math.max(-100, gap));
+                const barWidth = Math.abs(displayGap);
+                
+                html += `
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="font-bold text-sm text-on-surface">${sub}</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[10px] font-bold ${labelClass} bg-white px-2 py-0.5 rounded-full border border-slate-100">${gap > 0 ? '+' : ''}${gap}%</span>
+                                <span class="text-[9px] font-bold text-outline uppercase tracking-wider">${statusText}</span>
+                            </div>
+                        </div>
+                        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden relative">
+                            <div class="h-full ${colorClass} rounded-full" style="width: ${Math.max(10, barWidth)}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
 
-updateStudyTimeDisplay();
+            container.innerHTML = html;
+            adviceDiv.innerHTML = advices.length > 0 ? advices.map(a => `<p>${a}</p>`).join('') : "데이터 수집 중...";
+        }
 
-document
-.getElementById('start-study')
-.addEventListener('click', () => {
+        const subjectInput = document.getElementById('subject');
+        const subjectGapTip = document.getElementById('subject-gap-tip');
+        const editSubjectInput = document.getElementById('edit-subject');
+        const editSubjectGapTip = document.getElementById('edit-subject-gap-tip');
 
-  currentStudySubject =
-    document.getElementById('study-subject').value.trim();
+        function handleSubjectInput(inputEl, tipEl) {
+            const val = inputEl.value.trim();
+            if (!val) {
+                tipEl.classList.add('hidden');
+                tipEl.innerText = '';
+                return;
+            }
+            
+            const gap = subjectGapRates[val];
+            if (gap !== undefined) {
+                tipEl.classList.remove('hidden');
+                if (gap > 10) {
+                    tipEl.className = "text-[11px] text-amber-600 mt-1 font-semibold flex items-center gap-1";
+                    tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">warning</span> 이 과목은 예상보다 평균 ${gap}% 더 오래 걸렸습니다. 시간을 넉넉하게 잡는 것을 추천해요!`;
+                } else if (gap < -10) {
+                    tipEl.className = "text-[11px] text-blue-600 mt-1 font-semibold flex items-center gap-1";
+                    tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">info</span> 이 과목은 예상보다 평균 ${Math.abs(gap)}% 더 일찍 끝났습니다. 조밀하게 잡으셔도 좋습니다.`;
+                } else {
+                    tipEl.className = "text-[11px] text-emerald-600 mt-1 font-semibold flex items-center gap-1";
+                    tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">check_circle</span> 이 과목은 계획 시간과 실제 공부 시간이 대체로 정확합니다!`;
+                }
+            } else {
+                const keys = Object.keys(subjectGapRates);
+                const matchedKey = keys.find(k => k.toLowerCase() === val.toLowerCase());
+                if (matchedKey !== undefined) {
+                    const matchGap = subjectGapRates[matchedKey];
+                    tipEl.classList.remove('hidden');
+                    if (matchGap > 10) {
+                        tipEl.className = "text-[11px] text-amber-600 mt-1 font-semibold flex items-center gap-1";
+                        tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">warning</span> [${matchedKey}] 과목은 예상보다 평균 ${matchGap}% 더 오래 걸렸습니다.`;
+                    } else if (matchGap < -10) {
+                        tipEl.className = "text-[11px] text-blue-600 mt-1 font-semibold flex items-center gap-1";
+                        tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">info</span> [${matchedKey}] 과목은 예상보다 평균 ${Math.abs(matchGap)}% 더 일찍 끝났습니다.`;
+                    } else {
+                        tipEl.className = "text-[11px] text-emerald-600 mt-1 font-semibold flex items-center gap-1";
+                        tipEl.innerHTML = `<span class="material-symbols-outlined text-xs">check_circle</span> [${matchedKey}] 과목은 계획 시간과 실제 공부 시간이 정확합니다!`;
+                    }
+                } else {
+                    tipEl.classList.add('hidden');
+                    tipEl.innerText = '';
+                }
+            }
+        }
 
-if (!currentStudySubject) {
-    alert('과목명을 입력해주세요.');
-    return;
-}
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
-studyStartTime = Date.now();
+        function selectExistingSubject(val) {
+            if (!val) return;
+            const input = document.getElementById('subject');
+            if (input) {
+                input.value = val;
+                input.dispatchEvent(new Event('input'));
+            }
+            const select = document.getElementById('existing-subjects');
+            if (select) {
+                select.value = "";
+            }
+        }
 
-timerInterval = setInterval(() => {
+        function selectEditExistingSubject(val) {
+            if (!val) return;
+            const input = document.getElementById('edit-subject');
+            if (input) {
+                input.value = val;
+                input.dispatchEvent(new Event('input'));
+            }
+            const select = document.getElementById('edit-existing-subjects');
+            if (select) {
+                select.value = "";
+            }
+        }
 
-    const elapsedSeconds =
-        Math.floor((Date.now() - studyStartTime) / 1000);
+        function updateExistingSubjectsSelects() {
+            const dropdownAdd = document.getElementById('existing-subjects');
+            const dropdownEdit = document.getElementById('edit-existing-subjects');
+            if (!dropdownAdd || !dropdownEdit) return;
 
-    const mins = Math.floor(elapsedSeconds / 60);
-    const secs = elapsedSeconds % 60;
+            // Extract unique non-empty subject names, trimmed, sorted
+            const subjectList = [...new Set(tasks.map(t => t.subject ? t.subject.trim() : ""))].filter(s => s !== "").sort();
 
-   document.getElementById('total-study-time').innerText =
-    `${mins}분 ${secs}초`;
+            let optionsHtml = '<option value="">기존 과목 선택</option>';
+            subjectList.forEach(sub => {
+                optionsHtml += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`;
+            });
 
-}, 1000);
-    alert('공부 시작!');
-});
+            dropdownAdd.innerHTML = optionsHtml;
+            dropdownEdit.innerHTML = optionsHtml;
+        }
 
-document
-.getElementById('stop-study')
-.addEventListener('click', () => {
+        if (subjectInput && subjectGapTip) {
+            subjectInput.addEventListener('input', () => handleSubjectInput(subjectInput, subjectGapTip));
+        }
+        if (editSubjectInput && editSubjectGapTip) {
+            editSubjectInput.addEventListener('input', () => handleSubjectInput(editSubjectInput, editSubjectGapTip));
+        }
 
-    if (!studyStartTime) {
-        alert('먼저 공부 시작을 눌러주세요.');
-        return;
-    }
-        clearInterval(timerInterval);
-
-    const elapsedMinutes =
-        Math.round(
-            (Date.now() - studyStartTime)
-            / 1000 / 60
-        );
-
-    totalStudyMinutes += elapsedMinutes;
-if (!subjectStudyTime[currentStudySubject]) {
-    subjectStudyTime[currentStudySubject] = 0;
-}
-
-subjectStudyTime[currentStudySubject] += elapsedMinutes;
-
-localStorage.setItem(
-    'subjectStudyTime',
-    JSON.stringify(subjectStudyTime)
-);
-
-updateSubjectStats();
-    localStorage.setItem(
-        'totalStudyMinutes',
-        totalStudyMinutes
-    );
-
-    updateStudyTimeDisplay();
-
-    studyStartTime = null;
-
-    alert(
-        `${elapsedMinutes}분 공부 완료!`
-    );
-});
         taskForm.addEventListener('submit', addTask);
         setInterval(updateMotivation, 300000);
+        
+        // Execute Initialization
         init();
     </script>
-</body></html>
+</body>
+</html>
